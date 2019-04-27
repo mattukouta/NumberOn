@@ -1,7 +1,8 @@
-package kouta.numberon
+package kouta.numberon.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import kouta.numberon.R
 
 class MainActivity : AppCompatActivity() {
 
