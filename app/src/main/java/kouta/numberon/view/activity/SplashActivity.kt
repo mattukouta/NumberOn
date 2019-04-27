@@ -35,24 +35,24 @@ class SplashActivity : AppCompatActivity() {
      * Animationの適用
      */
     fun Animation() {
-        val anim1 = TranslateAnimation(
+        val anim_up = TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, -0.5f)
-        anim1.duration = 800
+        anim_up.duration = 800
 
-        val anim2 = TranslateAnimation(
+        val anim_down = TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, -0.5f,
                 Animation.RELATIVE_TO_SELF, 0.0f)
-        anim2.duration = 800
+        anim_down.duration = 800
 
         GlobalScope.launch(Dispatchers.Main) {
             while (true) {
-                title_text.AnimationAsync(anim1) // 2秒かけて上へ移動するアニメーションを実行
-                title_text.AnimationAsync(anim2) // 2秒かけて下へ移動するアニメーションを実行
+                title_text.AnimationAsync(anim_up) // 上へ移動するアニメーションを実行
+                title_text.AnimationAsync(anim_down) // 下へ移動するアニメーションを実行
             }
         }
     }
