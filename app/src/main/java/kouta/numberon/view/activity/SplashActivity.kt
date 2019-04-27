@@ -3,7 +3,6 @@ package kouta.numberon.view.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 
@@ -24,7 +23,7 @@ class SplashActivity : AppCompatActivity() {
 
         Animation()
 
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, SelectMode::class.java)
 
         background.setOnClickListener {
             startActivity(intent)

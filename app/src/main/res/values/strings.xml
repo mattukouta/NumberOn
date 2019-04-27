@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">NumberOn</string>
+    
+    <!--splash画面-->
     <string name="touch_title">Start to Game</string>
+    
+    <!--selectMode画面-->
+    <string name="cpu_btn"><font size="20">CPU対戦</font></string>
+    <string name="local_btn"><font size="20">ローカル対戦</font></string>
+    <string name="online_btn"><font size="20">オンライン対戦</font></string>
+    <string name="rule_btn"><font size="20">ルール説明</font></string>
+    
 </resources>
