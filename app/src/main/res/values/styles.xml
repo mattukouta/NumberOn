@@ -8,9 +8,23 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--tool barの削除-->
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <!--DigitDialog用-->
+    <style name="DigitDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/digit_dialog_background</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:buttonTint">@color/white</item>
+    </style>
+
+    <!--RadioButton用-->
+    <style name="DigitDialogRadioButton" parent="AlertDialog.AppCompat.Light">
+        <item name="android:colorControlNormal">@color/white</item>
+        <item name="android:colorControlActivated">@color/digit_dialog_background</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

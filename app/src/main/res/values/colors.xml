@@ -6,4 +6,10 @@
 
     <color name="white">#ffffff</color>
     <color name="select_mode_btn">#002550</color>
+
+    <!--DigitDialog用-->
+    <color name="digit_dialog_background">#002550</color>
+    <color name="digit_dialog_radiobutton">#D81B60</color>
+    <color name="digit_dialog_cancel">#D81B60</color>
+    <color name="digit_dialog_ok">#D81B60</color>
 </resources>
