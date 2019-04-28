@@ -1,4 +1,25 @@
 <resources>
     <string name="app_name">NumberOn</string>
+
+    <!--splash画面-->
     <string name="touch_title">Start to Game</string>
+
+    <!--selectMode画面-->
+    <string name="cpu_btn"><font size="20">CPU対戦</font></string>
+    <string name="local_btn"><font size="20">ローカル対戦</font></string>
+    <string name="online_btn"><font size="20">オンライン対戦</font></string>
+    <string name="rule_btn"><font size="20">ルール説明</font></string>
+
+    <!--桁選択のダイアログ用-->
+    <string name="digit_dialog_title">桁数を選択してください</string>
+    <string name="digit_dialog_two">2桁</string>
+    <string name="digit_dialog_three">3桁</string>
+    <string name="digit_dialog_four">4桁</string>
+    <string name="digit_dialog_five">5桁</string>
+    <string name="digit_dialog_cancel">cancel</string>
+    <string name="digit_dialog_ok">ok</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
