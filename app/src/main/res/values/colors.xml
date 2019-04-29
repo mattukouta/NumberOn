@@ -15,4 +15,5 @@
 
     <!--order用-->
     <color name="oder_select_btn">#002550</color>
+    <color name="oder_background">#cc000000</color>
 </resources>

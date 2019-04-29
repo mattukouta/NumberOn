@@ -3,14 +3,13 @@ package kouta.numberon.view.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_order.*
-import kotlinx.android.synthetic.main.activity_splash.*
 import kouta.numberon.R
 import kouta.numberon.view.Fragment.DigitDialogFragment
-import org.w3c.dom.Text
+import android.view.View
 
-class OrderActivity : AppCompatActivity() {
+
+class OrderActivity : AppCompatActivity(), View.OnClickListener {
 
     val dialogFragment = DigitDialogFragment()
 
@@ -27,6 +26,32 @@ class OrderActivity : AppCompatActivity() {
 
         dialogFragment.isCancelable = false
         dialogFragment.show(supportFragmentManager, "local")
+
+        zero.setOnClickListener(this)
+        one.setOnClickListener(this)
+        two.setOnClickListener(this)
+        three.setOnClickListener(this)
+        four.setOnClickListener(this)
+        five.setOnClickListener(this)
+        six.setOnClickListener(this)
+        seven.setOnClickListener(this)
+        eight.setOnClickListener(this)
+        nine.setOnClickListener(this)
+    }
+
+    override fun onClick(v : View?) {
+        when (v) {
+            zero -> Log.d("check", "hoge")
+            one -> Log.d("check", "hoge")
+            two -> Log.d("check", "hoge")
+            three -> Log.d("check", "hoge")
+            four -> Log.d("check", "hoge")
+            five -> Log.d("check", "hoge")
+            six -> Log.d("check", "hoge")
+            seven -> Log.d("check", "hoge")
+            eight -> Log.d("check", "hoge")
+            nine -> Log.d("check", "hoge")
+        }
     }
 
     /**
