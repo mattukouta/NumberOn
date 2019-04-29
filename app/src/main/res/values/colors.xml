@@ -12,4 +12,7 @@
     <color name="digit_dialog_radiobutton">#D81B60</color>
     <color name="digit_dialog_cancel">#D81B60</color>
     <color name="digit_dialog_ok">#D81B60</color>
+
+    <!--order用-->
+    <color name="oder_select_btn">#002550</color>
 </resources>

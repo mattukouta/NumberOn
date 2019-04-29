@@ -27,6 +27,7 @@ class SplashActivity : AppCompatActivity() {
 
         background.setOnClickListener {
             startActivity(intent)
+            overridePendingTransition(0, 0)
         }
     }
 
