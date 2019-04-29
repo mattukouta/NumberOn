@@ -28,7 +28,10 @@ class DigitDialogFragment : DialogFragment() {
         val radio = view?.findViewById<RadioGroup>(R.id.radioGroup)
 
 
-        cancel?.setOnClickListener { activity?.finish() }
+        cancel?.setOnClickListener {
+            activity?.finish()
+            activity?.overridePendingTransition(0, 0)
+        }
         ok?.setOnClickListener {
             when (radio?.checkedRadioButtonId) {
                 R.id.two -> dismiss()

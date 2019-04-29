@@ -28,4 +28,12 @@ class OrderActivity : AppCompatActivity() {
         dialogFragment.isCancelable = false
         dialogFragment.show(supportFragmentManager, "local")
     }
+
+    /**
+     * バックキーの動作の変更
+     */
+    override fun onBackPressed() {
+        finish()
+        overridePendingTransition(0, 0)
+    }
 }

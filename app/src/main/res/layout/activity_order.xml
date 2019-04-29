@@ -70,89 +70,102 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/zero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:scaleType="fitStart"
+                android:background="@null"
                 app:srcCompat="@drawable/trump_re" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:scaleType="fitStart"
+                android:background="@null"
                 app:srcCompat="@drawable/trump_re" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:scaleType="fitStart"
+                android:background="@null"
                 app:srcCompat="@drawable/trump_re" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/three"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:scaleType="fitStart"
+                android:background="@null"
                 app:srcCompat="@drawable/trump_re" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/four"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:scaleType="fitStart"
+                android:background="@null"
                 app:srcCompat="@drawable/trump_re" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/imageView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@null"
                 app:srcCompat="@drawable/trump_re" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/imageView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
+                android:background="@null"
                 app:srcCompat="@drawable/trump_re" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/imageView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
+                android:background="@null"
                 app:srcCompat="@drawable/trump_re" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/imageView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
+                android:background="@null"
                 app:srcCompat="@drawable/trump_re" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/imageView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
+                android:background="@null"
                 app:srcCompat="@drawable/trump_re" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>>
