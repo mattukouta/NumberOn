@@ -1,6 +1,6 @@
 package kouta.numberon.view.activity
 
-import android.graphics.drawable.Drawable
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +14,8 @@ import androidx.core.content.res.ResourcesCompat
 
 class OrderActivity : AppCompatActivity(), View.OnClickListener {
 
+    val DIGIT_REQUEST_CODE = 100
+    val DIGIT_RESULT_CODE = 101
     val dialogFragment = DigitDialogFragment()
     var view : View? = null
     var player1 = 10
@@ -34,6 +36,7 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         dialogFragment.isCancelable = false
+        dialogFragment.setTargetFragment(null, DIGIT_REQUEST_CODE)
         dialogFragment.show(supportFragmentManager, "local")
 
         zero.setOnClickListener(this)
@@ -63,11 +66,13 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
             nine -> select = 9
             select_btn -> {
                 if (select != 10) {
+                    //player1の決定時
                     if (player1 == 10 && player2 == 10) {
                         player1 = select
                         view?.isEnabled = false
                         view = null
                         select_card = R.drawable.trump_re_red
+                        //player2の決定時
                     } else if (player1 != 10 && player2 == 10) {
                         player2 = select
                         Toast.makeText(this, "Player1:$player1, Player2:$player2", Toast.LENGTH_LONG).show()
@@ -83,6 +88,12 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
             }
             v.background = ResourcesCompat.getDrawable(resources, select_card, null)
             view = v
+        }
+    }
+
+    override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
+        if (requestCode == DIGIT_REQUEST_CODE && resultCode == DIGIT_RESULT_CODE) {
+            Toast.makeText(this, data?.getIntExtra("digit", 0).toString(), Toast.LENGTH_LONG).show()
         }
     }
 

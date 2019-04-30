@@ -1,6 +1,8 @@
 package kouta.numberon.view.Fragment
 
 import android.app.Dialog
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.RadioGroup
@@ -13,6 +15,9 @@ import kouta.numberon.R
 
 class DigitDialogFragment : DialogFragment() {
 
+    val DIGIT_REQUEST_CODE = 100
+    val DIGIT_RESULT_CODE = 101
+    var digit = 0
 
     override fun onCreateDialog(savedInstanceState : Bundle?) : Dialog {
         super.onCreateDialog(savedInstanceState)
@@ -33,12 +38,23 @@ class DigitDialogFragment : DialogFragment() {
             activity?.overridePendingTransition(0, 0)
         }
         ok?.setOnClickListener {
+
+            val intent = Intent()
+
             when (radio?.checkedRadioButtonId) {
-                R.id.two -> dismiss()
-                R.id.three -> dismiss()
-                R.id.four -> dismiss()
-                R.id.five -> dismiss()
+                R.id.two -> digit = 2
+                R.id.three -> digit = 3
+                R.id.four -> digit = 4
+                R.id.five -> digit = 5
             }
+
+            intent.putExtra("digit", digit)
+            val pi = activity?.createPendingResult(targetRequestCode, intent, PendingIntent.FLAG_ONE_SHOT)
+
+            if (pi != null) {
+                pi.send(DIGIT_RESULT_CODE)
+            }
+            dismiss()
         }
 
         return alert?.create()!!
