@@ -23,6 +23,7 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
     var select = 10
     var card_base = R.drawable.trump_re
     var select_card = R.drawable.trump_re_green
+    var digit_data = 0
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,9 +74,9 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
                         view = null
                         select_card = R.drawable.trump_re_red
                         //player2の決定時
-                    } else if (player1 != 10 && player2 == 10) {
+                    } else if (player1 != 10 && player2 == 10 && player1 != select) {
                         player2 = select
-                        Toast.makeText(this, "Player1:$player1, Player2:$player2", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Player1:$player1, Player2:$player2, 桁数は:$digit_data", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -93,7 +94,9 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
         if (requestCode == DIGIT_REQUEST_CODE && resultCode == DIGIT_RESULT_CODE) {
-            Toast.makeText(this, data?.getIntExtra("digit", 0).toString(), Toast.LENGTH_LONG).show()
+            if (data != null) {
+                digit_data = data.getIntExtra("digit", 0)
+            }
         }
     }
 
