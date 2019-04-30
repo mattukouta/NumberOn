@@ -75,7 +75,7 @@ class DigitDialogFragment : DialogFragment() {
     private fun isSameTagDialogShowing(manager : FragmentManager, tag : String) : Boolean {
         val previousFragment = manager.findFragmentByTag(tag)
         if (previousFragment is DialogFragment) {
-            val dialog = (previousFragment as DialogFragment).getDialog()
+            val dialog = (previousFragment).getDialog()
             if (dialog != null && dialog.isShowing()) {
                 return true
             }

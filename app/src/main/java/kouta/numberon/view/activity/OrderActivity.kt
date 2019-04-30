@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import kouta.numberon.Model.DataUtils
+import kouta.numberon.view.Fragment.OrderResultFragment
 import java.util.Collections
 
 
@@ -70,6 +71,7 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
                 if (select != 10) {
                     //player1の決定時
                     if (player1 == 10 && player2 == 10) {
+                        select_text.text = resources.getText(R.string.select_player2)
                         player1 = select
                         view?.isEnabled = false
                         view = null
@@ -78,7 +80,17 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
                     } else if (player1 != 10 && player2 == 10 && player1 != select) {
                         Collections.shuffle(card_number)
                         player2 = select
-                        Toast.makeText(this, "Player1:" + card_number[player1].toString() + ", Player2:" + card_number[player2] + "桁数は:$digit_data", Toast.LENGTH_LONG).show()
+//                        Toast.makeText(this, "Player1:" + card_number[player1].toString() + ", Player2:" + card_number[player2] + "桁数は:$digit_data", Toast.LENGTH_LONG).show()
+                        val bundle = Bundle()
+                        bundle.putInt(DataUtils().PLAYER1_CARD, card_number[player1])
+                        bundle.putInt(DataUtils().PLAYER2_CARD, card_number[player2])
+
+                        val fragment = OrderResultFragment()
+                        fragment.arguments = bundle
+
+                        supportFragmentManager.beginTransaction()
+                                .add(R.id.order_base, fragment)
+                                .commit()
                     }
                 }
             }

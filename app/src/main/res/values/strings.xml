@@ -27,7 +27,10 @@
     <string name="order_title_online">オンライン対戦</string>
     <string name="explain_text">先攻、後攻を決めてください</string>
     <string name="card_select">好きなカード一枚選んでください</string>
+    <string name="select_player1">Player1は好きなカードを一枚選んでください</string>
+    <string name="select_player2">Player2は好きなカードを一枚選んでください</string>
     <string name="select_btn">決定</string>
-
+    <string name="order_player1">Player1が先攻です</string>
+    <string name="order_player2">Player2が先攻です</string>
 
 </resources>
