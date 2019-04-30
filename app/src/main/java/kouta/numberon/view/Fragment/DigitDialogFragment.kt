@@ -1,18 +1,22 @@
 package kouta.numberon.view.Fragment
 
 import android.app.Dialog
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import kouta.numberon.Model.DataUtils
 
 import kouta.numberon.R
 
 
 class DigitDialogFragment : DialogFragment() {
 
+    var digit = 0
 
     override fun onCreateDialog(savedInstanceState : Bundle?) : Dialog {
         super.onCreateDialog(savedInstanceState)
@@ -28,14 +32,28 @@ class DigitDialogFragment : DialogFragment() {
         val radio = view?.findViewById<RadioGroup>(R.id.radioGroup)
 
 
-        cancel?.setOnClickListener { activity?.finish() }
+        cancel?.setOnClickListener {
+            activity?.finish()
+            activity?.overridePendingTransition(0, 0)
+        }
         ok?.setOnClickListener {
+
+            val intent = Intent()
+
             when (radio?.checkedRadioButtonId) {
-                R.id.two -> dismiss()
-                R.id.three -> dismiss()
-                R.id.four -> dismiss()
-                R.id.five -> dismiss()
+                R.id.two -> digit = 2
+                R.id.three -> digit = 3
+                R.id.four -> digit = 4
+                R.id.five -> digit = 5
             }
+
+            intent.putExtra("digit", digit)
+            val pi = activity?.createPendingResult(targetRequestCode, intent, PendingIntent.FLAG_ONE_SHOT)
+
+            if (pi != null) {
+                pi.send(DataUtils().DIGIT_RESULT_CODE)
+            }
+            dismiss()
         }
 
         return alert?.create()!!
@@ -57,7 +75,7 @@ class DigitDialogFragment : DialogFragment() {
     private fun isSameTagDialogShowing(manager : FragmentManager, tag : String) : Boolean {
         val previousFragment = manager.findFragmentByTag(tag)
         if (previousFragment is DialogFragment) {
-            val dialog = (previousFragment as DialogFragment).getDialog()
+            val dialog = (previousFragment).getDialog()
             if (dialog != null && dialog.isShowing()) {
                 return true
             }

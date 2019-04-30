@@ -12,4 +12,8 @@
     <color name="digit_dialog_radiobutton">#D81B60</color>
     <color name="digit_dialog_cancel">#D81B60</color>
     <color name="digit_dialog_ok">#D81B60</color>
+
+    <!--order用-->
+    <color name="order_select_btn">#002550</color>
+    <color name="order_background">#aa000000</color>
 </resources>

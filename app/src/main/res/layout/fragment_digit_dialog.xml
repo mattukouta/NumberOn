@@ -1,97 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/digit_dialog_background"
-    tools:context=".view.Fragment.DigitDialogFragment">
+<layout>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/digit_dialog_background"
+        tools:context=".view.Fragment.DigitDialogFragment">
 
-    <TextView
-        android:id="@+id/dialog_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/digit_dialog_title"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/cancel"
-        app:layout_constraintEnd_toEndOf="@+id/dialog_title"
-        app:layout_constraintStart_toStartOf="@+id/dialog_title"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_title">
-
-        <RadioButton
-            android:id="@+id/two"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/digit_dialog_two"
+            android:layout_marginTop="16dp"
+            android:text="@string/digit_dialog_title"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:theme="@style/DigitDialogRadioButton" />
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <RadioButton
-            android:id="@+id/three"
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/digit_dialog_three"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:theme="@style/DigitDialogRadioButton" />
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/cancel"
+            app:layout_constraintEnd_toEndOf="@+id/dialog_title"
+            app:layout_constraintStart_toStartOf="@+id/dialog_title"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_title">
 
-        <RadioButton
-            android:id="@+id/four"
-            android:layout_width="match_parent"
+            <RadioButton
+                android:id="@+id/two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/digit_dialog_two"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:theme="@style/DigitDialogRadioButton" />
+
+            <RadioButton
+                android:id="@+id/three"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/digit_dialog_three"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:theme="@style/DigitDialogRadioButton" />
+
+            <RadioButton
+                android:id="@+id/four"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/digit_dialog_four"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:theme="@style/DigitDialogRadioButton" />
+
+            <RadioButton
+                android:id="@+id/five"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/digit_dialog_five"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:theme="@style/DigitDialogRadioButton" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/ok"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/digit_dialog_four"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:theme="@style/DigitDialogRadioButton" />
+            android:layout_marginBottom="16dp"
+            android:text="@string/digit_dialog_ok"
+            android:textColor="@color/digit_dialog_ok"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/dialog_title" />
 
-        <RadioButton
-            android:id="@+id/five"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/cancel"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/digit_dialog_five"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:theme="@style/DigitDialogRadioButton" />
-    </RadioGroup>
-
-    <Button
-        android:id="@+id/ok"
-        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/digit_dialog_ok"
-        android:textColor="@color/digit_dialog_ok"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/dialog_title" />
-
-    <Button
-        android:id="@+id/cancel"
-        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="@string/digit_dialog_cancel"
-        android:textColor="@color/digit_dialog_cancel"
-        app:layout_constraintBottom_toBottomOf="@+id/ok"
-        app:layout_constraintEnd_toStartOf="@+id/ok" />
+            android:layout_marginEnd="16dp"
+            android:text="@string/digit_dialog_cancel"
+            android:textColor="@color/digit_dialog_cancel"
+            app:layout_constraintBottom_toBottomOf="@+id/ok"
+            app:layout_constraintEnd_toStartOf="@+id/ok" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">NumberOn</string>
 
+    <string name="eir"> </string>
+
     <!--splash画面-->
     <string name="touch_title">Start to Game</string>
 
@@ -19,7 +21,17 @@
     <string name="digit_dialog_cancel">cancel</string>
     <string name="digit_dialog_ok">ok</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--先行、後攻決め用-->
+    <string name="order_title_cpu">CPU対戦</string>
+    <string name="order_title_local">ローカル対戦</string>
+    <string name="order_title_online">オンライン対戦</string>
+    <string name="explain_text">先攻、後攻を決めてください</string>
+    <string name="card_select">好きなカード一枚選んでください</string>
+    <string name="select_player1">Player1は好きなカードを一枚選んでください</string>
+    <string name="select_player2">Player2は好きなカードを一枚選んでください</string>
+    <string name="select_btn">決定</string>
+    <string name="order_player1">Player1が先攻です</string>
+    <string name="order_player2">Player2が先攻です</string>
+    <string name="game_start">タッチでゲームスタート</string>
 
 </resources>

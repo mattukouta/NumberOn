@@ -19,6 +19,7 @@ class SelectMode : AppCompatActivity() {
             val intent = Intent(this, OrderActivity::class.java)
             intent.putExtra("Mode", "local")
             startActivity(intent)
+            overridePendingTransition(0, 0)
         }
         online_btn.setOnClickListener {
 //            dialogFragment.show(supportFragmentManager, "online")
