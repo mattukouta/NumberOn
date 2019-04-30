@@ -11,11 +11,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import kouta.numberon.Model.DataUtils
+import java.util.Collections
 
 
 class OrderActivity : AppCompatActivity(), View.OnClickListener {
 
     val dialogFragment = DigitDialogFragment()
+    val card_number = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
     var view : View? = null
     var player1 = 10
     var player2 = 10
@@ -74,8 +76,9 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
                         select_card = R.drawable.trump_re_red
                         //player2の決定時
                     } else if (player1 != 10 && player2 == 10 && player1 != select) {
+                        Collections.shuffle(card_number)
                         player2 = select
-                        Toast.makeText(this, "Player1:$player1, Player2:$player2, 桁数は:$digit_data", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Player1:" + card_number[player1].toString() + ", Player2:" + card_number[player2] + "桁数は:$digit_data", Toast.LENGTH_LONG).show()
                     }
                 }
             }
