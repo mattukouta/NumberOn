@@ -10,12 +10,11 @@ import kouta.numberon.view.Fragment.DigitDialogFragment
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import kouta.numberon.Model.DataUtils
 
 
 class OrderActivity : AppCompatActivity(), View.OnClickListener {
 
-    val DIGIT_REQUEST_CODE = 100
-    val DIGIT_RESULT_CODE = 101
     val dialogFragment = DigitDialogFragment()
     var view : View? = null
     var player1 = 10
@@ -37,7 +36,7 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         dialogFragment.isCancelable = false
-        dialogFragment.setTargetFragment(null, DIGIT_REQUEST_CODE)
+        dialogFragment.setTargetFragment(null, DataUtils().DIGIT_REQUEST_CODE)
         dialogFragment.show(supportFragmentManager, "local")
 
         zero.setOnClickListener(this)
@@ -93,7 +92,7 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
-        if (requestCode == DIGIT_REQUEST_CODE && resultCode == DIGIT_RESULT_CODE) {
+        if (requestCode == DataUtils().DIGIT_REQUEST_CODE && resultCode == DataUtils().DIGIT_RESULT_CODE) {
             if (data != null) {
                 digit_data = data.getIntExtra("digit", 0)
             }

@@ -9,14 +9,13 @@ import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import kouta.numberon.Model.DataUtils
 
 import kouta.numberon.R
 
 
 class DigitDialogFragment : DialogFragment() {
 
-    val DIGIT_REQUEST_CODE = 100
-    val DIGIT_RESULT_CODE = 101
     var digit = 0
 
     override fun onCreateDialog(savedInstanceState : Bundle?) : Dialog {
@@ -52,7 +51,7 @@ class DigitDialogFragment : DialogFragment() {
             val pi = activity?.createPendingResult(targetRequestCode, intent, PendingIntent.FLAG_ONE_SHOT)
 
             if (pi != null) {
-                pi.send(DIGIT_RESULT_CODE)
+                pi.send(DataUtils().DIGIT_RESULT_CODE)
             }
             dismiss()
         }
