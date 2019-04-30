@@ -47,7 +47,7 @@ class DigitDialogFragment : DialogFragment() {
                 R.id.five -> digit = 5
             }
 
-            intent.putExtra("digit", digit)
+            intent.putExtra(DataUtils().DIGIT, digit)
             val pi = activity?.createPendingResult(targetRequestCode, intent, PendingIntent.FLAG_ONE_SHOT)
 
             if (pi != null) {

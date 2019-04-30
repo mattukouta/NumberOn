@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activity.SelectMode"
+            android:name=".view.activity.SelectModeActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -29,9 +29,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.OrderActivity"
+        <activity
+            android:name=".view.activity.OrderActivity"
             android:launchMode="singleTask"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".view.activity.MatchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

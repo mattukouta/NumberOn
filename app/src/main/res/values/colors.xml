@@ -16,4 +16,13 @@
     <!--order用-->
     <color name="order_select_btn">#002550</color>
     <color name="order_background">#aa000000</color>
+
+    <!--match用-->
+    <color name="selece_border">#ff6633</color>
+
+    <!--テスト用-->
+    <color name="one">#ffffff</color>
+    <color name="two">#8bad34</color>
+    <color name="three">#b23b56</color>
+    <color name="four">#285174</color>
 </resources>
