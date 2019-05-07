@@ -27,6 +27,8 @@ class MatchActivity : AppCompatActivity() {
     val hi_blow = listOf("123", "124", "231")
 
     var list = ArrayList<Player>()
+    var flag = 0
+    lateinit var player_result : Player
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,16 +53,22 @@ class MatchActivity : AppCompatActivity() {
         var count = 0
 
         btn_call.setOnClickListener {
-            var player = Player()
-            count++
-            player.player1_call = "$count"
-            player.player1_hit_blow = "2H&0B"
-            player.player2_call = "398"
-            player.player2_hit_blow = "2H&0B"
-            list.add(0, player)
-//            list.reverse()
-//            list.
-            listAdapter.notifyDataSetChanged()
+            if (flag == 0) {
+                count++
+                player_result = Player()
+                player_result.player1_call = "$count"
+                player_result.player1_hit_blow = "2H&0B"
+                list.add(0, player_result)
+                listAdapter.notifyDataSetChanged()
+                flag = 1
+
+            } else if (flag == 1) {
+                player_result.player2_call = "398"
+                player_result.player2_hit_blow = "2H&0B"
+                listAdapter.notifyDataSetChanged()
+                flag = 0
+
+            }
         }
     }
 }

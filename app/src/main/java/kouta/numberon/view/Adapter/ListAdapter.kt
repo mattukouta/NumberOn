@@ -15,17 +15,12 @@ class ListAdapter() : BaseAdapter() {
     lateinit var context : Context
     lateinit var call : List<String>
     lateinit var hb : List<String>
+    var flag = 0
 
     constructor(context : Context, player_result : ArrayList<Player>) : this() {
         this.context = context
         this.player_result = player_result
     }
-
-//    constructor(context : Context, call : List<String>, hb : List<String>) : this() {
-//        this.context = context
-//        this.call = call
-//        this.hb = hb
-//    }
 
     override fun getItem(position : Int) : Any {
         return 0
@@ -43,10 +38,15 @@ class ListAdapter() : BaseAdapter() {
         val inflator = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflator.inflate(R.layout.playerlist, null)
 
-        view.player1_call.text = player_result.get(position).player1_call
-        view.player1_hit_blow.text = player_result.get(position).player1_hit_blow
-        view.player2_call.text = player_result.get(position).player2_call
-        view.player2_hit_blow.text = player_result.get(position).player2_hit_blow
+//        if (flag == 0) {
+            view.player1_call.text = player_result.get(position).player1_call
+            view.player1_hit_blow.text = player_result.get(position).player1_hit_blow
+//            flag = 1
+//        } else if (flag == 1) {
+            view.player2_call.text = player_result.get(position).player2_call
+            view.player2_hit_blow.text = player_result.get(position).player2_hit_blow
+//            flag = 0
+//        }
 
 //        view.player1_call.text = call[position]
 //        view.player2_call.text = call[position]
