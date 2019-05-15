@@ -33,5 +33,10 @@
     <string name="order_player1">Player1が先攻です</string>
     <string name="order_player2">Player2が先攻です</string>
     <string name="game_start">タッチでゲームスタート</string>
-
+    
+    <!--対戦画面用-->
+    <string name="first">先攻</string>
+    <string name="second">後攻</string>
+    <string name="cell_call">Call</string>
+    <string name="cell_H_B">Hit&amp;Blow</string>
 </resources>
