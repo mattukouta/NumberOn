@@ -5,18 +5,19 @@ import android.graphics.drawable.StateListDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import android.widget.RadioButton
 import kotlinx.android.synthetic.main.activity_match.*
 import kouta.numberon.Model.DataUtils
 import kouta.numberon.Model.Player
 import kouta.numberon.Presenter.ModeTextChange
+import kouta.numberon.Presenter.NumberToCard
 import kouta.numberon.view.Adapter.ListAdapter
 import kouta.numberon.R
 
 
-class MatchActivity : AppCompatActivity() {
-
+class MatchActivity : AppCompatActivity(), View.OnClickListener {
     var digit = 0
     lateinit var mode : String
     var player = 0
@@ -86,5 +87,67 @@ class MatchActivity : AppCompatActivity() {
             }
 
         }
+
+        btn_0.setOnClickListener(this)
+        btn_1.setOnClickListener(this)
+        btn_2.setOnClickListener(this)
+        btn_3.setOnClickListener(this)
+        btn_4.setOnClickListener(this)
+        btn_5.setOnClickListener(this)
+        btn_6.setOnClickListener(this)
+        btn_7.setOnClickListener(this)
+        btn_8.setOnClickListener(this)
+        btn_9.setOnClickListener(this)
+        btn_call.setOnClickListener(this)
     }
+
+    /**
+     * 画面下の数字およびcallボタン選択時の処理
+     */
+    override fun onClick(v : View?) {
+        var select_card = 0
+        when (v) {
+            btn_0 -> {
+                select_card = NumberToCard(0)
+            }
+            btn_1 -> {
+                select_card = NumberToCard(1)
+            }
+            btn_2 -> {
+                select_card = NumberToCard(2)
+            }
+            btn_3 -> {
+                select_card = NumberToCard(3)
+            }
+            btn_4 -> {
+                select_card = NumberToCard(4)
+            }
+            btn_5 -> {
+                select_card = NumberToCard(5)
+            }
+            btn_6 -> {
+                select_card = NumberToCard(6)
+            }
+            btn_7 -> {
+                select_card = NumberToCard(7)
+            }
+            btn_8 -> {
+                select_card = NumberToCard(8)
+            }
+            btn_9 -> {
+                select_card = NumberToCard(9)
+            }
+            btn_call -> {
+            }
+        }
+        /**
+         * 画面下の選択した数字を選択していたradioButtonに画面に差し込み
+         */
+
+        if (radioGroup.checkedRadioButtonId != - 1 && v != btn_call) {
+            val radio = findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
+            radio.setButtonDrawable(select_card)
+        }
+    }
+
 }

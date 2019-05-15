@@ -71,8 +71,14 @@ class SplashActivity : AppCompatActivity() {
 
         GlobalScope.launch(Dispatchers.Main) {
             while (true) {
-                title_text.AnimationAsync(anim_up) // 上へ移動するアニメーションを実行
-                title_text.AnimationAsync(anim_down) // 下へ移動するアニzメーションを実行
+                /**
+                 * 上へ移動するアニメーションを実行
+                 */
+                title_text.AnimationAsync(anim_up)
+                /**
+                 * 下へ移動するアニメーションを実行
+                 */
+                title_text.AnimationAsync(anim_down)
             }
         }
     }

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_order_result.*
 import kotlinx.android.synthetic.main.fragment_order_result.view.*
 import kouta.numberon.Model.DataUtils
+import kouta.numberon.Presenter.NumberToCard
 
 import kouta.numberon.R
 import kouta.numberon.view.activity.MatchActivity
@@ -63,25 +64,5 @@ class OrderResultFragment : Fragment() {
         }
 
         return view
-    }
-
-    /**
-     * idから画像intの変換用
-     */
-    //他で使う可能性があるため単独の関数に変更するかも
-    private fun NumberToCard(number : Int) : Int {
-        when (number) {
-            0 -> return R.drawable.trump_0
-            1 -> return R.drawable.trump_1
-            2 -> return R.drawable.trump_2
-            3 -> return R.drawable.trump_3
-            4 -> return R.drawable.trump_4
-            5 -> return R.drawable.trump_5
-            6 -> return R.drawable.trump_6
-            7 -> return R.drawable.trump_7
-            8 -> return R.drawable.trump_8
-            9 -> return R.drawable.trump_9
-        }
-        return 0
     }
 }
