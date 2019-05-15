@@ -47,6 +47,9 @@ class DigitDialogFragment : DialogFragment() {
                 R.id.five -> digit = 5
             }
 
+            /**
+             * 選択した桁数をActivityに反映
+             */
             intent.putExtra(DataUtils().DIGIT, digit)
             val pi = activity?.createPendingResult(targetRequestCode, intent, PendingIntent.FLAG_ONE_SHOT)
 
@@ -55,8 +58,8 @@ class DigitDialogFragment : DialogFragment() {
             }
             dismiss()
         }
-
-        return alert?.create()!!
+        //アンラップになっているの要修正事項
+        return alert?.create() !!
     }
 
     override fun show(manager : FragmentManager, tag : String?) {

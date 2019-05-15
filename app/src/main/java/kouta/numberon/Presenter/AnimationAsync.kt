@@ -5,6 +5,9 @@ import android.view.animation.Animation
 import kotlin.coroutines.suspendCoroutine
 import kotlin.coroutines.resume
 
+/**
+ * splash用のanimation処理
+ */
 suspend fun View.AnimationAsync(anim : Animation) {
     return suspendCoroutine { continuation ->
         anim.setAnimationListener(object : Animation.AnimationListener {

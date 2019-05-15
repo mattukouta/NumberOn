@@ -27,6 +27,9 @@ class OrderResultFragment : Fragment() {
         var mode = ""
         var first = 1
 
+        /**
+         * カード選択値の受け取り
+         */
         if (argument != null) {
             player1 = argument.getInt(DataUtils().PLAYER1_CARD)
             player2 = argument.getInt(DataUtils().PLAYER2_CARD)
@@ -47,6 +50,9 @@ class OrderResultFragment : Fragment() {
             first = 2
         }
 
+        /**
+         * 先行、後攻が決まりタッチでゲームスタートの処理
+         */
         view.result_background.setOnClickListener {
             val intent = Intent(activity, MatchActivity::class.java)
             intent.putExtra(DataUtils().DIGIT, digit)
@@ -59,6 +65,10 @@ class OrderResultFragment : Fragment() {
         return view
     }
 
+    /**
+     * idから画像intの変換用
+     */
+    //他で使う可能性があるため単独の関数に変更するかも
     private fun NumberToCard(number : Int) : Int {
         when (number) {
             0 -> return R.drawable.trump_0

@@ -30,6 +30,8 @@ class SplashActivity : AppCompatActivity() {
 
         /**
          * 画面サイズの取得
+         *
+         * 初期化されることに気がついた(2019/05/15)
          */
         val wm : WindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         val disp = wm.defaultDisplay
@@ -40,6 +42,9 @@ class SplashActivity : AppCompatActivity() {
 
         Animation()
 
+        /**
+         * 画面タップでSelectModeActivityへ
+         */
         background.setOnClickListener {
             startActivity(intent)
             overridePendingTransition(0, 0)

@@ -2,6 +2,9 @@ package kouta.numberon.Presenter
 
 import kouta.numberon.R
 
+/**
+ * 画面上部に表示させる用
+ */
 fun ModeTextChange(mode : String) : Int {
     when (mode) {
         "cpu" -> return R.string.order_title_cpu

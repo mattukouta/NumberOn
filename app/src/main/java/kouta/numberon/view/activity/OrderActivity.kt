@@ -69,14 +69,18 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
             nine -> select = 9
             select_btn -> {
                 if (select != 10) {
-                    //player1の決定時
+                    /**
+                     * player1の決定時
+                     */
                     if (player1 == 10 && player2 == 10) {
                         select_text.text = resources.getText(R.string.select_player2)
                         player1 = select
                         view?.isEnabled = false
                         view = null
                         select_card = R.drawable.trump_re_red
-                        //player2の決定時
+                        /**
+                         * player2の決定時
+                         */
                     } else if (player1 != 10 && player2 == 10 && player1 != select) {
                         Collections.shuffle(card_number)
                         player2 = select
@@ -107,6 +111,9 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * 桁数の受け取り
+     */
     override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
         if (requestCode == DataUtils().DIGIT_REQUEST_CODE && resultCode == DataUtils().DIGIT_RESULT_CODE) {
             if (data != null) {

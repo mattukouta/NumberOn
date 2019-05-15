@@ -41,16 +41,11 @@ class MatchActivity : AppCompatActivity() {
         digit = intent.getIntExtra(DataUtils().DIGIT, 0)
         mode = intent.getStringExtra(DataUtils().MODE)
         player = intent.getIntExtra(DataUtils().PLAYER, 0)
-
-        //        turn_text.setText()
         select_title.setText(ModeTextChange(mode))
 
-        //        val select_adapter = SelectNumberGridAdapter(this, digit)
-        //        select_gridView.numColumns = digit
-        //        select_gridView.adapter = select_adapter
-
-        //        val listAdapter = ListAdapter(this, call, hi_blow)
-
+        /**
+         * radiobuttonの追加
+         */
         for (n in 1..digit) {
             val radio = RadioButton(this)
             radio.background = resources.getDrawable(R.drawable.card_checked, null)
@@ -59,11 +54,17 @@ class MatchActivity : AppCompatActivity() {
             radioGroup.addView(radio)
         }
 
+        /**
+         * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
+         */
         val listAdapter = ListAdapter(this, list)
         playerList.adapter = listAdapter
 
         var count = 0
 
+        /**
+         * callボタン押した時の処理
+         */
         btn_call.setOnClickListener {
             val radio = findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
             radio.setButtonDrawable(R.drawable.trump_1)
