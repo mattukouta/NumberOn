@@ -1,14 +1,17 @@
 package kouta.numberon.view.activity
 
+import android.graphics.drawable.StateListDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.RadioButton
 import kotlinx.android.synthetic.main.activity_match.*
 import kouta.numberon.Model.DataUtils
 import kouta.numberon.Model.Player
 import kouta.numberon.Presenter.ModeTextChange
-import kouta.numberon.R
 import kouta.numberon.view.Adapter.ListAdapter
-import kouta.numberon.view.Adapter.SelectNumberGridAdapter
+import kouta.numberon.R
+
 
 
 class MatchActivity : AppCompatActivity() {
@@ -38,23 +41,36 @@ class MatchActivity : AppCompatActivity() {
         mode = intent.getStringExtra(DataUtils().MODE)
         player = intent.getIntExtra(DataUtils().PLAYER, 0)
 
-//        turn_text.setText()
+        //        turn_text.setText()
         select_title.setText(ModeTextChange(mode))
 
+        //        val select_adapter = SelectNumberGridAdapter(this, digit)
+        //        select_gridView.numColumns = digit
+        //        select_gridView.adapter = select_adapter
 
-        val select_adapter = SelectNumberGridAdapter(this, digit)
-        select_gridView.numColumns = digit
-        select_gridView.adapter = select_adapter
+        //        val listAdapter = ListAdapter(this, call, hi_blow)
 
-//        val listAdapter = ListAdapter(this, call, hi_blow)
+        for (n in 1..digit) {
+            val radio = RadioButton(this)
+            radio.background = resources.getDrawable(R.drawable.card_checked)
+            val buttom = StateListDrawable()
+            buttom.addState(intArrayOf(), null)
+            radio.buttonDrawable = buttom
+            radio.setButtonDrawable(R.drawable.trump_white)
+            radio.id = n
+            radioGroup.addView(radio)
+        }
+
         val listAdapter = ListAdapter(this, list)
         playerList.adapter = listAdapter
 
         var count = 0
 
         btn_call.setOnClickListener {
+            val radio = findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
+            radio.setButtonDrawable(R.drawable.trump_1)
             if (flag == 0) {
-                count++
+                count ++
                 player_result = Player()
                 player_result.player1_call = "$count"
                 player_result.player1_hit_blow = "2H&0B"
@@ -69,6 +85,7 @@ class MatchActivity : AppCompatActivity() {
                 flag = 0
 
             }
+
         }
     }
 }
