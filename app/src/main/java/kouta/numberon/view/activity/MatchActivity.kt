@@ -35,6 +35,8 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
     var flag = 0
     lateinit var player_result : Player
 
+    var number = mutableListOf<Int?>()
+
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
@@ -44,15 +46,20 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         player = intent.getIntExtra(DataUtils().PLAYER, 0)
         select_title.setText(ModeTextChange(mode))
 
-        /**
-         * radiobuttonの追加
-         */
         for (n in 1..digit) {
+            /**
+             * radiobuttonの追加
+             */
             val radio = RadioButton(this)
             radio.background = resources.getDrawable(R.drawable.card_checked, null)
             radio.setButtonDrawable(R.drawable.trump_white)
             radio.id = n
             radioGroup.addView(radio)
+
+            /**
+             * 配列の作成
+             */
+            number.add(null)
         }
 
         /**
@@ -66,27 +73,27 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         /**
          * callボタン押した時の処理
          */
-        btn_call.setOnClickListener {
-            val radio = findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
-            radio.setButtonDrawable(R.drawable.trump_1)
-            if (flag == 0) {
-                count ++
-                player_result = Player()
-                player_result.player1_call = "$count"
-                player_result.player1_hit_blow = "2H&0B"
-                list.add(0, player_result)
-                listAdapter.notifyDataSetChanged()
-                flag = 1
-
-            } else if (flag == 1) {
-                player_result.player2_call = "398"
-                player_result.player2_hit_blow = "2H&0B"
-                listAdapter.notifyDataSetChanged()
-                flag = 0
-
-            }
-
-        }
+//        btn_call.setOnClickListener {
+//            val radio = findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
+//            radio.setButtonDrawable(R.drawable.trump_1)
+//            if (flag == 0) {
+//                count ++
+//                player_result = Player()
+//                player_result.player1_call = "$count"
+//                player_result.player1_hit_blow = "2H&0B"
+//                list.add(0, player_result)
+//                listAdapter.notifyDataSetChanged()
+//                flag = 1
+//
+//            } else if (flag == 1) {
+//                player_result.player2_call = "398"
+//                player_result.player2_hit_blow = "2H&0B"
+//                listAdapter.notifyDataSetChanged()
+//                flag = 0
+//
+//            }
+//
+//        }
 
         btn_0.setOnClickListener(this)
         btn_1.setOnClickListener(this)
@@ -106,38 +113,60 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
      */
     override fun onClick(v : View?) {
         var select_card = 0
+        var select_number = 0
         when (v) {
             btn_0 -> {
-                select_card = NumberToCard(0)
+                select_number = 0
+                select_card = NumberToCard(select_number)
             }
             btn_1 -> {
-                select_card = NumberToCard(1)
+                select_number = 1
+                select_card = NumberToCard(select_number)
             }
             btn_2 -> {
-                select_card = NumberToCard(2)
+                select_number = 2
+                select_card = NumberToCard(select_number)
             }
             btn_3 -> {
-                select_card = NumberToCard(3)
+                select_number = 3
+                select_card = NumberToCard(select_number)
             }
             btn_4 -> {
-                select_card = NumberToCard(4)
+                select_number = 4
+                select_card = NumberToCard(select_number)
             }
             btn_5 -> {
-                select_card = NumberToCard(5)
+                select_number = 5
+                select_card = NumberToCard(select_number)
             }
             btn_6 -> {
-                select_card = NumberToCard(6)
+                select_number = 6
+                select_card = NumberToCard(select_number)
             }
             btn_7 -> {
-                select_card = NumberToCard(7)
+                select_number = 7
+                select_card = NumberToCard(select_number)
             }
             btn_8 -> {
-                select_card = NumberToCard(8)
+                select_number = 8
+                select_card = NumberToCard(select_number)
             }
             btn_9 -> {
-                select_card = NumberToCard(9)
+                select_number = 9
+                select_card = NumberToCard(select_number)
             }
             btn_call -> {
+                /**
+                 * 作成していたnumberリストの全ての値がnullではないことの確認
+                 * number.filterNotNull()でnullじゃない要素の抽出
+                 * number.filterNotNull().size == digitでnullじゃない要素のサイズと、
+                 * 選択していた桁数が等しいことを確認し次の処理へ
+                 */
+                if (number.filterNotNull().size == digit) {
+                    Log.d("check", "good!")
+                } else {
+                    Log.d("check", "bad..")
+                }
             }
         }
         /**
@@ -147,6 +176,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         if (radioGroup.checkedRadioButtonId != - 1 && v != btn_call) {
             val radio = findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
             radio.setButtonDrawable(select_card)
+            number[radioGroup.checkedRadioButtonId - 1] = select_number
         }
     }
 
