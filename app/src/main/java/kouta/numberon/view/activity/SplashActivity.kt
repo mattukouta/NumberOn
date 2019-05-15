@@ -1,10 +1,11 @@
 package kouta.numberon.view.activity
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.util.Log
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
@@ -31,10 +32,10 @@ class SplashActivity : AppCompatActivity() {
          * 画面サイズの取得
          */
         val wm : WindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-        val disp = wm.getDefaultDisplay()
+        val disp = wm.defaultDisplay
         val size = Point()
         disp.getSize(size)
-        DataUtils().WIN_WIDTH = size.x
+        DataUtils().WIN_WIDTH = size.y
         DataUtils().WIN_HEIGHT = size.y
 
         Animation()
@@ -53,13 +54,13 @@ class SplashActivity : AppCompatActivity() {
                 Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, -0.5f)
+                Animation.RELATIVE_TO_SELF, - 0.5f)
         anim_up.duration = 800
 
         val anim_down = TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, -0.5f,
+                Animation.RELATIVE_TO_SELF, - 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.0f)
         anim_down.duration = 800
 

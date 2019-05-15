@@ -1,9 +1,11 @@
 package kouta.numberon.view.activity
 
+import android.graphics.Point
 import android.graphics.drawable.StateListDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.widget.RadioButton
 import kotlinx.android.synthetic.main.activity_match.*
 import kouta.numberon.Model.DataUtils
@@ -11,7 +13,6 @@ import kouta.numberon.Model.Player
 import kouta.numberon.Presenter.ModeTextChange
 import kouta.numberon.view.Adapter.ListAdapter
 import kouta.numberon.R
-
 
 
 class MatchActivity : AppCompatActivity() {
@@ -52,10 +53,7 @@ class MatchActivity : AppCompatActivity() {
 
         for (n in 1..digit) {
             val radio = RadioButton(this)
-            radio.background = resources.getDrawable(R.drawable.card_checked)
-            val buttom = StateListDrawable()
-            buttom.addState(intArrayOf(), null)
-            radio.buttonDrawable = buttom
+            radio.background = resources.getDrawable(R.drawable.card_checked, null)
             radio.setButtonDrawable(R.drawable.trump_white)
             radio.id = n
             radioGroup.addView(radio)
