@@ -34,6 +34,9 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
     var list = ArrayList<Player>()
     lateinit var player_result : Player
 
+    var player1_setting_number = mutableListOf<Int?>()
+    var player2_setting_number = mutableListOf<Int?>()
+
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
@@ -131,6 +134,15 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 select_card = NumberToCard(select_number)
             }
             btn_call -> {
+                var call_number = mutableListOf<Int?>()
+
+                /**
+                 * 配列に格納
+                 */
+                for (n in number) {
+                    call_number.add(n)
+                }
+
                 /**
                  * 合計値の処理
                  */
@@ -140,22 +152,28 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                  * 正しいNumberか確認
                  */
                 val check = Check(number, state, digit, sum)
-
+                Log.d("check", call_number.toString())
                 /**
                  * 正しいNumberの時の処理
                  */
                 if (check) {
-
-                    Log.d("checksum", sum)
-
                     if (state == 1) {
                         /**
                          * 先攻のNumber設定時
                          */
                         if (player == 1) {
+                            Log.d("checksum", call_number.toString())
                             turn_text.text = resources.getText(R.string.player2_select)
+                            for (n in call_number) {
+                                player1_setting_number.add(n)
+                            }
+                            Log.d("checksum", player1_setting_number.toString())
                         } else if (player == 2) {
                             turn_text.text = resources.getText(R.string.player1_select)
+                            for (n in call_number) {
+                                player2_setting_number.add(n)
+                            }
+                            Log.d("checksum", player2_setting_number.toString())
                         }
                     } else if (state == 2) {
                         /**
@@ -163,8 +181,22 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                          */
                         if (player == 1) {
                             turn_text.text = resources.getText(R.string.player1_turn)
+                            /**
+                             * 配列に格納
+                             */
+                            for (n in call_number) {
+                                player2_setting_number.add(n)
+                            }
+                            Log.d("checksum", player2_setting_number.toString())
                         } else if (player == 2) {
                             turn_text.text = resources.getText(R.string.player2_turn)
+                            /**
+                             * 配列に格納
+                             */
+                            for (n in call_number) {
+                                player1_setting_number.add(n)
+                            }
+                            Log.d("checksum", player1_setting_number.toString())
                         }
                     } else if (state == 3) {
                         /**
@@ -175,6 +207,8 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                         } else if (player == 2) {
                             turn_text.text = resources.getText(R.string.player1_turn)
                         }
+                        Log.d("checknumber1", player1_setting_number.toString())
+                        Log.d("checknumber2", player2_setting_number.toString())
                     } else if (state == 4) {
                         /**
                          * 後攻のNumber選択時
@@ -255,13 +289,13 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 if (flag == 0) {
                     player_result = Player()
                     player_result.player1_call = sum_C
-                    player_result.player1_hit_blow = sum_C
+//                    player_result.player1_hit_blow = sum_C
                     list.add(0, player_result)
                     listAdapter.notifyDataSetChanged()
                     flag = 1
                 } else if (flag == 1) {
                     player_result.player2_call = sum_C
-                    player_result.player2_hit_blow = sum_C
+//                    player_result.player2_hit_blow = sum_C
                     listAdapter.notifyDataSetChanged()
                     flag = 0
                 }
@@ -275,12 +309,16 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                     .add(R.id.match_base, fragment)
                     .commit()
 
+//            /**
+//             * 配列の初期化
+//             */
+//            number.clear()
+
             /**
              * 選択していたNumberの初期化
              */
             radioGroup.clearCheck()
             radioGroup.removeAllViews()
-            number.clear()
             for (n in 1..digit) {
                 /**
                  * radiobuttonの追加
@@ -295,7 +333,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 /**
                  * 配列の作成
                  */
-                number.add(null)
+                number[n - 1] = null
             }
 
 
