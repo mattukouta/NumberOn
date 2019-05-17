@@ -115,6 +115,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v : View?) {
         var select_card = 0
         var select_number = 0
+        var flag = 0
         when (v) {
             btn_0 -> {
                 select_number = 0
@@ -175,11 +176,18 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
+
+        for (n in number) {
+            if (n == select_number) {
+                flag = 1
+            }
+        }
+
         /**
          * 画面下の選択した数字を選択していたradioButtonに画面に差し込み
          */
 
-        if (radioGroup.checkedRadioButtonId != - 1 && v != btn_call) {
+        if (radioGroup.checkedRadioButtonId != - 1 && v != btn_call && flag != 1) {
             val radio = findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
             radio.setButtonDrawable(select_card)
             number[radioGroup.checkedRadioButtonId - 1] = select_number
