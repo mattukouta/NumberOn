@@ -20,12 +20,14 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
     var digit = 0
     lateinit var mode : String
     var player = 0
+    /**
+     * 後述はしてあるが、
+     * state = 1　は先攻の人のNumber設定
+     * state = 2　は後攻の人のNumber設定
+     * state = 3　は先攻の人のNumber選択
+     * state = 4　は後攻の人のNumber選択
+     */
     var state = 1
-    val calc_btn = listOf(R.drawable.trump_0, R.drawable.trump_1, R.drawable.trump_2,
-            R.drawable.trump_3, R.drawable.trump_4, R.drawable.trump_eir, R.drawable.trump_5,
-            R.drawable.trump_6, R.drawable.trump_7, R.drawable.trump_8, R.drawable.trump_9,
-            R.drawable.trump_call)
-
     var number = mutableListOf<Int?>()
     var flag = 0
 
@@ -57,12 +59,11 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
             number.add(null)
         }
 
+
         if (player == 1) {
             turn_text.text = resources.getText(R.string.player1_select)
-            state = 1
         } else if (player == 2) {
             turn_text.text = resources.getText(R.string.player2_select)
-            state = 2
         }
 
         /**
@@ -130,16 +131,67 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 select_card = NumberToCard(select_number)
             }
             btn_call -> {
-                var sum = ""
-                if (state == 1) {
-                    sum = NumberToSum(digit, number)
-                } else if (state == 2) {
-                    sum = NumberToSum(digit, number)
+                /**
+                 * 合計値の処理
+                 */
+                var sum = NumberToSum(digit, number)
+
+                /**
+                 * 正しいNumberか確認
+                 */
+                val check = Check(number, state, digit, sum)
+
+                /**
+                 * 正しいNumberの時の処理
+                 */
+                if (check) {
+
+                    Log.d("checksum", sum)
+
+                    if (state == 1) {
+                        /**
+                         * 先攻のNumber設定時
+                         */
+                        if (player == 1) {
+                            turn_text.text = resources.getText(R.string.player2_select)
+                        } else if (player == 2) {
+                            turn_text.text = resources.getText(R.string.player1_select)
+                        }
+                    } else if (state == 2) {
+                        /**
+                         * 後攻のNumber設定時
+                         */
+                        if (player == 1) {
+                            turn_text.text = resources.getText(R.string.player1_turn)
+                        } else if (player == 2) {
+                            turn_text.text = resources.getText(R.string.player2_turn)
+                        }
+                    } else if (state == 3) {
+                        /**
+                         * 先攻のNumber選択時
+                         */
+                        if (player == 1) {
+                            turn_text.text = resources.getText(R.string.player2_turn)
+                        } else if (player == 2) {
+                            turn_text.text = resources.getText(R.string.player1_turn)
+                        }
+                    } else if (state == 4) {
+                        /**
+                         * 後攻のNumber選択時
+                         */
+                        if (player == 1) {
+                            turn_text.text = resources.getText(R.string.player1_turn)
+                        } else if (player == 2) {
+                            turn_text.text = resources.getText(R.string.player2_turn)
+                        }
+                    }
+
+                    if (state == 4) {
+                        state -= 1
+                    } else {
+                        state += 1
+                    }
                 }
-
-                Log.d("checksum", sum)
-
-                Check(number, state, digit, sum)
             }
         }
 
@@ -164,7 +216,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         /**
          * ここで配列numberを数字に変換する。
          */
-
         var index = 10.0
         var digit_number = 0
         index = pow(index, (digit_NTS - 1).toDouble())
@@ -175,12 +226,11 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 index /= 10
             }
         }
-//        Log.d("checksum", String.format("%0${digit_NTS}d", digit_number))
 
         return String.format("%0${digit_NTS}d", digit_number)
     }
 
-    fun Check(number_C : MutableList<Int?>, state_C : Int, digit_C : Int, sum_C : String) {
+    fun Check(number_C : MutableList<Int?>, state_C : Int, digit_C : Int, sum_C : String) : Boolean {
         /**
          * 作成していたnumberリストの全ての値がnullではないことの確認
          * number.filterNotNull()でnullじゃない要素の抽出
@@ -192,35 +242,48 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
             /**
              * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
              */
-            val listAdapter = ListAdapter(this, list)
-            playerList.adapter = listAdapter
+            if (state_C == 1 || state_C == 2) {
+
+            } else if (state_C == 3 || state_C == 4) {
+                val listAdapter = ListAdapter(this, list)
+                playerList.adapter = listAdapter
 
 
-            /**
-             * callボタン押した時の処理
-             */
-            if (flag == 0) {
-                player_result = Player()
-                player_result.player1_call = sum_C
-                player_result.player1_hit_blow = sum_C
-                list.add(0, player_result)
-                listAdapter.notifyDataSetChanged()
-                flag = 1
-            } else if (flag == 1) {
-                player_result.player2_call = sum_C
-                player_result.player2_hit_blow = sum_C
-                listAdapter.notifyDataSetChanged()
-                flag = 0
+                /**
+                 * callボタン押した時の処理
+                 */
+                if (flag == 0) {
+                    player_result = Player()
+                    player_result.player1_call = sum_C
+                    player_result.player1_hit_blow = sum_C
+                    list.add(0, player_result)
+                    listAdapter.notifyDataSetChanged()
+                    flag = 1
+                } else if (flag == 1) {
+                    player_result.player2_call = sum_C
+                    player_result.player2_hit_blow = sum_C
+                    listAdapter.notifyDataSetChanged()
+                    flag = 0
+                }
             }
 
-            Log.d("check", "good!")
+            /**
+             * 交代用のfragment表示
+             */
             val fragment = TurnChangeFragment()
-
             supportFragmentManager.beginTransaction()
                     .add(R.id.match_base, fragment)
                     .commit()
+
+            Log.d("check", "good!")
+
+            return true
+
         } else {
             Log.d("check", "bad..")
+
+            return false
+
         }
     }
 
