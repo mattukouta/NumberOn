@@ -1,20 +1,17 @@
 package kouta.numberon.view.activity
 
-import android.graphics.Point
-import android.graphics.drawable.StateListDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.RadioButton
 import kotlinx.android.synthetic.main.activity_match.*
 import kouta.numberon.Model.DataUtils
 import kouta.numberon.Model.Player
 import kouta.numberon.Presenter.ModeTextChange
 import kouta.numberon.Presenter.NumberToCard
-import kouta.numberon.view.Adapter.ListAdapter
 import kouta.numberon.R
+import kouta.numberon.view.Adapter.ListAdapter
 import kouta.numberon.view.Fragment.TurnChangeFragment
 import java.lang.Math.pow
 
@@ -23,21 +20,17 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
     var digit = 0
     lateinit var mode : String
     var player = 0
-    var state = 0
-    var turn = 1
+    var state = 1
     val calc_btn = listOf(R.drawable.trump_0, R.drawable.trump_1, R.drawable.trump_2,
             R.drawable.trump_3, R.drawable.trump_4, R.drawable.trump_eir, R.drawable.trump_5,
             R.drawable.trump_6, R.drawable.trump_7, R.drawable.trump_8, R.drawable.trump_9,
             R.drawable.trump_call)
 
-    val call = listOf("123", "124", "231")
-    val hi_blow = listOf("123", "124", "231")
+    var number = mutableListOf<Int?>()
+    var flag = 0
 
     var list = ArrayList<Player>()
-    var flag = 0
     lateinit var player_result : Player
-
-    var number = mutableListOf<Int?>()
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,37 +57,17 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
             number.add(null)
         }
 
-        /**
-         * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
-         */
-        //        val listAdapter = ListAdapter(this, list)
-        //        playerList.adapter = listAdapter
-        //
-        //        var count = 0
+        if (player == 1) {
+            turn_text.text = resources.getText(R.string.player1_select)
+            state = 1
+        } else if (player == 2) {
+            turn_text.text = resources.getText(R.string.player2_select)
+            state = 2
+        }
 
         /**
-         * callボタン押した時の処理
+         * ボタン押すための前処理
          */
-        //        btn_call.setOnClickListener {
-        //            if (flag == 0) {
-        //                count ++
-        //                player_result = Player()
-        //                player_result.player1_call = "$count"
-        //                player_result.player1_hit_blow = "2H&0B"
-        //                list.add(0, player_result)
-        //                listAdapter.notifyDataSetChanged()
-        //                flag = 1
-        //
-        //            } else if (flag == 1) {
-        //                player_result.player2_call = "398"
-        //                player_result.player2_hit_blow = "2H&0B"
-        //                listAdapter.notifyDataSetChanged()
-        //                flag = 0
-        //
-        //            }
-        //
-        //        }
-
         btn_0.setOnClickListener(this)
         btn_1.setOnClickListener(this)
         btn_2.setOnClickListener(this)
@@ -115,7 +88,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         var select_card = 0
         var select_number = 0
         var number_flag = 0
-        var digit_number = 0
         when (v) {
             btn_0 -> {
                 select_number = 0
@@ -158,58 +130,16 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 select_card = NumberToCard(select_number)
             }
             btn_call -> {
-                /**
-                 * 作成していたnumberリストの全ての値がnullではないことの確認
-                 * number.filterNotNull()でnullじゃない要素の抽出
-                 * number.filterNotNull().size == digitでnullじゃない要素のサイズと、
-                 * 選択していた桁数が等しいことを確認し次の処理へ
-                 */
-
-                var index = 10.0
-                index = pow(index, (digit - 1).toDouble())
-
-                if (number.filterNotNull().size == digit) {
-
-                    /**
-                     * ここで配列numberを数字に変換する。
-                     */
-
-                    for (n in number) {
-                        if (n != null) {
-                            digit_number += n * index.toInt()
-                            index /= 10
-                        }
-                    }
-                    Log.d("checksum", String.format("%0${digit}d", digit_number))
-
-                    val listAdapter = ListAdapter(this, list)
-                    playerList.adapter = listAdapter
-
-                    var count = 0
-                    if (flag == 0) {
-                        count ++
-                        player_result = Player()
-                        player_result.player1_call = "$count"
-                        player_result.player1_hit_blow = "2H&0B"
-                        list.add(0, player_result)
-                        listAdapter.notifyDataSetChanged()
-                        flag = 1
-                    } else if (flag == 1) {
-                        player_result.player2_call = "398"
-                        player_result.player2_hit_blow = "2H&0B"
-                        listAdapter.notifyDataSetChanged()
-                        flag = 0
-                    }
-
-                    Log.d("check", "good!")
-                    val fragment = TurnChangeFragment()
-
-                    supportFragmentManager.beginTransaction()
-                            .add(R.id.match_base, fragment)
-                            .commit()
-                } else {
-                    Log.d("check", "bad..")
+                var sum = ""
+                if (state == 1) {
+                    sum = NumberToSum(digit, number)
+                } else if (state == 2) {
+                    sum = NumberToSum(digit, number)
                 }
+
+                Log.d("checksum", sum)
+
+                Check(number, state, digit, sum)
             }
         }
 
@@ -227,6 +157,70 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
             val radio = findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
             radio.setButtonDrawable(select_card)
             number[radioGroup.checkedRadioButtonId - 1] = select_number
+        }
+    }
+
+    fun NumberToSum(digit_NTS : Int, number_NTS : MutableList<Int?>) : String {
+        /**
+         * ここで配列numberを数字に変換する。
+         */
+
+        var index = 10.0
+        var digit_number = 0
+        index = pow(index, (digit_NTS - 1).toDouble())
+
+        for (n in number_NTS) {
+            if (n != null) {
+                digit_number += n * index.toInt()
+                index /= 10
+            }
+        }
+//        Log.d("checksum", String.format("%0${digit_NTS}d", digit_number))
+
+        return String.format("%0${digit_NTS}d", digit_number)
+    }
+
+    fun Check(number_C : MutableList<Int?>, state_C : Int, digit_C : Int, sum_C : String) {
+        /**
+         * 作成していたnumberリストの全ての値がnullではないことの確認
+         * number.filterNotNull()でnullじゃない要素の抽出
+         * number.filterNotNull().size == digitでnullじゃない要素のサイズと、
+         * 選択していた桁数が等しいことを確認し次の処理へ
+         */
+
+        if (number_C.filterNotNull().size == digit_C) {
+            /**
+             * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
+             */
+            val listAdapter = ListAdapter(this, list)
+            playerList.adapter = listAdapter
+
+
+            /**
+             * callボタン押した時の処理
+             */
+            if (flag == 0) {
+                player_result = Player()
+                player_result.player1_call = sum_C
+                player_result.player1_hit_blow = sum_C
+                list.add(0, player_result)
+                listAdapter.notifyDataSetChanged()
+                flag = 1
+            } else if (flag == 1) {
+                player_result.player2_call = sum_C
+                player_result.player2_hit_blow = sum_C
+                listAdapter.notifyDataSetChanged()
+                flag = 0
+            }
+
+            Log.d("check", "good!")
+            val fragment = TurnChangeFragment()
+
+            supportFragmentManager.beginTransaction()
+                    .add(R.id.match_base, fragment)
+                    .commit()
+        } else {
+            Log.d("check", "bad..")
         }
     }
 
