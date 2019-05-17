@@ -15,6 +15,7 @@ import kouta.numberon.Presenter.ModeTextChange
 import kouta.numberon.Presenter.NumberToCard
 import kouta.numberon.view.Adapter.ListAdapter
 import kouta.numberon.R
+import kouta.numberon.view.Fragment.TurnChangeFragment
 
 
 class MatchActivity : AppCompatActivity(), View.OnClickListener {
@@ -164,6 +165,11 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                  */
                 if (number.filterNotNull().size == digit) {
                     Log.d("check", "good!")
+                    val fragment = TurnChangeFragment()
+
+                    supportFragmentManager.beginTransaction()
+                            .add(R.id.match_base, fragment)
+                            .commit()
                 } else {
                     Log.d("check", "bad..")
                 }
