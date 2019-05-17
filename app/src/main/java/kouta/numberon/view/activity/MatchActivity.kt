@@ -275,6 +275,30 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                     .add(R.id.match_base, fragment)
                     .commit()
 
+            /**
+             * 選択していたNumberの初期化
+             */
+            radioGroup.clearCheck()
+            radioGroup.removeAllViews()
+            number.clear()
+            for (n in 1..digit) {
+                /**
+                 * radiobuttonの追加
+                 */
+
+                val radio = RadioButton(this)
+                radio.background = resources.getDrawable(R.drawable.card_checked, null)
+                radio.setButtonDrawable(R.drawable.trump_white)
+                radio.id = n
+                radioGroup.addView(radio)
+
+                /**
+                 * 配列の作成
+                 */
+                number.add(null)
+            }
+
+
             Log.d("check", "good!")
 
             return true
