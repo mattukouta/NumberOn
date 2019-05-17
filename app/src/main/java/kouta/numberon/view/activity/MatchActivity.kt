@@ -16,6 +16,7 @@ import kouta.numberon.Presenter.NumberToCard
 import kouta.numberon.view.Adapter.ListAdapter
 import kouta.numberon.R
 import kouta.numberon.view.Fragment.TurnChangeFragment
+import java.lang.Math.pow
 
 
 class MatchActivity : AppCompatActivity(), View.OnClickListener {
@@ -66,35 +67,33 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         /**
          * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
          */
-        val listAdapter = ListAdapter(this, list)
-        playerList.adapter = listAdapter
-
-        var count = 0
+        //        val listAdapter = ListAdapter(this, list)
+        //        playerList.adapter = listAdapter
+        //
+        //        var count = 0
 
         /**
          * callボタン押した時の処理
          */
-//        btn_call.setOnClickListener {
-//            val radio = findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
-//            radio.setButtonDrawable(R.drawable.trump_1)
-//            if (flag == 0) {
-//                count ++
-//                player_result = Player()
-//                player_result.player1_call = "$count"
-//                player_result.player1_hit_blow = "2H&0B"
-//                list.add(0, player_result)
-//                listAdapter.notifyDataSetChanged()
-//                flag = 1
-//
-//            } else if (flag == 1) {
-//                player_result.player2_call = "398"
-//                player_result.player2_hit_blow = "2H&0B"
-//                listAdapter.notifyDataSetChanged()
-//                flag = 0
-//
-//            }
-//
-//        }
+        //        btn_call.setOnClickListener {
+        //            if (flag == 0) {
+        //                count ++
+        //                player_result = Player()
+        //                player_result.player1_call = "$count"
+        //                player_result.player1_hit_blow = "2H&0B"
+        //                list.add(0, player_result)
+        //                listAdapter.notifyDataSetChanged()
+        //                flag = 1
+        //
+        //            } else if (flag == 1) {
+        //                player_result.player2_call = "398"
+        //                player_result.player2_hit_blow = "2H&0B"
+        //                listAdapter.notifyDataSetChanged()
+        //                flag = 0
+        //
+        //            }
+        //
+        //        }
 
         btn_0.setOnClickListener(this)
         btn_1.setOnClickListener(this)
@@ -115,7 +114,8 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v : View?) {
         var select_card = 0
         var select_number = 0
-        var flag = 0
+        var number_flag = 0
+        var digit_number = 0
         when (v) {
             btn_0 -> {
                 select_number = 0
@@ -164,7 +164,43 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                  * number.filterNotNull().size == digitでnullじゃない要素のサイズと、
                  * 選択していた桁数が等しいことを確認し次の処理へ
                  */
+
+                var index = 10.0
+                index = pow(index, (digit - 1).toDouble())
+
                 if (number.filterNotNull().size == digit) {
+
+                    /**
+                     * ここで配列numberを数字に変換する。
+                     */
+
+                    for (n in number) {
+                        if (n != null) {
+                            digit_number += n * index.toInt()
+                            index /= 10
+                        }
+                    }
+                    Log.d("checksum", String.format("%0${digit}d", digit_number))
+
+                    val listAdapter = ListAdapter(this, list)
+                    playerList.adapter = listAdapter
+
+                    var count = 0
+                    if (flag == 0) {
+                        count ++
+                        player_result = Player()
+                        player_result.player1_call = "$count"
+                        player_result.player1_hit_blow = "2H&0B"
+                        list.add(0, player_result)
+                        listAdapter.notifyDataSetChanged()
+                        flag = 1
+                    } else if (flag == 1) {
+                        player_result.player2_call = "398"
+                        player_result.player2_hit_blow = "2H&0B"
+                        listAdapter.notifyDataSetChanged()
+                        flag = 0
+                    }
+
                     Log.d("check", "good!")
                     val fragment = TurnChangeFragment()
 
@@ -179,7 +215,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
 
         for (n in number) {
             if (n == select_number) {
-                flag = 1
+                number_flag = 1
             }
         }
 
@@ -187,7 +223,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
          * 画面下の選択した数字を選択していたradioButtonに画面に差し込み
          */
 
-        if (radioGroup.checkedRadioButtonId != - 1 && v != btn_call && flag != 1) {
+        if (radioGroup.checkedRadioButtonId != - 1 && v != btn_call && number_flag != 1) {
             val radio = findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
             radio.setButtonDrawable(select_card)
             number[radioGroup.checkedRadioButtonId - 1] = select_number
