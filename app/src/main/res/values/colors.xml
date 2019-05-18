@@ -22,6 +22,7 @@
     <color name="first">#EF5350</color>
     <color name="second">#42A5F5</color>
     <color name="listbackground">#708090</color>
+    <color name="player_curtain">#aa000000</color>
 
     <!--テスト用-->
     <color name="one">#ffffff</color>

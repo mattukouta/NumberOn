@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.activity.MatchActivity"
-    android:background="@drawable/background">
+    android:background="@drawable/background"
+    android:id="@+id/match_base">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,7 +34,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
-            android:text="@string/select_player1"
+            android:text="@string/player1_select"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -143,6 +144,17 @@
                     app:layout_constraintStart_toEndOf="@+id/textView10"
                     app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
+                <View
+                    android:id="@+id/firstCurtain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:background="@color/player_curtain"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView11"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -205,6 +217,17 @@
                     app:layout_constraintEnd_toEndOf="@+id/textView6"
                     app:layout_constraintStart_toEndOf="@+id/textView12"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+                <View
+                    android:id="@+id/secondCurtain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:background="@color/player_curtain"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView13"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
