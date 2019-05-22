@@ -168,7 +168,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 /**
                  * 正しいNumberか確認
                  */
-                val check = Check(base_number,number, state, digit, sum)
+                val check = Check(base_number, number, state, digit, sum)
                 Log.d("check", call_number.toString())
                 /**
                  * 正しいNumberの時の処理
@@ -290,6 +290,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
          */
 
         if (call_number_C.filterNotNull().size == digit_C) {
+            var result = ""
             /**
              * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
              */
@@ -302,19 +303,21 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 val listAdapter = ListAdapter(this, list)
                 playerList.adapter = listAdapter
 
+                result = "${hit}H & ${blow}B"
+
                 /**
                  * callボタン押した時の処理
                  */
                 if (flag == 0) {
                     player_result = Player()
                     player_result.player1_call = sum_C
-                    player_result.player1_hit_blow = "${hit}H & ${blow}B"
+                    player_result.player1_hit_blow = result
                     list.add(0, player_result)
                     listAdapter.notifyDataSetChanged()
                     flag = 1
                 } else if (flag == 1) {
                     player_result.player2_call = sum_C
-                    player_result.player2_hit_blow = "${hit}H & ${blow}B"
+                    player_result.player2_hit_blow = result
                     listAdapter.notifyDataSetChanged()
                     flag = 0
                 }
@@ -323,7 +326,11 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
             /**
              * 交代用のfragment表示
              */
+            val bundle = Bundle()
+            bundle.putString("result", result)
+
             val fragment = TurnChangeFragment()
+            fragment.arguments = bundle
             supportFragmentManager.beginTransaction()
                     .add(R.id.match_base, fragment)
                     .commit()
