@@ -10,6 +10,7 @@ import kouta.numberon.Model.DataUtils
 import kouta.numberon.Model.Player
 import kouta.numberon.Presenter.ModeTextChange
 import kouta.numberon.Presenter.NumberToCard
+import kouta.numberon.Presenter.returnHit
 import kouta.numberon.R
 import kouta.numberon.view.Adapter.ListAdapter
 import kouta.numberon.view.Fragment.TurnChangeFragment
@@ -135,6 +136,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
             }
             btn_call -> {
                 var call_number = mutableListOf<Int?>()
+                var base_number = mutableListOf<Int?>()
 
                 /**
                  * 配列に格納
@@ -148,10 +150,24 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                  */
                 var sum = NumberToSum(digit, number)
 
+                if (state == 3) {
+                    if (player == 1) {
+                        base_number = player1_setting_number
+                    } else if (player == 2) {
+                        base_number = player2_setting_number
+                    }
+                } else if (state == 4) {
+                    if (player == 1) {
+                        base_number = player2_setting_number
+                    } else if (player == 2) {
+                        base_number = player1_setting_number
+                    }
+                }
+
                 /**
                  * 正しいNumberか確認
                  */
-                val check = Check(number, state, digit, sum)
+                val check = Check(base_number,number, state, digit, sum)
                 Log.d("check", call_number.toString())
                 /**
                  * 正しいNumberの時の処理
@@ -264,7 +280,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         return String.format("%0${digit_NTS}d", digit_number)
     }
 
-    fun Check(number_C : MutableList<Int?>, state_C : Int, digit_C : Int, sum_C : String) : Boolean {
+    fun Check(base_number_C : MutableList<Int?>, call_number_C : MutableList<Int?>, state_C : Int, digit_C : Int, sum_C : String) : Boolean {
         /**
          * 作成していたnumberリストの全ての値がnullではないことの確認
          * number.filterNotNull()でnullじゃない要素の抽出
@@ -272,16 +288,17 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
          * 選択していた桁数が等しいことを確認し次の処理へ
          */
 
-        if (number_C.filterNotNull().size == digit_C) {
+        if (call_number_C.filterNotNull().size == digit_C) {
             /**
              * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
              */
             if (state_C == 1 || state_C == 2) {
 
             } else if (state_C == 3 || state_C == 4) {
+                val hit = returnHit(base_number_C, call_number_C)
+
                 val listAdapter = ListAdapter(this, list)
                 playerList.adapter = listAdapter
-
 
                 /**
                  * callボタン押した時の処理
@@ -289,13 +306,13 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 if (flag == 0) {
                     player_result = Player()
                     player_result.player1_call = sum_C
-//                    player_result.player1_hit_blow = sum_C
+                    player_result.player1_hit_blow = hit.toString()
                     list.add(0, player_result)
                     listAdapter.notifyDataSetChanged()
                     flag = 1
                 } else if (flag == 1) {
                     player_result.player2_call = sum_C
-//                    player_result.player2_hit_blow = sum_C
+                    player_result.player2_hit_blow = hit.toString()
                     listAdapter.notifyDataSetChanged()
                     flag = 0
                 }
@@ -308,11 +325,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
             supportFragmentManager.beginTransaction()
                     .add(R.id.match_base, fragment)
                     .commit()
-
-//            /**
-//             * 配列の初期化
-//             */
-//            number.clear()
 
             /**
              * 選択していたNumberの初期化
