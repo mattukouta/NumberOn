@@ -10,6 +10,7 @@ import kouta.numberon.Model.DataUtils
 import kouta.numberon.Model.Player
 import kouta.numberon.Presenter.ModeTextChange
 import kouta.numberon.Presenter.NumberToCard
+import kouta.numberon.Presenter.returnBlow
 import kouta.numberon.Presenter.returnHit
 import kouta.numberon.R
 import kouta.numberon.view.Adapter.ListAdapter
@@ -296,6 +297,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
 
             } else if (state_C == 3 || state_C == 4) {
                 val hit = returnHit(base_number_C, call_number_C)
+                val blow = returnBlow(base_number_C, call_number_C)
 
                 val listAdapter = ListAdapter(this, list)
                 playerList.adapter = listAdapter
@@ -306,13 +308,13 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 if (flag == 0) {
                     player_result = Player()
                     player_result.player1_call = sum_C
-                    player_result.player1_hit_blow = hit.toString()
+                    player_result.player1_hit_blow = "${hit}H & ${blow}B"
                     list.add(0, player_result)
                     listAdapter.notifyDataSetChanged()
                     flag = 1
                 } else if (flag == 1) {
                     player_result.player2_call = sum_C
-                    player_result.player2_hit_blow = hit.toString()
+                    player_result.player2_hit_blow = "${hit}H & ${blow}B"
                     listAdapter.notifyDataSetChanged()
                     flag = 0
                 }
