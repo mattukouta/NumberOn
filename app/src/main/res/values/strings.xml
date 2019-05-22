@@ -45,4 +45,6 @@
     <string name="player2_turn">Player2はNumberを選んでください</string>
     <string name="player_change">プレイヤーを交代してください</string>
     <string name="change_and_tap">Change and Tap</string>
+    <string name="hit_blow">%1$dH &amp; %2$dB</string>
+    <string name="match_result">%1$sの勝利です</string>
 </resources>

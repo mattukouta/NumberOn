@@ -14,6 +14,7 @@ import kouta.numberon.Presenter.returnBlow
 import kouta.numberon.Presenter.returnHit
 import kouta.numberon.R
 import kouta.numberon.view.Adapter.ListAdapter
+import kouta.numberon.view.Fragment.GameResultFragment
 import kouta.numberon.view.Fragment.TurnChangeFragment
 import java.lang.Math.pow
 
@@ -303,7 +304,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 val listAdapter = ListAdapter(this, list)
                 playerList.adapter = listAdapter
 
-                result = "${hit}H & ${blow}B"
+                result = resources.getString(R.string.hit_blow, hit, blow)
 
                 /**
                  * callボタン押した時の処理
@@ -320,6 +321,28 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                     player_result.player2_hit_blow = result
                     listAdapter.notifyDataSetChanged()
                     flag = 0
+                }
+
+                if (hit == digit_C) {
+                    val bundle = Bundle()
+//                    bundle.putString("result", )
+                    if (state_C == 3) {
+                        if (player == 1) {
+                            bundle.putString("win_player", "Player1")
+                        } else if (player == 2) {
+                            bundle.putString("win_player", "Player2")
+                        }
+                    } else if (state_C == 4) {
+                        if (player == 1) {
+                            bundle.putString("win_player", "Player2")
+                        } else if (player == 2) {
+                            bundle.putString("win_player", "Player1")
+                        }
+                    }
+                    val fragment = GameResultFragment()
+                    supportFragmentManager.beginTransaction()
+                            .add(R.id.match_base, fragment)
+                            .commit()
                 }
             }
 
