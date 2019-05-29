@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_order_result.view.*
 import kouta.numberon.Presenter.DataUtils
 import kouta.numberon.Presenter.NumberToCard
+import kouta.numberon.Presenter.fragment.OrderResultPresenter
 
 import kouta.numberon.R
 import kouta.numberon.view.activity.MatchActivity
@@ -22,7 +23,6 @@ class OrderResultFragment : Fragment() {
         val argument = arguments
         var player1 = 0
         var player2 = 0
-        var digit = 0
         var first = 1
 
         /**
@@ -31,7 +31,6 @@ class OrderResultFragment : Fragment() {
         if (argument != null) {
             player1 = argument.getInt(DataUtils().PLAYER1_CARD)
             player2 = argument.getInt(DataUtils().PLAYER2_CARD)
-            digit = argument.getInt(DataUtils().DIGIT)
         }
 
         val card1 = NumberToCard(player1)
@@ -52,7 +51,6 @@ class OrderResultFragment : Fragment() {
          */
         view.result_background.setOnClickListener {
             val intent = Intent(activity, MatchActivity::class.java)
-            intent.putExtra(DataUtils().DIGIT, digit)
             intent.putExtra(DataUtils().PLAYER, first)
             activity?.startActivity(intent)
             activity?.overridePendingTransition(0, 0)

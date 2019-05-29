@@ -19,8 +19,8 @@ import java.lang.Math.pow
 
 
 class MatchActivity : AppCompatActivity(), View.OnClickListener {
-    var digit = 0
     var player = 0
+    val digit = MatchPresenter().getDigit()
     /**
      * 後述はしてあるが、
      * state = 1　は先攻の人のNumber設定
@@ -42,7 +42,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
 
-        digit = intent.getIntExtra(DataUtils().DIGIT, 0)
         val mode = MatchPresenter().getMode()
         player = intent.getIntExtra(DataUtils().PLAYER, 0)
         select_title.setText(ModeTextChange(mode))

@@ -7,6 +7,10 @@ class MatchPresenter {
         return gameInfo.gameMode
     }
 
+    fun getDigit() : Int {
+        return gameInfo.gameDigit
+    }
+
     fun returnHit(baseNumber : MutableList<Int?>, selectnumber : MutableList<Int?>) : Int {
         var hitCount = 0
 

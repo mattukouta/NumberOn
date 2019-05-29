@@ -25,7 +25,6 @@ class DigitDialogFragment : DialogFragment() {
         val cancel = view?.findViewById<Button>(R.id.cancel)
         val ok = view?.findViewById<Button>(R.id.ok)
         val radio = view?.findViewById<RadioGroup>(R.id.radioGroup)
-        var digit = 0
 
         /**
          * dialogをセット
@@ -39,7 +38,7 @@ class DigitDialogFragment : DialogFragment() {
         }
         ok?.setOnClickListener {
 
-            val intent = Intent()
+            var digit = 0
 
             when (radio?.checkedRadioButtonId) {
                 R.id.two -> digit = 2
@@ -51,12 +50,8 @@ class DigitDialogFragment : DialogFragment() {
             /**
              * 選択した桁数をActivityに反映
              */
-            intent.putExtra(DataUtils().DIGIT, digit)
-            val pi = activity?.createPendingResult(targetRequestCode, intent, PendingIntent.FLAG_ONE_SHOT)
+            DigitDialogPresenter().setDigit(digit)
 
-            if (pi != null) {
-                pi.send(DataUtils().DIGIT_RESULT_CODE)
-            }
             dismiss()
         }
         //アンラップになっているので要修正事項

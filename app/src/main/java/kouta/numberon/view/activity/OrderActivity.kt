@@ -19,19 +19,18 @@ import java.util.Collections
 
 class OrderActivity : AppCompatActivity(), View.OnClickListener {
 
-    val dialogFragment = DigitDialogFragment()
     var view : View? = null
     var player1 = 10
     var player2 = 10
     var select = 10
     var card_base = R.drawable.trump_re
     var select_card = R.drawable.trump_re_green
-    var digit_data = 0
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
 
+        val dialogFragment = DigitDialogFragment()
         val mode = OrderPresenter().getMode()
 
         select_title.setText(ModeTextChange(mode))
@@ -87,7 +86,6 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
                         val bundle = Bundle()
                         bundle.putInt(DataUtils().PLAYER1_CARD, card_number[player1])
                         bundle.putInt(DataUtils().PLAYER2_CARD, card_number[player2])
-                        bundle.putInt(DataUtils().DIGIT, digit_data)
 
                         val fragment = OrderResultFragment()
                         fragment.arguments = bundle
@@ -110,17 +108,6 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
             }
             v.background = ResourcesCompat.getDrawable(resources, select_card, null)
             view = v
-        }
-    }
-
-    /**
-     * 桁数の受け取り
-     */
-    override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
-        if (requestCode == DataUtils().DIGIT_REQUEST_CODE && resultCode == DataUtils().DIGIT_RESULT_CODE) {
-            if (data != null) {
-                digit_data = data.getIntExtra(DataUtils().DIGIT, 0)
-            }
         }
     }
 
