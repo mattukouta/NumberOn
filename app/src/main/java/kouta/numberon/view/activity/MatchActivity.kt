@@ -6,13 +6,13 @@ import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import kotlinx.android.synthetic.main.activity_match.*
-import kouta.numberon.Model.DataUtils
+import kouta.numberon.Presenter.DataUtils
 import kouta.numberon.Model.Player
+import kouta.numberon.Presenter.activity.MatchPresenter
 import kouta.numberon.Presenter.ModeTextChange
 import kouta.numberon.Presenter.NumberToCard
-import kouta.numberon.Presenter.CallResultPresenter
 import kouta.numberon.R
-import kouta.numberon.view.Adapter.ListAdapter
+import kouta.numberon.view.Adapter.CallListAdapter
 import kouta.numberon.view.Fragment.GameResultFragment
 import kouta.numberon.view.Fragment.TurnChangeFragment
 import java.lang.Math.pow
@@ -20,7 +20,6 @@ import java.lang.Math.pow
 
 class MatchActivity : AppCompatActivity(), View.OnClickListener {
     var digit = 0
-    lateinit var mode : String
     var player = 0
     /**
      * 後述はしてあるが、
@@ -44,7 +43,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_match)
 
         digit = intent.getIntExtra(DataUtils().DIGIT, 0)
-        mode = intent.getStringExtra(DataUtils().MODE)
+        val mode = MatchPresenter().getMode()
         player = intent.getIntExtra(DataUtils().PLAYER, 0)
         select_title.setText(ModeTextChange(mode))
 
@@ -308,10 +307,10 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                         .commit()
 
             } else if (state_C == 3 || state_C == 4) {
-                val hit = CallResultPresenter().returnHit(base_number_C, call_number_C)
-                val blow = CallResultPresenter().returnBlow(base_number_C, call_number_C)
+                val hit = MatchPresenter().returnHit(base_number_C, call_number_C)
+                val blow = MatchPresenter().returnBlow(base_number_C, call_number_C)
 
-                val listAdapter = ListAdapter(this, list)
+                val listAdapter = CallListAdapter(this, list)
                 playerList.adapter = listAdapter
 
                 result = resources.getString(R.string.hit_blow, hit, blow)

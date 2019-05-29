@@ -14,16 +14,18 @@ class TurnChangeFragment : Fragment() {
 
     override fun onCreateView(inflater : LayoutInflater, container : ViewGroup?, savedInstanceState : Bundle?) : View? {
         val view = inflater.inflate(R.layout.fragment_turn_change, container, false)
-
         val bundle = arguments
         val resultString = bundle?.getString("result")
 
+        /**
+         * call結果の表示
+         */
         view.HitBlow.text = resultString
 
+        /**
+         * 表示していたfragmentからactivityに戻す
+         */
         view.turn_change_background.setOnClickListener {
-            /**
-             * 表示していたfragmentからactivityに戻す
-             */
             fragmentManager?.beginTransaction()?.remove(this)?.commit()
         }
 

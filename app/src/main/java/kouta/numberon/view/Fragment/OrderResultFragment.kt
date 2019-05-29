@@ -3,14 +3,12 @@ package kouta.numberon.view.Fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_order_result.*
 import kotlinx.android.synthetic.main.fragment_order_result.view.*
-import kouta.numberon.Model.DataUtils
+import kouta.numberon.Presenter.DataUtils
 import kouta.numberon.Presenter.NumberToCard
 
 import kouta.numberon.R
@@ -25,7 +23,6 @@ class OrderResultFragment : Fragment() {
         var player1 = 0
         var player2 = 0
         var digit = 0
-        var mode = ""
         var first = 1
 
         /**
@@ -35,7 +32,6 @@ class OrderResultFragment : Fragment() {
             player1 = argument.getInt(DataUtils().PLAYER1_CARD)
             player2 = argument.getInt(DataUtils().PLAYER2_CARD)
             digit = argument.getInt(DataUtils().DIGIT)
-            mode = argument.getString(DataUtils().MODE)
         }
 
         val card1 = NumberToCard(player1)
@@ -57,7 +53,6 @@ class OrderResultFragment : Fragment() {
         view.result_background.setOnClickListener {
             val intent = Intent(activity, MatchActivity::class.java)
             intent.putExtra(DataUtils().DIGIT, digit)
-            intent.putExtra(DataUtils().MODE, mode)
             intent.putExtra(DataUtils().PLAYER, first)
             activity?.startActivity(intent)
             activity?.overridePendingTransition(0, 0)

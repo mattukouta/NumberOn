@@ -9,27 +9,28 @@ import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import kouta.numberon.Model.DataUtils
+import kouta.numberon.Presenter.DataUtils
+import kouta.numberon.Presenter.fragment.DigitDialogPresenter
 
 import kouta.numberon.R
 
 
 class DigitDialogFragment : DialogFragment() {
 
-    var digit = 0
-
     override fun onCreateDialog(savedInstanceState : Bundle?) : Dialog {
         super.onCreateDialog(savedInstanceState)
 
         val alert = activity?.let { AlertDialog.Builder(it) }
         val view = activity?.layoutInflater?.inflate(R.layout.fragment_digit_dialog, null)
-
-        alert?.setView(view)
-
-
         val cancel = view?.findViewById<Button>(R.id.cancel)
         val ok = view?.findViewById<Button>(R.id.ok)
         val radio = view?.findViewById<RadioGroup>(R.id.radioGroup)
+        var digit = 0
+
+        /**
+         * dialogをセット
+         */
+        alert?.setView(view)
 
 
         cancel?.setOnClickListener {
@@ -58,7 +59,7 @@ class DigitDialogFragment : DialogFragment() {
             }
             dismiss()
         }
-        //アンラップになっているの要修正事項
+        //アンラップになっているので要修正事項
         return alert?.create() !!
     }
 
@@ -67,22 +68,7 @@ class DigitDialogFragment : DialogFragment() {
     }
 
     override fun showNow(manager : FragmentManager, tag : String?) {
-        if (isSameTagDialogShowing(manager, tag.toString())) return
+        if (DigitDialogPresenter().isSameTagDialogShowing(manager, tag.toString())) return
         super.showNow(manager, tag)
-    }
-
-    /**
-     * 同一TAGのダイアログが表示されているかどうかを判定する。
-     * @return 同一TAGのダイアログが表示されている場合は true を返す。
-     */
-    private fun isSameTagDialogShowing(manager : FragmentManager, tag : String) : Boolean {
-        val previousFragment = manager.findFragmentByTag(tag)
-        if (previousFragment is DialogFragment) {
-            val dialog = (previousFragment).getDialog()
-            if (dialog != null && dialog.isShowing()) {
-                return true
-            }
-        }
-        return false
     }
 }

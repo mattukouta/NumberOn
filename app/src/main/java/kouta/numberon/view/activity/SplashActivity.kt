@@ -4,8 +4,6 @@ import android.content.Intent
 import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.util.Log
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
@@ -15,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kouta.numberon.Model.DataUtils
+import kouta.numberon.Presenter.DataUtils
 
 import kouta.numberon.Presenter.AnimationAsync
 import kouta.numberon.R
@@ -28,17 +26,17 @@ class SplashActivity : AppCompatActivity() {
 
         val intent = Intent(this, SelectModeActivity::class.java)
 
-        /**
-         * 画面サイズの取得
-         *
-         * 初期化されることに気がついた(2019/05/15)
-         */
-        val wm : WindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-        val disp = wm.defaultDisplay
-        val size = Point()
-        disp.getSize(size)
-        DataUtils().WIN_WIDTH = size.y
-        DataUtils().WIN_HEIGHT = size.y
+//        /**
+//         * 画面サイズの取得
+//         *
+//         * 初期化されることに気がついた(2019/05/15)
+//         */
+//        val wm : WindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+//        val disp = wm.defaultDisplay
+//        val size = Point()
+//        disp.getSize(size)
+//        DataUtils().WIN_WIDTH = size.y
+//        DataUtils().WIN_HEIGHT = size.y
 
         Animation()
 

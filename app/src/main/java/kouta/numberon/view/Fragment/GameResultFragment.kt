@@ -18,8 +18,14 @@ class GameResultFragment : Fragment() {
         val bundle = arguments
         val player = bundle?.getString("win_player")
 
+        /**
+         * 勝利プレイヤーの表示
+         */
         view.result.text = resources.getString(R.string.match_result, player)
 
+        /**
+         * 画面タップ時処理
+         */
         view.result_background.setOnClickListener {
             activity?.finish()
         }

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_select_mode.*
+import kouta.numberon.Presenter.activity.SelectModePresenter
 import kouta.numberon.R
 
 class SelectModeActivity : AppCompatActivity() {
@@ -25,7 +26,7 @@ class SelectModeActivity : AppCompatActivity() {
          */
         local_btn.setOnClickListener {
             val intent = Intent(this, OrderActivity::class.java)
-            intent.putExtra("Mode", "local")
+            SelectModePresenter().setMode("local")
             startActivity(intent)
             overridePendingTransition(0, 0)
         }

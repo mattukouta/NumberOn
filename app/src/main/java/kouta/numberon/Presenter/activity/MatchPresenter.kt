@@ -1,6 +1,11 @@
-package kouta.numberon.Presenter
+package kouta.numberon.Presenter.activity
 
-class CallResultPresenter {
+import kouta.numberon.Model.gameInfo
+
+class MatchPresenter {
+    fun getMode() : String {
+        return gameInfo.gameMode
+    }
 
     fun returnHit(baseNumber : MutableList<Int?>, selectnumber : MutableList<Int?>) : Int {
         var hitCount = 0

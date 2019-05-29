@@ -9,12 +9,10 @@ import kotlinx.android.synthetic.main.playerlist.view.*
 import kouta.numberon.Model.Player
 import kouta.numberon.R
 
-class ListAdapter() : BaseAdapter() {
+class CallListAdapter() : BaseAdapter() {
 
     lateinit var player_result : ArrayList<Player>
     lateinit var context : Context
-    lateinit var call : List<String>
-    lateinit var hb : List<String>
 
     constructor(context : Context, player_result : ArrayList<Player>) : this() {
         this.context = context
