@@ -18,7 +18,11 @@ class GameResultFragment : Fragment() {
         val bundle = arguments
         val player = bundle?.getString("win_player")
 
-        view.result.text = player
+        view.result.text = resources.getString(R.string.match_result, player)
+
+        view.result_background.setOnClickListener {
+            activity?.finish()
+        }
 
         return view
     }

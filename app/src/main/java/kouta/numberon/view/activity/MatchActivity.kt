@@ -11,8 +11,6 @@ import kouta.numberon.Model.Player
 import kouta.numberon.Presenter.ModeTextChange
 import kouta.numberon.Presenter.NumberToCard
 import kouta.numberon.Presenter.CallResultPresenter
-import kouta.numberon.Presenter.returnBlow
-import kouta.numberon.Presenter.returnHit
 import kouta.numberon.R
 import kouta.numberon.view.Adapter.ListAdapter
 import kouta.numberon.view.Fragment.GameResultFragment
@@ -297,6 +295,17 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
              * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
              */
             if (state_C == 1 || state_C == 2) {
+                /**
+                 * 交代用のfragment表示
+                 */
+                val bundle = Bundle()
+                bundle.putString("result", result)
+
+                val fragment = TurnChangeFragment()
+                fragment.arguments = bundle
+                supportFragmentManager.beginTransaction()
+                        .add(R.id.match_base, fragment)
+                        .commit()
 
             } else if (state_C == 3 || state_C == 4) {
                 val hit = CallResultPresenter().returnHit(base_number_C, call_number_C)
@@ -326,7 +335,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
 
                 if (hit == digit_C) {
                     val bundle = Bundle()
-//                    bundle.putString("result", )
                     if (state_C == 3) {
                         if (player == 1) {
                             bundle.putString("win_player", "Player1")
@@ -341,23 +349,24 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     }
                     val fragment = GameResultFragment()
+                    fragment.arguments = bundle
+                    supportFragmentManager.beginTransaction()
+                            .add(R.id.match_base, fragment)
+                            .commit()
+                } else {
+                    /**
+                     * 交代用のfragment表示
+                     */
+                    val bundle = Bundle()
+                    bundle.putString("result", result)
+
+                    val fragment = TurnChangeFragment()
+                    fragment.arguments = bundle
                     supportFragmentManager.beginTransaction()
                             .add(R.id.match_base, fragment)
                             .commit()
                 }
             }
-
-            /**
-             * 交代用のfragment表示
-             */
-            val bundle = Bundle()
-            bundle.putString("result", result)
-
-            val fragment = TurnChangeFragment()
-            fragment.arguments = bundle
-            supportFragmentManager.beginTransaction()
-                    .add(R.id.match_base, fragment)
-                    .commit()
 
             /**
              * 選択していたNumberの初期化
