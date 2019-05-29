@@ -10,8 +10,10 @@ import kouta.numberon.Model.DataUtils
 import kouta.numberon.Model.Player
 import kouta.numberon.Presenter.ModeTextChange
 import kouta.numberon.Presenter.NumberToCard
+import kouta.numberon.Presenter.CallResultPresenter
 import kouta.numberon.R
 import kouta.numberon.view.Adapter.ListAdapter
+import kouta.numberon.view.Fragment.GameResultFragment
 import kouta.numberon.view.Fragment.TurnChangeFragment
 import java.lang.Math.pow
 
@@ -135,6 +137,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
             }
             btn_call -> {
                 var call_number = mutableListOf<Int?>()
+                var base_number = mutableListOf<Int?>()
 
                 /**
                  * 配列に格納
@@ -148,10 +151,24 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                  */
                 var sum = NumberToSum(digit, number)
 
+                if (state == 3) {
+                    if (player == 1) {
+                        base_number = player1_setting_number
+                    } else if (player == 2) {
+                        base_number = player2_setting_number
+                    }
+                } else if (state == 4) {
+                    if (player == 1) {
+                        base_number = player2_setting_number
+                    } else if (player == 2) {
+                        base_number = player1_setting_number
+                    }
+                }
+
                 /**
                  * 正しいNumberか確認
                  */
-                val check = Check(number, state, digit, sum)
+                val check = Check(base_number, number, state, digit, sum)
                 Log.d("check", call_number.toString())
                 /**
                  * 正しいNumberの時の処理
@@ -264,7 +281,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         return String.format("%0${digit_NTS}d", digit_number)
     }
 
-    fun Check(number_C : MutableList<Int?>, state_C : Int, digit_C : Int, sum_C : String) : Boolean {
+    fun Check(base_number_C : MutableList<Int?>, call_number_C : MutableList<Int?>, state_C : Int, digit_C : Int, sum_C : String) : Boolean {
         /**
          * 作成していたnumberリストの全ての値がnullではないことの確認
          * number.filterNotNull()でnullじゃない要素の抽出
@@ -272,16 +289,32 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
          * 選択していた桁数が等しいことを確認し次の処理へ
          */
 
-        if (number_C.filterNotNull().size == digit_C) {
+        if (call_number_C.filterNotNull().size == digit_C) {
+            var result = ""
             /**
              * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
              */
             if (state_C == 1 || state_C == 2) {
+                /**
+                 * 交代用のfragment表示
+                 */
+                val bundle = Bundle()
+                bundle.putString("result", result)
+
+                val fragment = TurnChangeFragment()
+                fragment.arguments = bundle
+                supportFragmentManager.beginTransaction()
+                        .add(R.id.match_base, fragment)
+                        .commit()
 
             } else if (state_C == 3 || state_C == 4) {
+                val hit = CallResultPresenter().returnHit(base_number_C, call_number_C)
+                val blow = CallResultPresenter().returnBlow(base_number_C, call_number_C)
+
                 val listAdapter = ListAdapter(this, list)
                 playerList.adapter = listAdapter
 
+                result = resources.getString(R.string.hit_blow, hit, blow)
 
                 /**
                  * callボタン押した時の処理
@@ -289,30 +322,51 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 if (flag == 0) {
                     player_result = Player()
                     player_result.player1_call = sum_C
-//                    player_result.player1_hit_blow = sum_C
+                    player_result.player1_hit_blow = result
                     list.add(0, player_result)
                     listAdapter.notifyDataSetChanged()
                     flag = 1
                 } else if (flag == 1) {
                     player_result.player2_call = sum_C
-//                    player_result.player2_hit_blow = sum_C
+                    player_result.player2_hit_blow = result
                     listAdapter.notifyDataSetChanged()
                     flag = 0
                 }
+
+                if (hit == digit_C) {
+                    val bundle = Bundle()
+                    if (state_C == 3) {
+                        if (player == 1) {
+                            bundle.putString("win_player", "Player1")
+                        } else if (player == 2) {
+                            bundle.putString("win_player", "Player2")
+                        }
+                    } else if (state_C == 4) {
+                        if (player == 1) {
+                            bundle.putString("win_player", "Player2")
+                        } else if (player == 2) {
+                            bundle.putString("win_player", "Player1")
+                        }
+                    }
+                    val fragment = GameResultFragment()
+                    fragment.arguments = bundle
+                    supportFragmentManager.beginTransaction()
+                            .add(R.id.match_base, fragment)
+                            .commit()
+                } else {
+                    /**
+                     * 交代用のfragment表示
+                     */
+                    val bundle = Bundle()
+                    bundle.putString("result", result)
+
+                    val fragment = TurnChangeFragment()
+                    fragment.arguments = bundle
+                    supportFragmentManager.beginTransaction()
+                            .add(R.id.match_base, fragment)
+                            .commit()
+                }
             }
-
-            /**
-             * 交代用のfragment表示
-             */
-            val fragment = TurnChangeFragment()
-            supportFragmentManager.beginTransaction()
-                    .add(R.id.match_base, fragment)
-                    .commit()
-
-//            /**
-//             * 配列の初期化
-//             */
-//            number.clear()
 
             /**
              * 選択していたNumberの初期化
