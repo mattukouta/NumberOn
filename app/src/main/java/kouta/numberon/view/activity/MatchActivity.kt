@@ -10,6 +10,7 @@ import kouta.numberon.Model.DataUtils
 import kouta.numberon.Model.Player
 import kouta.numberon.Presenter.ModeTextChange
 import kouta.numberon.Presenter.NumberToCard
+import kouta.numberon.Presenter.CallResultPresenter
 import kouta.numberon.Presenter.returnBlow
 import kouta.numberon.Presenter.returnHit
 import kouta.numberon.R
@@ -298,8 +299,8 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
             if (state_C == 1 || state_C == 2) {
 
             } else if (state_C == 3 || state_C == 4) {
-                val hit = returnHit(base_number_C, call_number_C)
-                val blow = returnBlow(base_number_C, call_number_C)
+                val hit = CallResultPresenter().returnHit(base_number_C, call_number_C)
+                val blow = CallResultPresenter().returnBlow(base_number_C, call_number_C)
 
                 val listAdapter = ListAdapter(this, list)
                 playerList.adapter = listAdapter
