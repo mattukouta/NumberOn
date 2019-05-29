@@ -19,7 +19,7 @@ import java.lang.Math.pow
 
 
 class MatchActivity : AppCompatActivity(), View.OnClickListener {
-    var player = 0
+    val firstPlayer = MatchPresenter().getFirstPlayer()
     val digit = MatchPresenter().getDigit()
     /**
      * 後述はしてあるが、
@@ -43,7 +43,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_match)
 
         val mode = MatchPresenter().getMode()
-        player = intent.getIntExtra(DataUtils().PLAYER, 0)
         select_title.setText(ModeTextChange(mode))
 
         for (n in 1..digit) {
@@ -63,9 +62,9 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         }
 
 
-        if (player == 1) {
+        if (firstPlayer == 1) {
             turn_text.text = resources.getText(R.string.player1_select)
-        } else if (player == 2) {
+        } else if (firstPlayer == 2) {
             turn_text.text = resources.getText(R.string.player2_select)
         }
 
@@ -150,15 +149,15 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 var sum = NumberToSum(digit, number)
 
                 if (state == 3) {
-                    if (player == 1) {
+                    if (firstPlayer == 1) {
                         base_number = player1_setting_number
-                    } else if (player == 2) {
+                    } else if (firstPlayer == 2) {
                         base_number = player2_setting_number
                     }
                 } else if (state == 4) {
-                    if (player == 1) {
+                    if (firstPlayer == 1) {
                         base_number = player2_setting_number
-                    } else if (player == 2) {
+                    } else if (firstPlayer == 2) {
                         base_number = player1_setting_number
                     }
                 }
@@ -176,14 +175,14 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                         /**
                          * 先攻のNumber設定時
                          */
-                        if (player == 1) {
+                        if (firstPlayer == 1) {
                             Log.d("checksum", call_number.toString())
                             turn_text.text = resources.getText(R.string.player2_select)
                             for (n in call_number) {
                                 player1_setting_number.add(n)
                             }
                             Log.d("checksum", player1_setting_number.toString())
-                        } else if (player == 2) {
+                        } else if (firstPlayer == 2) {
                             turn_text.text = resources.getText(R.string.player1_select)
                             for (n in call_number) {
                                 player2_setting_number.add(n)
@@ -194,7 +193,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                         /**
                          * 後攻のNumber設定時
                          */
-                        if (player == 1) {
+                        if (firstPlayer == 1) {
                             turn_text.text = resources.getText(R.string.player1_turn)
                             /**
                              * 配列に格納
@@ -203,7 +202,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                                 player2_setting_number.add(n)
                             }
                             Log.d("checksum", player2_setting_number.toString())
-                        } else if (player == 2) {
+                        } else if (firstPlayer == 2) {
                             turn_text.text = resources.getText(R.string.player2_turn)
                             /**
                              * 配列に格納
@@ -217,9 +216,9 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                         /**
                          * 先攻のNumber選択時
                          */
-                        if (player == 1) {
+                        if (firstPlayer == 1) {
                             turn_text.text = resources.getText(R.string.player2_turn)
-                        } else if (player == 2) {
+                        } else if (firstPlayer == 2) {
                             turn_text.text = resources.getText(R.string.player1_turn)
                         }
                         Log.d("checknumber1", player1_setting_number.toString())
@@ -228,9 +227,9 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                         /**
                          * 後攻のNumber選択時
                          */
-                        if (player == 1) {
+                        if (firstPlayer == 1) {
                             turn_text.text = resources.getText(R.string.player1_turn)
-                        } else if (player == 2) {
+                        } else if (firstPlayer == 2) {
                             turn_text.text = resources.getText(R.string.player2_turn)
                         }
                     }
@@ -334,15 +333,15 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 if (hit == digit_C) {
                     val bundle = Bundle()
                     if (state_C == 3) {
-                        if (player == 1) {
+                        if (firstPlayer == 1) {
                             bundle.putString("win_player", "Player1")
-                        } else if (player == 2) {
+                        } else if (firstPlayer == 2) {
                             bundle.putString("win_player", "Player2")
                         }
                     } else if (state_C == 4) {
-                        if (player == 1) {
+                        if (firstPlayer == 1) {
                             bundle.putString("win_player", "Player2")
-                        } else if (player == 2) {
+                        } else if (firstPlayer == 2) {
                             bundle.putString("win_player", "Player1")
                         }
                     }

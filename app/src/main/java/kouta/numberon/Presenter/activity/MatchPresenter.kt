@@ -11,6 +11,10 @@ class MatchPresenter {
         return gameInfo.gameDigit
     }
 
+    fun getFirstPlayer() : Int {
+        return gameInfo.firstPlayer
+    }
+
     fun returnHit(baseNumber : MutableList<Int?>, selectnumber : MutableList<Int?>) : Int {
         var hitCount = 0
 

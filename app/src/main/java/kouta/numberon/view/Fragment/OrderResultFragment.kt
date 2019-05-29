@@ -23,7 +23,6 @@ class OrderResultFragment : Fragment() {
         val argument = arguments
         var player1 = 0
         var player2 = 0
-        var first = 1
 
         /**
          * カード選択値の受け取り
@@ -43,7 +42,7 @@ class OrderResultFragment : Fragment() {
             view.textView.text = resources.getText(R.string.order_player1)
         } else {
             view.textView.text = resources.getText(R.string.order_player2)
-            first = 2
+            OrderResultPresenter().setfirstPlayer(2)
         }
 
         /**
@@ -51,7 +50,6 @@ class OrderResultFragment : Fragment() {
          */
         view.result_background.setOnClickListener {
             val intent = Intent(activity, MatchActivity::class.java)
-            intent.putExtra(DataUtils().PLAYER, first)
             activity?.startActivity(intent)
             activity?.overridePendingTransition(0, 0)
         }
