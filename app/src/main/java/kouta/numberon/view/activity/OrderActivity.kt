@@ -1,20 +1,16 @@
 package kouta.numberon.view.activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import kotlinx.android.synthetic.main.activity_order.*
 import kouta.numberon.R
 import kouta.numberon.view.Fragment.DigitDialogFragment
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
-import kouta.numberon.Model.gameInfo
 import kouta.numberon.Presenter.DataUtils
 import kouta.numberon.Presenter.ModeTextChange
 import kouta.numberon.Presenter.activity.OrderPresenter
 import kouta.numberon.view.Fragment.OrderResultFragment
-import java.util.Collections
 
 
 class OrderActivity : AppCompatActivity(), View.OnClickListener {
@@ -79,10 +75,10 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
                         /**
                          * player2の決定時
                          */
-                        val card_number = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+                        var card_number = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 
                         player2 = select
-                        Collections.shuffle(card_number)
+                        card_number = card_number.shuffled()
                         val bundle = Bundle()
                         bundle.putInt(DataUtils().PLAYER1_CARD, card_number[player1])
                         bundle.putInt(DataUtils().PLAYER2_CARD, card_number[player2])

@@ -26,18 +26,6 @@ class SplashActivity : AppCompatActivity() {
 
         val intent = Intent(this, SelectModeActivity::class.java)
 
-//        /**
-//         * 画面サイズの取得
-//         *
-//         * 初期化されることに気がついた(2019/05/15)
-//         */
-//        val wm : WindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-//        val disp = wm.defaultDisplay
-//        val size = Point()
-//        disp.getSize(size)
-//        DataUtils().WIN_WIDTH = size.y
-//        DataUtils().WIN_HEIGHT = size.y
-
         Animation()
 
         /**
