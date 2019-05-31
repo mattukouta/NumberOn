@@ -45,4 +45,22 @@ class MatchPresenter {
 
         return blowCount
     }
+
+    fun NumberToSum(digit_NTS : Int, number_NTS : MutableList<Int?>) : String {
+        /**
+         * ここで配列numberを数字に変換する。
+         */
+        var index = 10.0
+        var digit_number = 0
+        index = Math.pow(index, (digit_NTS - 1).toDouble())
+
+        for (n in number_NTS) {
+            if (n != null) {
+                digit_number += n * index.toInt()
+                index /= 10
+            }
+        }
+
+        return String.format("%0${digit_NTS}d", digit_number)
+    }
 }

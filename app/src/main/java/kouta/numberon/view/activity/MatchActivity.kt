@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import kotlinx.android.synthetic.main.activity_match.*
-import kouta.numberon.Presenter.DataUtils
 import kouta.numberon.Model.Player
 import kouta.numberon.Presenter.activity.MatchPresenter
 import kouta.numberon.Presenter.ModeTextChange
@@ -15,9 +14,8 @@ import kouta.numberon.R
 import kouta.numberon.view.Adapter.CallListAdapter
 import kouta.numberon.view.Fragment.GameResultFragment
 import kouta.numberon.view.Fragment.TurnChangeFragment
-import java.lang.Math.pow
 
-
+// radioButton生成部分が'number.add(null)', 'number[n - 1] = null'以外同じ ←activity内にメソッドの作成
 class MatchActivity : AppCompatActivity(), View.OnClickListener {
     val firstPlayer = MatchPresenter().getFirstPlayer()
     val digit = MatchPresenter().getDigit()
@@ -146,7 +144,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 /**
                  * 合計値の処理
                  */
-                var sum = NumberToSum(digit, number)
+                var sum = MatchPresenter().NumberToSum(digit, number)
 
                 if (state == 3) {
                     if (firstPlayer == 1) {
@@ -258,24 +256,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
             radio.setButtonDrawable(select_card)
             number[radioGroup.checkedRadioButtonId - 1] = select_number
         }
-    }
-
-    fun NumberToSum(digit_NTS : Int, number_NTS : MutableList<Int?>) : String {
-        /**
-         * ここで配列numberを数字に変換する。
-         */
-        var index = 10.0
-        var digit_number = 0
-        index = pow(index, (digit_NTS - 1).toDouble())
-
-        for (n in number_NTS) {
-            if (n != null) {
-                digit_number += n * index.toInt()
-                index /= 10
-            }
-        }
-
-        return String.format("%0${digit_NTS}d", digit_number)
     }
 
     fun Check(base_number_C : MutableList<Int?>, call_number_C : MutableList<Int?>, state_C : Int, digit_C : Int, sum_C : String) : Boolean {
