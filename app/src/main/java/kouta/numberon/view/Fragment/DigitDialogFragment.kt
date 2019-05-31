@@ -1,15 +1,12 @@
 package kouta.numberon.view.Fragment
 
 import android.app.Dialog
-import android.app.PendingIntent
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import kouta.numberon.Presenter.DataUtils
 import kouta.numberon.Presenter.fragment.DigitDialogPresenter
 
 import kouta.numberon.R
@@ -47,12 +44,14 @@ class DigitDialogFragment : DialogFragment() {
                 R.id.five -> digit = 5
             }
 
-            /**
-             * 選択した桁数をActivityに反映
-             */
-            DigitDialogPresenter().setDigit(digit)
+            if (digit != 0) {
+                /**
+                 * 選択した桁数をActivityに反映
+                 */
+                DigitDialogPresenter().setDigit(digit)
 
-            dismiss()
+                dismiss()
+            }
         }
         //アンラップになっているので要修正事項
         return alert?.create() !!
