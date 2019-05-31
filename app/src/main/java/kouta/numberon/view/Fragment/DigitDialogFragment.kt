@@ -14,7 +14,7 @@ import kouta.numberon.R
 
 class DigitDialogFragment : DialogFragment() {
 
-    override fun onCreateDialog(savedInstanceState : Bundle?) : Dialog {
+    override fun onCreateDialog(savedInstanceState : Bundle?) : AlertDialog {
         super.onCreateDialog(savedInstanceState)
 
         val alert = activity?.let { AlertDialog.Builder(it) }
@@ -53,8 +53,8 @@ class DigitDialogFragment : DialogFragment() {
                 dismiss()
             }
         }
-        //アンラップになっているので要修正事項
-        return alert?.create() !!
+
+        return alert?.create() as AlertDialog
     }
 
     override fun show(manager : FragmentManager, tag : String?) {
