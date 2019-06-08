@@ -24,6 +24,7 @@ class OrderResultPresenter : OrderResultContract.Presenter {
         if (mode == "cpu") {
             if (player1 > player2) {
                 string = R.string.order_player
+                setFirstPlayer(1)
             } else {
                 string = R.string.order_cpu
                 setFirstPlayer(2)
@@ -31,11 +32,13 @@ class OrderResultPresenter : OrderResultContract.Presenter {
         } else if (mode == "local") {
             if (player1 > player2) {
                 string = R.string.order_player1
+                setFirstPlayer(1)
             } else {
                 string = R.string.order_player2
                 setFirstPlayer(2)
             }
         }
+
         return string
     }
 }
