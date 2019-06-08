@@ -18,8 +18,8 @@ import kouta.numberon.view.Fragment.TurnChangeFragment
 class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.View {
     override lateinit var presenter : MatchContract.Presenter
 
-    val firstPlayer = MatchPresenter().getFirstPlayer()
-    val digit = MatchPresenter().getDigit()
+    var firstPlayer = MatchPresenter().getFirstPlayer()
+    var digit = MatchPresenter().getDigit()
     /**
      * 後述はしてあるが、
      * state = 1　は先攻の人のNumber設定
@@ -42,8 +42,10 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         setContentView(R.layout.activity_match)
 
         presenter = MatchPresenter()
+        firstPlayer = presenter.getFirstPlayer()
+        digit = presenter.getDigit()
 
-        val mode = MatchPresenter().getMode()
+        val mode = presenter.getMode()
         select_title.setText(presenter.modeTextChange(mode))
 
         for (n in 1..digit) {

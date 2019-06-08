@@ -11,7 +11,8 @@ interface MatchContract {
     }
 
     interface Presenter : BasePresenter, NumberToCard, ModeTextChange {
-
         fun numberToSum(digit_NTS : Int, number_NTS : MutableList<Int?>) : String
+        fun returnBlow(baseNumber : MutableList<Int?>, callNumber : MutableList<Int?>) : Int
+        fun returnHit(baseNumber : MutableList<Int?>, selectnumber : MutableList<Int?>) : Int
     }
 }

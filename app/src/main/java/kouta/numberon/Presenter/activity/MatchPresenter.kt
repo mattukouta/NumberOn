@@ -8,10 +8,6 @@ class MatchPresenter : MatchContract.Presenter {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun getMode() : String {
-        return gameInfo.gameMode
-    }
-
     fun getDigit() : Int {
         return gameInfo.gameDigit
     }
@@ -20,7 +16,7 @@ class MatchPresenter : MatchContract.Presenter {
         return gameInfo.firstPlayer
     }
 
-    fun returnHit(baseNumber : MutableList<Int?>, selectnumber : MutableList<Int?>) : Int {
+    override fun returnHit(baseNumber : MutableList<Int?>, selectnumber : MutableList<Int?>) : Int {
         var hitCount = 0
 
         /**
@@ -33,7 +29,7 @@ class MatchPresenter : MatchContract.Presenter {
         return hitCount
     }
 
-    fun returnBlow(baseNumber : MutableList<Int?>, callNumber : MutableList<Int?>) : Int {
+    override fun returnBlow(baseNumber : MutableList<Int?>, callNumber : MutableList<Int?>) : Int {
         var blowCount = 0
 
         /**

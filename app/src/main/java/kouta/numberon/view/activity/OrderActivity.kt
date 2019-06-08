@@ -28,10 +28,10 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.V
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
 
-        val dialogFragment = DigitDialogFragment()
-        val mode = OrderPresenter().getMode()
-
         presenter = OrderPresenter()
+
+        val dialogFragment = DigitDialogFragment()
+        val mode = presenter.getMode()
 
         select_title.setText(presenter.modeTextChange(mode))
 
