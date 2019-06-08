@@ -1,7 +1,7 @@
-package kouta.numberon.Presenter.Contract
+package kouta.numberon.Presenter.fragment
 
 import androidx.fragment.app.FragmentManager
-import kouta.numberon.Digit
+import kouta.numberon.Model.Digit
 import kouta.numberon.Presenter.BasePresenter
 import kouta.numberon.Presenter.BaseView
 

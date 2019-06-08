@@ -2,7 +2,6 @@ package kouta.numberon.Presenter.fragment
 
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import kouta.numberon.Presenter.Contract.DigitDialogContract
 
 class DigitDialogPresenter : DigitDialogContract.Presenter {
     override fun start() {

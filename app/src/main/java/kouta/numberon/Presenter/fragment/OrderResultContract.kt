@@ -1,6 +1,6 @@
-package kouta.numberon.Presenter.Contract
+package kouta.numberon.Presenter.fragment
 
-import kouta.numberon.FirstPlayer
+import kouta.numberon.Model.FirstPlayer
 import kouta.numberon.Presenter.BasePresenter
 import kouta.numberon.Presenter.BaseView
 import kouta.numberon.Presenter.NumberToCard

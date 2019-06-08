@@ -1,7 +1,5 @@
 package kouta.numberon.Presenter.activity
 
-import kouta.numberon.Presenter.Contract.MatchContract
-
 class MatchPresenter : MatchContract.Presenter {
     override fun start() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

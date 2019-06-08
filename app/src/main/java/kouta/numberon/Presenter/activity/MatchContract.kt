@@ -1,8 +1,8 @@
-package kouta.numberon.Presenter.Contract
+package kouta.numberon.Presenter.activity
 
-import kouta.numberon.Digit
-import kouta.numberon.FirstPlayer
-import kouta.numberon.Mode
+import kouta.numberon.Model.Digit
+import kouta.numberon.Model.FirstPlayer
+import kouta.numberon.Model.Mode
 import kouta.numberon.Presenter.BasePresenter
 import kouta.numberon.Presenter.BaseView
 import kouta.numberon.Presenter.ModeTextChange

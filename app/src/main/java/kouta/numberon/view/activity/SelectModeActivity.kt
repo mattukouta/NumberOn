@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_select_mode.*
-import kouta.numberon.Presenter.Contract.SelectModeContract
+import kouta.numberon.Presenter.activity.SelectModeContract
 import kouta.numberon.Presenter.activity.SelectModePresenter
 import kouta.numberon.R
 

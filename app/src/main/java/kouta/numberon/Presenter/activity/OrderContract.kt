@@ -1,6 +1,6 @@
-package kouta.numberon.Presenter.Contract
+package kouta.numberon.Presenter.activity
 
-import kouta.numberon.Mode
+import kouta.numberon.Model.Mode
 import kouta.numberon.Presenter.BasePresenter
 import kouta.numberon.Presenter.BaseView
 import kouta.numberon.Presenter.ModeTextChange

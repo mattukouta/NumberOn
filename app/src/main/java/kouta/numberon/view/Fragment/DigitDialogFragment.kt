@@ -6,7 +6,7 @@ import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import kouta.numberon.Presenter.Contract.DigitDialogContract
+import kouta.numberon.Presenter.fragment.DigitDialogContract
 import kouta.numberon.Presenter.fragment.DigitDialogPresenter
 
 import kouta.numberon.R

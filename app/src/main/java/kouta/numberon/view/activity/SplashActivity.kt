@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-import kouta.numberon.Presenter.Contract.SplashContract
+import kouta.numberon.Presenter.activity.SplashContract
 import kouta.numberon.Presenter.activity.SplashPresenter
 import kouta.numberon.R
 import kotlin.coroutines.resume

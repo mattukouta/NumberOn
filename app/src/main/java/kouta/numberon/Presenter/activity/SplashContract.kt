@@ -1,4 +1,4 @@
-package kouta.numberon.Presenter.Contract
+package kouta.numberon.Presenter.activity
 
 import android.view.animation.Animation
 import kouta.numberon.Presenter.BasePresenter

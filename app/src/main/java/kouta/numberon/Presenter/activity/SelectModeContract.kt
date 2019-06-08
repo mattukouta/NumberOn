@@ -1,7 +1,7 @@
-package kouta.numberon.Presenter.Contract
+package kouta.numberon.Presenter.activity
 
 import android.content.Intent
-import kouta.numberon.Mode
+import kouta.numberon.Model.Mode
 import kouta.numberon.Presenter.BasePresenter
 import kouta.numberon.Presenter.BaseView
 

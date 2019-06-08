@@ -8,9 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_order_result.view.*
-import kouta.numberon.Presenter.Contract.OrderResultContract
-import kouta.numberon.Presenter.DataUtils
-import kouta.numberon.Presenter.NumberToCard
+import kouta.numberon.Presenter.fragment.OrderResultContract
+import kouta.numberon.Model.DataUtils
 import kouta.numberon.Presenter.fragment.OrderResultPresenter
 
 import kouta.numberon.R

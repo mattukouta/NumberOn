@@ -2,7 +2,6 @@ package kouta.numberon.Presenter.activity
 
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
-import kouta.numberon.Presenter.Contract.SplashContract
 
 class SplashPresenter(private val view : SplashContract.View) : SplashContract.Presenter {
 

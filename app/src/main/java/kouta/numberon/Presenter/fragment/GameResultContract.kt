@@ -1,4 +1,4 @@
-package kouta.numberon.Presenter.Contract
+package kouta.numberon.Presenter.fragment
 
 import kouta.numberon.Presenter.BasePresenter
 import kouta.numberon.Presenter.BaseView

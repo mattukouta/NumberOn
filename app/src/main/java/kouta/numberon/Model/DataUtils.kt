@@ -1,4 +1,4 @@
-package kouta.numberon.Presenter
+package kouta.numberon.Model
 
 class DataUtils {
     val DIGIT_REQUEST_CODE = 100

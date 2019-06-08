@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.RadioButton
 import kotlinx.android.synthetic.main.activity_match.*
 import kouta.numberon.Model.Player
-import kouta.numberon.Presenter.Contract.MatchContract
+import kouta.numberon.Presenter.activity.MatchContract
 import kouta.numberon.Presenter.activity.MatchPresenter
 import kouta.numberon.R
 import kouta.numberon.view.Adapter.CallListAdapter

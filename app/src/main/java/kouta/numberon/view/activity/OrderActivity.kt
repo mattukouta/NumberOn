@@ -7,9 +7,8 @@ import kouta.numberon.R
 import kouta.numberon.view.Fragment.DigitDialogFragment
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
-import kouta.numberon.Presenter.Contract.OrderContract
-import kouta.numberon.Presenter.DataUtils
-import kouta.numberon.Presenter.ModeTextChange
+import kouta.numberon.Presenter.activity.OrderContract
+import kouta.numberon.Model.DataUtils
 import kouta.numberon.Presenter.activity.OrderPresenter
 import kouta.numberon.view.Fragment.OrderResultFragment
 

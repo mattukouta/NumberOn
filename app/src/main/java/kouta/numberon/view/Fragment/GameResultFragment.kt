@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_game_result.view.*
-import kouta.numberon.Presenter.Contract.GameResultContract
+import kouta.numberon.Presenter.fragment.GameResultContract
 import kouta.numberon.Presenter.fragment.GameResultPresenter
 
 import kouta.numberon.R
