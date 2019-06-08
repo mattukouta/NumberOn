@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_order_result.view.*
+import kouta.numberon.Presenter.Contract.OrderResultContract
 import kouta.numberon.Presenter.DataUtils
 import kouta.numberon.Presenter.NumberToCard
 import kouta.numberon.Presenter.fragment.OrderResultPresenter
@@ -15,7 +16,8 @@ import kouta.numberon.Presenter.fragment.OrderResultPresenter
 import kouta.numberon.R
 import kouta.numberon.view.activity.MatchActivity
 
-class OrderResultFragment : Fragment() {
+class OrderResultFragment : Fragment(), OrderResultContract.View {
+    override lateinit var presenter : OrderResultContract.Presenter
 
     override fun onCreateView(inflater : LayoutInflater, container : ViewGroup?,
                               savedInstanceState : Bundle?) : View? {
@@ -23,6 +25,8 @@ class OrderResultFragment : Fragment() {
         val argument = arguments
         var player1 = 0
         var player2 = 0
+
+        presenter = OrderResultPresenter()
 
         /**
          * カード選択値の受け取り
@@ -32,8 +36,8 @@ class OrderResultFragment : Fragment() {
             player2 = argument.getInt(DataUtils().PLAYER2_CARD)
         }
 
-        val card1 = NumberToCard(player1)
-        val card2 = NumberToCard(player2)
+        val card1 = presenter.numberToCard(player1)
+        val card2 = presenter.numberToCard(player2)
 
         view.player1_card.setImageResource(card1)
         view.player2_card.setImageResource(card2)
