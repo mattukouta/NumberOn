@@ -15,7 +15,7 @@ class OrderPresenter : OrderContract.Presenter {
         return DataUtils().PLAYER1_CARD
     }
 
-    override fun getplayer2CardKey() : String {
+    override fun getPlayer2CardKey() : String {
         return DataUtils().PLAYER2_CARD
     }
 }
