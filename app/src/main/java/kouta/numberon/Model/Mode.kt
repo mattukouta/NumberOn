@@ -1,6 +1,5 @@
 package kouta.numberon.Model
 
-import kouta.numberon.Model.gameInfo
 
 interface Mode {
     fun setMode(mode : String) {

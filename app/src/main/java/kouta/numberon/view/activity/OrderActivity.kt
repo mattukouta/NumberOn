@@ -83,7 +83,7 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.V
                         card_number = card_number.shuffled()
                         val bundle = Bundle()
                         bundle.putInt(presenter.getPlayer1CardKey(), card_number[player1])
-                        bundle.putInt(presenter.getPlayer1CardKey(), card_number[player2])
+                        bundle.putInt(presenter.getPlayer2CardKey(), card_number[player2])
 
                         val fragment = OrderResultFragment()
                         fragment.arguments = bundle

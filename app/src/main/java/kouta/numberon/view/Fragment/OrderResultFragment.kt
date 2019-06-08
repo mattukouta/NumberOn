@@ -31,7 +31,7 @@ class OrderResultFragment : Fragment(), OrderResultContract.View {
          */
         if (argument != null) {
             player1 = argument.getInt(presenter.getPlayer1CardKey())
-            player2 = argument.getInt(presenter.getPlayer1CardKey())
+            player2 = argument.getInt(presenter.getPlayer2CardKey())
         }
 
         val card1 = presenter.numberToCard(player1)
