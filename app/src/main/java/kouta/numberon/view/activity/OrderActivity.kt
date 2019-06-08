@@ -7,14 +7,16 @@ import kouta.numberon.R
 import kouta.numberon.view.Fragment.DigitDialogFragment
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import kouta.numberon.Presenter.Contract.OrderContract
 import kouta.numberon.Presenter.DataUtils
 import kouta.numberon.Presenter.ModeTextChange
 import kouta.numberon.Presenter.activity.OrderPresenter
 import kouta.numberon.view.Fragment.OrderResultFragment
 
 
-class OrderActivity : AppCompatActivity(), View.OnClickListener {
+class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.View {
 
+    override lateinit var presenter : OrderContract.Presenter
     var view : View? = null
     var player1 = 10
     var player2 = 10
@@ -29,7 +31,9 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener {
         val dialogFragment = DigitDialogFragment()
         val mode = OrderPresenter().getMode()
 
-        select_title.setText(ModeTextChange(mode))
+        presenter = OrderPresenter()
+
+        select_title.setText(presenter.ModeTextChange(mode))
 
         dialogFragment.isCancelable = false
         dialogFragment.setTargetFragment(null, DataUtils().DIGIT_REQUEST_CODE)
