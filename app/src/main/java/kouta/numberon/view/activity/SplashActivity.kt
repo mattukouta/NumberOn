@@ -1,24 +1,26 @@
 package kouta.numberon.view.activity
 
 import android.content.Intent
-import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowManager
+import android.view.View
 import android.view.animation.Animation
-import android.view.animation.TranslateAnimation
 
 import kotlinx.android.synthetic.main.activity_splash.*
-
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kouta.numberon.Presenter.DataUtils
 
-import kouta.numberon.Presenter.AnimationAsync
+import kouta.numberon.Presenter.Contract.SplashContract
+import kouta.numberon.Presenter.activity.SplashPresenter
 import kouta.numberon.R
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity(), SplashContract.View {
+    override lateinit var presenter : SplashContract.Presenter
+    lateinit var anim_up : Animation
+    lateinit var anim_down : Animation
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +28,12 @@ class SplashActivity : AppCompatActivity() {
 
         val intent = Intent(this, SelectModeActivity::class.java)
 
-        Animation()
+        presenter = SplashPresenter(this)
+
+        anim_up = presenter.anim_up()
+        anim_down = presenter.anim_down()
+
+        presenter.start()
 
         /**
          * 画面タップでSelectModeActivityへ
@@ -37,35 +44,30 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Animationの適用
-     */
-    fun Animation() {
-        val anim_up = TranslateAnimation(
-                Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, - 0.5f)
-        anim_up.duration = 800
-
-        val anim_down = TranslateAnimation(
-                Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, - 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.0f)
-        anim_down.duration = 800
-
+    override fun showAnimation() {
         GlobalScope.launch(Dispatchers.Main) {
             while (true) {
-                /**
-                 * 上へ移動するアニメーションを実行
-                 */
                 title_text.AnimationAsync(anim_up)
-                /**
-                 * 下へ移動するアニメーションを実行
-                 */
+
                 title_text.AnimationAsync(anim_down)
             }
+        }
+    }
+
+    suspend fun View.AnimationAsync(anim : Animation) {
+        return suspendCoroutine { continuation ->
+            anim.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation : Animation?) {
+                }
+
+                override fun onAnimationEnd(animation : Animation?) {
+                    continuation.resume(Unit)
+                }
+
+                override fun onAnimationRepeat(animation : Animation?) {
+                }
+            })
+            this.startAnimation(anim)
         }
     }
 }
