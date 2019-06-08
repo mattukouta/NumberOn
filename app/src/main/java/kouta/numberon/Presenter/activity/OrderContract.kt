@@ -11,5 +11,8 @@ interface OrderContract {
 
     interface Presenter : BasePresenter, ModeTextChange, Mode {
 
+        fun getDigitRequestCode() : Int
+        fun getPlayer1CardKey() : String
+        fun getplayer2CardKey() : String
     }
 }

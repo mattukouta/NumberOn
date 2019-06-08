@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_order_result.view.*
 import kouta.numberon.Presenter.fragment.OrderResultContract
-import kouta.numberon.Model.DataUtils
 import kouta.numberon.Presenter.fragment.OrderResultPresenter
 
 import kouta.numberon.R
@@ -31,8 +30,8 @@ class OrderResultFragment : Fragment(), OrderResultContract.View {
          * カード選択値の受け取り
          */
         if (argument != null) {
-            player1 = argument.getInt(DataUtils().PLAYER1_CARD)
-            player2 = argument.getInt(DataUtils().PLAYER2_CARD)
+            player1 = argument.getInt(presenter.getPlayer1CardKey())
+            player2 = argument.getInt(presenter.getPlayer1CardKey())
         }
 
         val card1 = presenter.numberToCard(player1)

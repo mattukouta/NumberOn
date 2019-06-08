@@ -8,7 +8,6 @@ import kouta.numberon.view.Fragment.DigitDialogFragment
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import kouta.numberon.Presenter.activity.OrderContract
-import kouta.numberon.Model.DataUtils
 import kouta.numberon.Presenter.activity.OrderPresenter
 import kouta.numberon.view.Fragment.OrderResultFragment
 
@@ -35,7 +34,7 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.V
         select_title.setText(presenter.modeTextChange(mode))
 
         dialogFragment.isCancelable = false
-        dialogFragment.setTargetFragment(null, DataUtils().DIGIT_REQUEST_CODE)
+        dialogFragment.setTargetFragment(null, presenter.getDigitRequestCode())
         dialogFragment.show(supportFragmentManager, mode)
 
         zero.setOnClickListener(this)
@@ -83,8 +82,8 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.V
                         player2 = select
                         card_number = card_number.shuffled()
                         val bundle = Bundle()
-                        bundle.putInt(DataUtils().PLAYER1_CARD, card_number[player1])
-                        bundle.putInt(DataUtils().PLAYER2_CARD, card_number[player2])
+                        bundle.putInt(presenter.getPlayer1CardKey(), card_number[player1])
+                        bundle.putInt(presenter.getPlayer1CardKey(), card_number[player2])
 
                         val fragment = OrderResultFragment()
                         fragment.arguments = bundle

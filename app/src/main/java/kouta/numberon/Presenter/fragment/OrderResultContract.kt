@@ -11,6 +11,7 @@ interface OrderResultContract {
     }
 
     interface Presenter : BasePresenter, NumberToCard, FirstPlayer {
-
+        fun getPlayer1CardKey() : String
+        fun getplayer2CardKey() : String
     }
 }
