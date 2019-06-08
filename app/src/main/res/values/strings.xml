@@ -29,9 +29,12 @@
     <string name="card_select">好きなカード一枚選んでください</string>
     <string name="select_player1">Player1は好きなカードを一枚選んでください</string>
     <string name="select_player2">Player2は好きなカードを一枚選んでください</string>
+    <string name="select_player">Playerは好きなカードを一枚選んでください</string>
     <string name="select_btn">決定</string>
     <string name="order_player1">Player1が先攻です</string>
     <string name="order_player2">Player2が先攻です</string>
+    <string name="order_player">Playerが先攻です</string>
+    <string name="order_cpu">CPUが先行です</string>
     <string name="game_start">タッチでゲームスタート</string>
 
     <!--対戦画面用-->

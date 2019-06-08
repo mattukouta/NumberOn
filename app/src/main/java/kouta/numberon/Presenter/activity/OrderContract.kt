@@ -14,5 +14,6 @@ interface OrderContract {
         fun getDigitRequestCode() : Int
         fun getPlayer1CardKey() : String
         fun getPlayer2CardKey() : String
+        fun getListRemoveShuffle(selectNumber : Int) : Int
     }
 }

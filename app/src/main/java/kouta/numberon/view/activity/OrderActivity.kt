@@ -34,6 +34,10 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.V
         mode = presenter.getMode()
 
         select_title.setText(presenter.modeTextChange(mode))
+        if (mode == "cpu") {
+            select_text.text = resources.getText(R.string.select_player)
+        }
+
 
         dialogFragment.isCancelable = false
         dialogFragment.setTargetFragment(null, presenter.getDigitRequestCode())
@@ -68,30 +72,17 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.V
                 if (select != 10) {
                     if (player1 == 10 && player2 == 10) {
 
+                        player1 = select
+
                         if (mode == "cpu"){
-                            player1 = select
-                            var numbers = mutableListOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-                            numbers.removeAll { it == player1 }
-                            numbers.shuffled()
-                            player2 = numbers.random()
+                            player2 = presenter.getListRemoveShuffle(player1)
 
-                            val shuffle_card_number = card_number.shuffled()
-                            val bundle = Bundle()
-                            bundle.putInt(presenter.getPlayer1CardKey(), shuffle_card_number[player1])
-                            bundle.putInt(presenter.getPlayer2CardKey(), shuffle_card_number[player2])
-
-                            val fragment = OrderResultFragment()
-                            fragment.arguments = bundle
-
-                            supportFragmentManager.beginTransaction()
-                                    .add(R.id.order_base, fragment)
-                                    .commit()
+                            showFragment()
                         } else if (mode == "local") {
                             /**
                              * player1の決定時
                              */
                             select_text.text = resources.getText(R.string.select_player2)
-                            player1 = select
                             view?.isEnabled = false
                             view = null
                             select_card = R.drawable.trump_re_red
@@ -103,17 +94,7 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.V
                          */
 
                         player2 = select
-                        val shuffle_card_number = card_number.shuffled()
-                        val bundle = Bundle()
-                        bundle.putInt(presenter.getPlayer1CardKey(), shuffle_card_number[player1])
-                        bundle.putInt(presenter.getPlayer2CardKey(), shuffle_card_number[player2])
-
-                        val fragment = OrderResultFragment()
-                        fragment.arguments = bundle
-
-                        supportFragmentManager.beginTransaction()
-                                .add(R.id.order_base, fragment)
-                                .commit()
+                        showFragment()
                     }
                 }
             }
@@ -130,6 +111,20 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.V
             v.background = ResourcesCompat.getDrawable(resources, select_card, null)
             view = v
         }
+    }
+
+    fun showFragment() {
+        val shuffle_card_number = card_number.shuffled()
+        val bundle = Bundle()
+        bundle.putInt(presenter.getPlayer1CardKey(), shuffle_card_number[player1])
+        bundle.putInt(presenter.getPlayer2CardKey(), shuffle_card_number[player2])
+
+        val fragment = OrderResultFragment()
+        fragment.arguments = bundle
+
+        supportFragmentManager.beginTransaction()
+                .add(R.id.order_base, fragment)
+                .commit()
     }
 
     /**
