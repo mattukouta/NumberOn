@@ -8,10 +8,6 @@ class MatchPresenter : MatchContract.Presenter {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun getFirstPlayer() : Int {
-        return gameInfo.firstPlayer
-    }
-
     override fun returnHit(baseNumber : MutableList<Int?>, selectnumber : MutableList<Int?>) : Int {
         var hitCount = 0
 

@@ -18,7 +18,7 @@ import kouta.numberon.view.Fragment.TurnChangeFragment
 class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.View {
     override lateinit var presenter : MatchContract.Presenter
 
-    var firstPlayer = MatchPresenter().getFirstPlayer()
+    var firstPlayer = 0
     var digit = 0
     /**
      * 後述はしてあるが、

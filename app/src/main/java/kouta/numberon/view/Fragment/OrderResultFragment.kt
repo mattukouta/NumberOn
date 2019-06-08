@@ -42,7 +42,7 @@ class OrderResultFragment : Fragment() {
             view.textView.text = resources.getText(R.string.order_player1)
         } else {
             view.textView.text = resources.getText(R.string.order_player2)
-            OrderResultPresenter().setfirstPlayer(2)
+            presenter.setFirstPlayer(2)
         }
 
         /**
