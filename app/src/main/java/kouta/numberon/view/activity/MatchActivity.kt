@@ -1,5 +1,6 @@
 package kouta.numberon.view.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -85,6 +86,18 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         btn_8.setOnClickListener(this)
         btn_9.setOnClickListener(this)
         btn_call.setOnClickListener(this)
+    }
+
+    /**
+     * バックキーの処理
+     */
+    override fun onBackPressed() {
+        /**
+         * activityのスタックを全て削除してSelectModeActivityに遷移する
+         */
+        val intent = Intent(this, SelectModeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
     }
 
     /**
