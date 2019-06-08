@@ -20,5 +20,6 @@ interface MatchContract {
         fun returnSecondText(player : Int, mode : String) : Int
         fun returnFirstTurnText(player : Int, mode : String) : Int
         fun returnSecondTurnText(player : Int, mode : String) : Int
+        fun getWinPlayer(state : Int, firstPlayer : Int, mode : String) : String
     }
 }

@@ -143,4 +143,40 @@ class MatchPresenter : MatchContract.Presenter {
 
         return text
     }
+
+    override fun getWinPlayer(state : Int, firstPlayer : Int, mode : String) : String {
+        lateinit var player : String
+
+        if (mode == "cpu") {
+            if (state == 3) {
+                if (firstPlayer == 1) {
+                    player = "Player"
+                } else if (firstPlayer == 2) {
+                    player = "CPU"
+                }
+            } else if (state == 4) {
+                if (firstPlayer == 1) {
+                    player = "CPU"
+                } else if (firstPlayer == 2) {
+                    player = "Player"
+                }
+            }
+        } else if (mode == "local") {
+            if (state == 3) {
+                if (firstPlayer == 1) {
+                    player = "Player1"
+                } else if (firstPlayer == 2) {
+                    player = "Player2"
+                }
+            } else if (state == 4) {
+                if (firstPlayer == 1) {
+                    player = "Player2"
+                } else if (firstPlayer == 2) {
+                    player = "Player1"
+                }
+            }
+        }
+
+        return player
+    }
 }

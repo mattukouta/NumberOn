@@ -327,19 +327,11 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
 
                 if (hit == digit_C) {
                     val bundle = Bundle()
-                    if (state_C == 3) {
-                        if (firstPlayer == 1) {
-                            bundle.putString("win_player", "Player1")
-                        } else if (firstPlayer == 2) {
-                            bundle.putString("win_player", "Player2")
-                        }
-                    } else if (state_C == 4) {
-                        if (firstPlayer == 1) {
-                            bundle.putString("win_player", "Player2")
-                        } else if (firstPlayer == 2) {
-                            bundle.putString("win_player", "Player1")
-                        }
-                    }
+
+                    val player = presenter.getWinPlayer(state_C, firstPlayer, mode)
+
+                    bundle.putString("win_player", player)
+
                     val fragment = GameResultFragment()
                     fragment.arguments = bundle
                     supportFragmentManager.beginTransaction()
