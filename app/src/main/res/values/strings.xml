@@ -44,6 +44,8 @@
     <string name="cell_H_B">Hit&amp;Blow</string>
     <string name="player1_select">Player1は設定するNumberを選んでください</string>
     <string name="player2_select">Player2は設定するNumberを選んでください</string>
+    <string name="player_select">Playerは設定するNumberを選んでください</string>
+    <string name="cpu_select">CPUは設定するNumberを選んでください</string>
     <string name="player1_turn">Player1はNumberを選んでください</string>
     <string name="player2_turn">Player2はNumberを選んでください</string>
     <string name="player_change">プレイヤーを交代してください</string>

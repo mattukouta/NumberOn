@@ -1,5 +1,7 @@
 package kouta.numberon.Presenter.activity
 
+import kouta.numberon.R
+
 class MatchPresenter : MatchContract.Presenter {
     override fun start() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -52,5 +54,49 @@ class MatchPresenter : MatchContract.Presenter {
         }
 
         return String.format("%0${digit_NTS}d", digit_number)
+    }
+
+    override fun returnFirstText(player : Int, mode : String) : Int {
+        var text = 0
+
+        if (mode == "cpu") {
+
+            if (player == 1) {
+                text = R.string.player_select
+            } else if (player == 2) {
+                text = R.string.cpu_select
+            }
+
+        } else if (mode == "local") {
+            if (player == 1) {
+                text = R.string.player1_select
+            } else if (player == 2) {
+                text = R.string.player2_select
+            }
+        }
+
+        return text
+    }
+
+    override fun returnSecondText(player : Int, mode : String) : Int {
+        var text = 0
+
+        if (mode == "cpu") {
+
+            if (player == 1) {
+                text = R.string.cpu_select
+            } else if (player == 2) {
+                text = R.string.player_select
+            }
+
+        } else if (mode == "local") {
+            if (player == 1) {
+                text = R.string.player2_select
+            } else if (player == 2) {
+                text = R.string.player1_select
+            }
+        }
+
+        return text
     }
 }

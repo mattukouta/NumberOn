@@ -38,6 +38,9 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
     var player1_setting_number = mutableListOf<Int?>()
     var player2_setting_number = mutableListOf<Int?>()
 
+    lateinit var first_turn_text : String
+    lateinit var second_turn_text : String
+
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
@@ -66,11 +69,17 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
 
 
-        if (firstPlayer == 1) {
-            turn_text.text = resources.getText(R.string.player1_select)
-        } else if (firstPlayer == 2) {
-            turn_text.text = resources.getText(R.string.player2_select)
-        }
+//        if (firstPlayer == 1) {
+//            turn_text.text = resources.getText(R.string.player1_select)
+//        } else if (firstPlayer == 2) {
+//            turn_text.text = resources.getText(R.string.player2_select)
+//        }
+//        turn_text.text = resources.getText(
+
+        first_turn_text = resources.getString(presenter.returnFirstText(firstPlayer, mode))
+        second_turn_text = resources.getString(presenter.returnSecondText(firstPlayer, mode))
+
+        turn_text.text = first_turn_text
 
         /**
          * ボタン押すための前処理
@@ -193,13 +202,13 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
                          */
                         if (firstPlayer == 1) {
                             Log.d("checksum", call_number.toString())
-                            turn_text.text = resources.getText(R.string.player2_select)
+                            turn_text.text = second_turn_text
                             for (n in call_number) {
                                 player1_setting_number.add(n)
                             }
                             Log.d("checksum", player1_setting_number.toString())
                         } else if (firstPlayer == 2) {
-                            turn_text.text = resources.getText(R.string.player1_select)
+                            turn_text.text = second_turn_text
                             for (n in call_number) {
                                 player2_setting_number.add(n)
                             }
