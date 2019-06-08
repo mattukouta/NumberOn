@@ -40,6 +40,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
 
     lateinit var first_turn_text : String
     lateinit var second_turn_text : String
+    lateinit var mode : String
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +50,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         firstPlayer = presenter.getFirstPlayer()
         digit = presenter.getDigit()
 
-        val mode = presenter.getMode()
+        mode = presenter.getMode()
         select_title.setText(presenter.modeTextChange(mode))
 
         for (n in 1..digit) {
@@ -69,12 +70,12 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
 
 
-//        if (firstPlayer == 1) {
-//            turn_text.text = resources.getText(R.string.player1_select)
-//        } else if (firstPlayer == 2) {
-//            turn_text.text = resources.getText(R.string.player2_select)
-//        }
-//        turn_text.text = resources.getText(
+        //        if (firstPlayer == 1) {
+        //            turn_text.text = resources.getText(R.string.player1_select)
+        //        } else if (firstPlayer == 2) {
+        //            turn_text.text = resources.getText(R.string.player2_select)
+        //        }
+        //        turn_text.text = resources.getText(
 
         first_turn_text = resources.getString(presenter.returnFirstText(firstPlayer, mode))
         second_turn_text = resources.getString(presenter.returnSecondText(firstPlayer, mode))
@@ -201,62 +202,49 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
                          * 先攻のNumber設定時
                          */
                         if (firstPlayer == 1) {
-                            Log.d("checksum", call_number.toString())
                             turn_text.text = second_turn_text
                             for (n in call_number) {
                                 player1_setting_number.add(n)
                             }
-                            Log.d("checksum", player1_setting_number.toString())
                         } else if (firstPlayer == 2) {
                             turn_text.text = second_turn_text
                             for (n in call_number) {
                                 player2_setting_number.add(n)
                             }
-                            Log.d("checksum", player2_setting_number.toString())
                         }
+                        first_turn_text = resources.getString(presenter.returnFirstTurnText(firstPlayer, mode))
+                        second_turn_text = resources.getString(presenter.returnSecondTurnText(firstPlayer, mode))
                     } else if (state == 2) {
                         /**
                          * 後攻のNumber設定時
                          */
                         if (firstPlayer == 1) {
-                            turn_text.text = resources.getText(R.string.player1_turn)
+                            turn_text.text = first_turn_text
                             /**
                              * 配列に格納
                              */
                             for (n in call_number) {
                                 player2_setting_number.add(n)
                             }
-                            Log.d("checksum", player2_setting_number.toString())
                         } else if (firstPlayer == 2) {
-                            turn_text.text = resources.getText(R.string.player2_turn)
+                            turn_text.text = first_turn_text
                             /**
                              * 配列に格納
                              */
                             for (n in call_number) {
                                 player1_setting_number.add(n)
                             }
-                            Log.d("checksum", player1_setting_number.toString())
                         }
                     } else if (state == 3) {
                         /**
                          * 先攻のNumber選択時
                          */
-                        if (firstPlayer == 1) {
-                            turn_text.text = resources.getText(R.string.player2_turn)
-                        } else if (firstPlayer == 2) {
-                            turn_text.text = resources.getText(R.string.player1_turn)
-                        }
-                        Log.d("checknumber1", player1_setting_number.toString())
-                        Log.d("checknumber2", player2_setting_number.toString())
+                        turn_text.text = second_turn_text
                     } else if (state == 4) {
                         /**
                          * 後攻のNumber選択時
                          */
-                        if (firstPlayer == 1) {
-                            turn_text.text = resources.getText(R.string.player1_turn)
-                        } else if (firstPlayer == 2) {
-                            turn_text.text = resources.getText(R.string.player2_turn)
-                        }
+                        turn_text.text = first_turn_text
                     }
 
                     if (state == 4) {

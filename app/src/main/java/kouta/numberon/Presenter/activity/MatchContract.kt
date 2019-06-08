@@ -16,7 +16,9 @@ interface MatchContract {
         fun numberToSum(digit_NTS : Int, number_NTS : MutableList<Int?>) : String
         fun returnBlow(baseNumber : MutableList<Int?>, callNumber : MutableList<Int?>) : Int
         fun returnHit(baseNumber : MutableList<Int?>, selectnumber : MutableList<Int?>) : Int
-        fun returnSecondText(player : Int, mode : String) : Int
         fun returnFirstText(player : Int, mode : String) : Int
+        fun returnSecondText(player : Int, mode : String) : Int
+        fun returnFirstTurnText(player : Int, mode : String) : Int
+        fun returnSecondTurnText(player : Int, mode : String) : Int
     }
 }

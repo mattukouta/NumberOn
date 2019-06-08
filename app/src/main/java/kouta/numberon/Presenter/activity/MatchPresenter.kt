@@ -99,4 +99,48 @@ class MatchPresenter : MatchContract.Presenter {
 
         return text
     }
+
+    override fun returnFirstTurnText(player : Int, mode : String) : Int {
+        var text = 0
+
+        if (mode == "cpu") {
+
+            if (player == 1) {
+                text = R.string.player_turn
+            } else if (player == 2) {
+                text = R.string.cpu_turn
+            }
+
+        } else if (mode == "local") {
+            if (player == 1) {
+                text = R.string.player1_turn
+            } else if (player == 2) {
+                text = R.string.player2_turn
+            }
+        }
+
+        return text
+    }
+
+    override fun returnSecondTurnText(player : Int, mode : String) : Int {
+        var text = 0
+
+        if (mode == "cpu") {
+
+            if (player == 1) {
+                text = R.string.cpu_turn
+            } else if (player == 2) {
+                text = R.string.player_turn
+            }
+
+        } else if (mode == "local") {
+            if (player == 1) {
+                text = R.string.player2_turn
+            } else if (player == 2) {
+                text = R.string.player1_turn
+            }
+        }
+
+        return text
+    }
 }

@@ -48,6 +48,8 @@
     <string name="cpu_select">CPUは設定するNumberを選んでください</string>
     <string name="player1_turn">Player1はNumberを選んでください</string>
     <string name="player2_turn">Player2はNumberを選んでください</string>
+    <string name="player_turn">PlayerはNumberを選んでください</string>
+    <string name="cpu_turn">CPUはNumberを選んでください</string>
     <string name="player_change">プレイヤーを交代してください</string>
     <string name="change_and_tap">Change and Tap</string>
     <string name="hit_blow">%1$dH &amp; %2$dB</string>
