@@ -6,7 +6,7 @@ import kouta.numberon.R
  * idから画像intの変換用
  */
 interface NumberToCard {
-    fun NumberToCard(number : Int) : Int {
+    fun numberToCard(number : Int) : Int {
         when (number) {
             0 -> return R.drawable.trump_0
             1 -> return R.drawable.trump_1

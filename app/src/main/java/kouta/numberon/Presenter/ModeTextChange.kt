@@ -7,7 +7,7 @@ import kouta.numberon.R
  */
 
 interface ModeTextChange {
-    fun ModeTextChange(mode : String) : Int {
+    fun modeTextChange(mode : String) : Int {
         when (mode) {
             "cpu" -> return R.string.order_title_cpu
             "local" -> return R.string.order_title_local

@@ -33,7 +33,7 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.V
 
         presenter = OrderPresenter()
 
-        select_title.setText(presenter.ModeTextChange(mode))
+        select_title.setText(presenter.modeTextChange(mode))
 
         dialogFragment.isCancelable = false
         dialogFragment.setTargetFragment(null, DataUtils().DIGIT_REQUEST_CODE)

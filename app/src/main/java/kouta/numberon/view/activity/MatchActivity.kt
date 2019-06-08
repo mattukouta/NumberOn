@@ -7,16 +7,17 @@ import android.view.View
 import android.widget.RadioButton
 import kotlinx.android.synthetic.main.activity_match.*
 import kouta.numberon.Model.Player
+import kouta.numberon.Presenter.Contract.MatchContract
 import kouta.numberon.Presenter.activity.MatchPresenter
-import kouta.numberon.Presenter.ModeTextChange
-import kouta.numberon.Presenter.NumberToCard
 import kouta.numberon.R
 import kouta.numberon.view.Adapter.CallListAdapter
 import kouta.numberon.view.Fragment.GameResultFragment
 import kouta.numberon.view.Fragment.TurnChangeFragment
 
 // radioButton生成部分が'number.add(null)', 'number[n - 1] = null'以外同じ ←activity内にメソッドの作成
-class MatchActivity : AppCompatActivity(), View.OnClickListener {
+class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.View {
+    override lateinit var presenter : MatchContract.Presenter
+
     val firstPlayer = MatchPresenter().getFirstPlayer()
     val digit = MatchPresenter().getDigit()
     /**
@@ -40,8 +41,10 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
 
+        presenter = MatchPresenter()
+
         val mode = MatchPresenter().getMode()
-        select_title.setText(ModeTextChange(mode))
+        select_title.setText(presenter.modeTextChange(mode))
 
         for (n in 1..digit) {
             /**
@@ -92,43 +95,43 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         when (v) {
             btn_0 -> {
                 select_number = 0
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_1 -> {
                 select_number = 1
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_2 -> {
                 select_number = 2
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_3 -> {
                 select_number = 3
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_4 -> {
                 select_number = 4
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_5 -> {
                 select_number = 5
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_6 -> {
                 select_number = 6
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_7 -> {
                 select_number = 7
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_8 -> {
                 select_number = 8
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_9 -> {
                 select_number = 9
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_call -> {
                 var call_number = mutableListOf<Int?>()
@@ -144,7 +147,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 /**
                  * 合計値の処理
                  */
-                var sum = MatchPresenter().NumberToSum(digit, number)
+                var sum = presenter.numberToSum(digit, number)
 
                 if (state == 3) {
                     if (firstPlayer == 1) {

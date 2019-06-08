@@ -1,8 +1,13 @@
 package kouta.numberon.Presenter.activity
 
 import kouta.numberon.Model.gameInfo
+import kouta.numberon.Presenter.Contract.MatchContract
 
-class MatchPresenter {
+class MatchPresenter : MatchContract.Presenter {
+    override fun start() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     fun getMode() : String {
         return gameInfo.gameMode
     }
@@ -46,7 +51,7 @@ class MatchPresenter {
         return blowCount
     }
 
-    fun NumberToSum(digit_NTS : Int, number_NTS : MutableList<Int?>) : String {
+    override fun numberToSum(digit_NTS : Int, number_NTS : MutableList<Int?>) : String {
         /**
          * ここで配列numberを数字に変換する。
          */
