@@ -22,6 +22,10 @@ class SelectModeActivity : AppCompatActivity(), SelectModeContract.View {
          * CPU対戦選択時処理
          */
         cpu_btn.setOnClickListener {
+            val intent = Intent(this, OrderActivity::class.java)
+            presenter.setMode("cpu")
+
+            intent(intent)
         }
 
         /**
