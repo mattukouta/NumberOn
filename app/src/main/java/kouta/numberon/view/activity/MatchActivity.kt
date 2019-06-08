@@ -6,22 +6,20 @@ import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import kotlinx.android.synthetic.main.activity_match.*
-import kouta.numberon.Model.DataUtils
 import kouta.numberon.Model.Player
-import kouta.numberon.Presenter.ModeTextChange
-import kouta.numberon.Presenter.NumberToCard
-import kouta.numberon.Presenter.CallResultPresenter
+import kouta.numberon.Presenter.activity.MatchContract
+import kouta.numberon.Presenter.activity.MatchPresenter
 import kouta.numberon.R
-import kouta.numberon.view.Adapter.ListAdapter
+import kouta.numberon.view.Adapter.CallListAdapter
 import kouta.numberon.view.Fragment.GameResultFragment
 import kouta.numberon.view.Fragment.TurnChangeFragment
-import java.lang.Math.pow
 
+// radioButton生成部分が'number.add(null)', 'number[n - 1] = null'以外同じ ←activity内にメソッドの作成
+class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.View {
+    override lateinit var presenter : MatchContract.Presenter
 
-class MatchActivity : AppCompatActivity(), View.OnClickListener {
+    var firstPlayer = 0
     var digit = 0
-    lateinit var mode : String
-    var player = 0
     /**
      * 後述はしてあるが、
      * state = 1　は先攻の人のNumber設定
@@ -43,10 +41,12 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
 
-        digit = intent.getIntExtra(DataUtils().DIGIT, 0)
-        mode = intent.getStringExtra(DataUtils().MODE)
-        player = intent.getIntExtra(DataUtils().PLAYER, 0)
-        select_title.setText(ModeTextChange(mode))
+        presenter = MatchPresenter()
+        firstPlayer = presenter.getFirstPlayer()
+        digit = presenter.getDigit()
+
+        val mode = presenter.getMode()
+        select_title.setText(presenter.modeTextChange(mode))
 
         for (n in 1..digit) {
             /**
@@ -65,9 +65,9 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         }
 
 
-        if (player == 1) {
+        if (firstPlayer == 1) {
             turn_text.text = resources.getText(R.string.player1_select)
-        } else if (player == 2) {
+        } else if (firstPlayer == 2) {
             turn_text.text = resources.getText(R.string.player2_select)
         }
 
@@ -97,43 +97,43 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         when (v) {
             btn_0 -> {
                 select_number = 0
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_1 -> {
                 select_number = 1
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_2 -> {
                 select_number = 2
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_3 -> {
                 select_number = 3
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_4 -> {
                 select_number = 4
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_5 -> {
                 select_number = 5
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_6 -> {
                 select_number = 6
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_7 -> {
                 select_number = 7
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_8 -> {
                 select_number = 8
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_9 -> {
                 select_number = 9
-                select_card = NumberToCard(select_number)
+                select_card = presenter.numberToCard(select_number)
             }
             btn_call -> {
                 var call_number = mutableListOf<Int?>()
@@ -149,18 +149,18 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 /**
                  * 合計値の処理
                  */
-                var sum = NumberToSum(digit, number)
+                var sum = presenter.numberToSum(digit, number)
 
                 if (state == 3) {
-                    if (player == 1) {
+                    if (firstPlayer == 1) {
                         base_number = player1_setting_number
-                    } else if (player == 2) {
+                    } else if (firstPlayer == 2) {
                         base_number = player2_setting_number
                     }
                 } else if (state == 4) {
-                    if (player == 1) {
+                    if (firstPlayer == 1) {
                         base_number = player2_setting_number
-                    } else if (player == 2) {
+                    } else if (firstPlayer == 2) {
                         base_number = player1_setting_number
                     }
                 }
@@ -178,14 +178,14 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                         /**
                          * 先攻のNumber設定時
                          */
-                        if (player == 1) {
+                        if (firstPlayer == 1) {
                             Log.d("checksum", call_number.toString())
                             turn_text.text = resources.getText(R.string.player2_select)
                             for (n in call_number) {
                                 player1_setting_number.add(n)
                             }
                             Log.d("checksum", player1_setting_number.toString())
-                        } else if (player == 2) {
+                        } else if (firstPlayer == 2) {
                             turn_text.text = resources.getText(R.string.player1_select)
                             for (n in call_number) {
                                 player2_setting_number.add(n)
@@ -196,7 +196,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                         /**
                          * 後攻のNumber設定時
                          */
-                        if (player == 1) {
+                        if (firstPlayer == 1) {
                             turn_text.text = resources.getText(R.string.player1_turn)
                             /**
                              * 配列に格納
@@ -205,7 +205,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                                 player2_setting_number.add(n)
                             }
                             Log.d("checksum", player2_setting_number.toString())
-                        } else if (player == 2) {
+                        } else if (firstPlayer == 2) {
                             turn_text.text = resources.getText(R.string.player2_turn)
                             /**
                              * 配列に格納
@@ -219,9 +219,9 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                         /**
                          * 先攻のNumber選択時
                          */
-                        if (player == 1) {
+                        if (firstPlayer == 1) {
                             turn_text.text = resources.getText(R.string.player2_turn)
-                        } else if (player == 2) {
+                        } else if (firstPlayer == 2) {
                             turn_text.text = resources.getText(R.string.player1_turn)
                         }
                         Log.d("checknumber1", player1_setting_number.toString())
@@ -230,9 +230,9 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                         /**
                          * 後攻のNumber選択時
                          */
-                        if (player == 1) {
+                        if (firstPlayer == 1) {
                             turn_text.text = resources.getText(R.string.player1_turn)
-                        } else if (player == 2) {
+                        } else if (firstPlayer == 2) {
                             turn_text.text = resources.getText(R.string.player2_turn)
                         }
                     }
@@ -263,24 +263,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    fun NumberToSum(digit_NTS : Int, number_NTS : MutableList<Int?>) : String {
-        /**
-         * ここで配列numberを数字に変換する。
-         */
-        var index = 10.0
-        var digit_number = 0
-        index = pow(index, (digit_NTS - 1).toDouble())
-
-        for (n in number_NTS) {
-            if (n != null) {
-                digit_number += n * index.toInt()
-                index /= 10
-            }
-        }
-
-        return String.format("%0${digit_NTS}d", digit_number)
-    }
-
     fun Check(base_number_C : MutableList<Int?>, call_number_C : MutableList<Int?>, state_C : Int, digit_C : Int, sum_C : String) : Boolean {
         /**
          * 作成していたnumberリストの全ての値がnullではないことの確認
@@ -308,10 +290,10 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                         .commit()
 
             } else if (state_C == 3 || state_C == 4) {
-                val hit = CallResultPresenter().returnHit(base_number_C, call_number_C)
-                val blow = CallResultPresenter().returnBlow(base_number_C, call_number_C)
+                val hit = MatchPresenter().returnHit(base_number_C, call_number_C)
+                val blow = MatchPresenter().returnBlow(base_number_C, call_number_C)
 
-                val listAdapter = ListAdapter(this, list)
+                val listAdapter = CallListAdapter(this, list)
                 playerList.adapter = listAdapter
 
                 result = resources.getString(R.string.hit_blow, hit, blow)
@@ -336,15 +318,15 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener {
                 if (hit == digit_C) {
                     val bundle = Bundle()
                     if (state_C == 3) {
-                        if (player == 1) {
+                        if (firstPlayer == 1) {
                             bundle.putString("win_player", "Player1")
-                        } else if (player == 2) {
+                        } else if (firstPlayer == 2) {
                             bundle.putString("win_player", "Player2")
                         }
                     } else if (state_C == 4) {
-                        if (player == 1) {
+                        if (firstPlayer == 1) {
                             bundle.putString("win_player", "Player2")
-                        } else if (player == 2) {
+                        } else if (firstPlayer == 2) {
                             bundle.putString("win_player", "Player1")
                         }
                     }

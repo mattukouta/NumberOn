@@ -5,11 +5,14 @@ import kouta.numberon.R
 /**
  * 画面上部に表示させる用
  */
-fun ModeTextChange(mode : String) : Int {
-    when (mode) {
-        "cpu" -> return R.string.order_title_cpu
-        "local" -> return R.string.order_title_local
-        "online" -> return R.string.order_title_online
+
+interface ModeTextChange {
+    fun modeTextChange(mode : String) : Int {
+        when (mode) {
+            "cpu" -> return R.string.order_title_cpu
+            "local" -> return R.string.order_title_local
+            "online" -> return R.string.order_title_online
+        }
+        return 0
     }
-    return 0
 }

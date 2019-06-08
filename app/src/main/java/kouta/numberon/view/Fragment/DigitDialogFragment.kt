@@ -1,35 +1,35 @@
 package kouta.numberon.view.Fragment
 
-import android.app.Dialog
-import android.app.PendingIntent
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import kouta.numberon.Model.DataUtils
+import kouta.numberon.Presenter.fragment.DigitDialogContract
+import kouta.numberon.Presenter.fragment.DigitDialogPresenter
 
 import kouta.numberon.R
 
 
-class DigitDialogFragment : DialogFragment() {
+class DigitDialogFragment : DialogFragment(), DigitDialogContract.View {
+    override lateinit var presenter : DigitDialogContract.Presenter
 
-    var digit = 0
-
-    override fun onCreateDialog(savedInstanceState : Bundle?) : Dialog {
+    override fun onCreateDialog(savedInstanceState : Bundle?) : AlertDialog {
         super.onCreateDialog(savedInstanceState)
 
         val alert = activity?.let { AlertDialog.Builder(it) }
         val view = activity?.layoutInflater?.inflate(R.layout.fragment_digit_dialog, null)
-
-        alert?.setView(view)
-
-
         val cancel = view?.findViewById<Button>(R.id.cancel)
         val ok = view?.findViewById<Button>(R.id.ok)
         val radio = view?.findViewById<RadioGroup>(R.id.radioGroup)
+
+        presenter = DigitDialogPresenter()
+
+        /**
+         * dialogをセット
+         */
+        alert?.setView(view)
 
 
         cancel?.setOnClickListener {
@@ -38,7 +38,7 @@ class DigitDialogFragment : DialogFragment() {
         }
         ok?.setOnClickListener {
 
-            val intent = Intent()
+            var digit = 0
 
             when (radio?.checkedRadioButtonId) {
                 R.id.two -> digit = 2
@@ -47,19 +47,17 @@ class DigitDialogFragment : DialogFragment() {
                 R.id.five -> digit = 5
             }
 
-            /**
-             * 選択した桁数をActivityに反映
-             */
-            intent.putExtra(DataUtils().DIGIT, digit)
-            val pi = activity?.createPendingResult(targetRequestCode, intent, PendingIntent.FLAG_ONE_SHOT)
+            if (digit != 0) {
+                /**
+                 * 選択した桁数をActivityに反映
+                 */
+                presenter.setDigit(digit)
 
-            if (pi != null) {
-                pi.send(DataUtils().DIGIT_RESULT_CODE)
+                dismiss()
             }
-            dismiss()
         }
-        //アンラップになっているの要修正事項
-        return alert?.create() !!
+
+        return alert?.create() as AlertDialog
     }
 
     override fun show(manager : FragmentManager, tag : String?) {
@@ -67,22 +65,7 @@ class DigitDialogFragment : DialogFragment() {
     }
 
     override fun showNow(manager : FragmentManager, tag : String?) {
-        if (isSameTagDialogShowing(manager, tag.toString())) return
+        if (DigitDialogPresenter().isSameTagDialogShowing(manager, tag.toString())) return
         super.showNow(manager, tag)
-    }
-
-    /**
-     * 同一TAGのダイアログが表示されているかどうかを判定する。
-     * @return 同一TAGのダイアログが表示されている場合は true を返す。
-     */
-    private fun isSameTagDialogShowing(manager : FragmentManager, tag : String) : Boolean {
-        val previousFragment = manager.findFragmentByTag(tag)
-        if (previousFragment is DialogFragment) {
-            val dialog = (previousFragment).getDialog()
-            if (dialog != null && dialog.isShowing()) {
-                return true
-            }
-        }
-        return false
     }
 }
