@@ -1,18 +1,19 @@
 package kouta.numberon.view.Fragment
 
-import android.app.Dialog
 import android.os.Bundle
 import android.widget.Button
 import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import kouta.numberon.Presenter.Contract.DigitDialogContract
 import kouta.numberon.Presenter.fragment.DigitDialogPresenter
 
 import kouta.numberon.R
 
 
-class DigitDialogFragment : DialogFragment() {
+class DigitDialogFragment : DialogFragment(), DigitDialogContract.View {
+    override lateinit var presenter : DigitDialogContract.Presenter
 
     override fun onCreateDialog(savedInstanceState : Bundle?) : AlertDialog {
         super.onCreateDialog(savedInstanceState)
@@ -22,6 +23,8 @@ class DigitDialogFragment : DialogFragment() {
         val cancel = view?.findViewById<Button>(R.id.cancel)
         val ok = view?.findViewById<Button>(R.id.ok)
         val radio = view?.findViewById<RadioGroup>(R.id.radioGroup)
+
+        presenter = DigitDialogPresenter()
 
         /**
          * dialogをセット
@@ -48,7 +51,7 @@ class DigitDialogFragment : DialogFragment() {
                 /**
                  * 選択した桁数をActivityに反映
                  */
-                presemter.setDigit(digit)
+                presenter.setDigit(digit)
 
                 dismiss()
             }

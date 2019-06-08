@@ -1,6 +1,5 @@
 package kouta.numberon.Presenter.activity
 
-import kouta.numberon.Model.gameInfo
 import kouta.numberon.Presenter.Contract.MatchContract
 
 class MatchPresenter : MatchContract.Presenter {

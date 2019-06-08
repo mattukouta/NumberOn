@@ -1,6 +1,7 @@
 package kouta.numberon.Presenter.Contract
 
 import kouta.numberon.Digit
+import kouta.numberon.FirstPlayer
 import kouta.numberon.Mode
 import kouta.numberon.Presenter.BasePresenter
 import kouta.numberon.Presenter.BaseView
@@ -12,7 +13,7 @@ interface MatchContract {
 
     }
 
-    interface Presenter : BasePresenter, NumberToCard, ModeTextChange, Mode, Digit {
+    interface Presenter : BasePresenter, NumberToCard, ModeTextChange, Mode, Digit, FirstPlayer {
         fun numberToSum(digit_NTS : Int, number_NTS : MutableList<Int?>) : String
         fun returnBlow(baseNumber : MutableList<Int?>, callNumber : MutableList<Int?>) : Int
         fun returnHit(baseNumber : MutableList<Int?>, selectnumber : MutableList<Int?>) : Int
