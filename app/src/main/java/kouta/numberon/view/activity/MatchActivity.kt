@@ -19,7 +19,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
     override lateinit var presenter : MatchContract.Presenter
 
     var firstPlayer = MatchPresenter().getFirstPlayer()
-    var digit = MatchPresenter().getDigit()
+    var digit = 0
     /**
      * 後述はしてあるが、
      * state = 1　は先攻の人のNumber設定

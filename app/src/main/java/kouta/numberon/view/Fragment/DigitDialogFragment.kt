@@ -48,7 +48,7 @@ class DigitDialogFragment : DialogFragment() {
                 /**
                  * 選択した桁数をActivityに反映
                  */
-                DigitDialogPresenter().setDigit(digit)
+                presemter.setDigit(digit)
 
                 dismiss()
             }

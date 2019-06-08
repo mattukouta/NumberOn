@@ -8,10 +8,6 @@ class MatchPresenter : MatchContract.Presenter {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun getDigit() : Int {
-        return gameInfo.gameDigit
-    }
-
     fun getFirstPlayer() : Int {
         return gameInfo.firstPlayer
     }
