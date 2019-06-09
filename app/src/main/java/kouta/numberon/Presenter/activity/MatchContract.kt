@@ -21,5 +21,6 @@ interface MatchContract {
         fun returnFirstTurnText(player : Int, mode : String) : Int
         fun returnSecondTurnText(player : Int, mode : String) : Int
         fun getWinPlayer(state : Int, firstPlayer : Int, mode : String) : String
+        fun createDigitList(digit : Int)
     }
 }

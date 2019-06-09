@@ -50,6 +50,8 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         firstPlayer = presenter.getFirstPlayer()
         digit = presenter.getDigit()
 
+        presenter.createDigitList(digit)
+
         mode = presenter.getMode()
         select_title.setText(presenter.modeTextChange(mode))
 
@@ -68,15 +70,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
              */
             number.add(null)
         }
-
-
-        //        if (firstPlayer == 1) {
-        //            turn_text.text = resources.getText(R.string.player1_select)
-        //        } else if (firstPlayer == 2) {
-        //            turn_text.text = resources.getText(R.string.player2_select)
-        //        }
-        //        turn_text.text = resources.getText(
-
         first_turn_text = resources.getString(presenter.returnFirstText(firstPlayer, mode))
         second_turn_text = resources.getString(presenter.returnSecondText(firstPlayer, mode))
 

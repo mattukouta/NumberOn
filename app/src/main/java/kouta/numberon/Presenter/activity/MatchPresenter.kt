@@ -1,6 +1,8 @@
 package kouta.numberon.Presenter.activity
 
+import android.util.Log
 import kouta.numberon.R
+import kotlin.math.pow
 
 class MatchPresenter : MatchContract.Presenter {
     override fun start() {
@@ -178,5 +180,77 @@ class MatchPresenter : MatchContract.Presenter {
         }
 
         return player
+    }
+
+    override fun createDigitList(digit : Int) {
+        var min_count = 0
+        var max_count = 9
+        var min_number = 0
+        var max_number = 0
+        var list = mutableListOf<Int>()
+
+        for (n in 0 until digit) {
+            min_number += min_count * (10f.pow(digit - 1 - n)).toInt()
+            min_count += 1
+        }
+
+        for (n in 0 until digit) {
+            max_number += max_count * (10f.pow(digit - 1 - n)).toInt()
+            max_count -= 1
+        }
+
+        Log.d("checklist", "$min_number : $max_number")
+
+        for (n in min_number..max_number) {
+
+            if (checkList(n, digit)) {
+                list.add(n)
+            }
+        }
+
+        Log.d("checklist", list.toString())
+
+        //        var list = mutableListOf<Int>()
+        //        var sum = 1
+        //        for (n in 0 until digit) sum *= n
+        //
+        //        for (n in 0 until sum) {
+        //
+        //        }
+    }
+
+    fun checkList(number : Int, digit : Int) : Boolean {
+        var list = mutableListOf(11, 12, 13, 14, 15)
+
+        when (digit) {
+            2 -> {
+                list[3] = number / 10
+                list[4] = number % 10
+            }
+            3 -> {
+                list[2] = number / 100
+                list[3] = (number - list[2] * 100) / 10
+                list[4] = (number - list[2] * 100) % 10
+            }
+            4 -> {
+                list[1] = number / 1000
+                list[2] = (number - list[1] * 1000) / 100
+                list[3] = (number - list[1] * 1000 - list[2] * 100) / 10
+                list[4] = (number - list[1] * 1000 - list[2] * 100) % 10
+            }
+            5 -> {
+                list[0] = number / 10000
+                list[1] = (number - list[0] * 10000) / 1000
+                list[2] = (number - list[0] * 10000 - list[1] * 1000) / 100
+                list[3] = (number - list[0] * 10000 - list[1] * 1000 - list[2] * 100) / 10
+                list[4] = (number - list[0] * 10000 - list[1] * 1000 - list[2] * 100) % 10
+            }
+        }
+
+        if ((list.distinct()).size == 5) {
+            return true
+        }
+
+        return false
     }
 }
