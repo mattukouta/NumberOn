@@ -182,7 +182,7 @@ class MatchPresenter : MatchContract.Presenter {
         return player
     }
 
-    override fun createDigitList(digit : Int) {
+    override fun createDigitList(digit : Int) : Int {
         var min_count = 0
         var max_count = 9
         var min_number = 0
@@ -199,27 +199,16 @@ class MatchPresenter : MatchContract.Presenter {
             max_count -= 1
         }
 
-        Log.d("checklist", "$min_number : $max_number")
-
         for (n in min_number..max_number) {
 
             if (checkList(n, digit)) {
                 list.add(n)
             }
         }
-
-        Log.d("checklist", list.toString())
-
-        //        var list = mutableListOf<Int>()
-        //        var sum = 1
-        //        for (n in 0 until digit) sum *= n
-        //
-        //        for (n in 0 until sum) {
-        //
-        //        }
+        return list.random()
     }
 
-    fun checkList(number : Int, digit : Int) : Boolean {
+    override fun checkList(number : Int, digit : Int) : Boolean {
         var list = mutableListOf(11, 12, 13, 14, 15)
 
         when (digit) {

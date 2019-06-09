@@ -1,6 +1,7 @@
 package kouta.numberon.view.activity
 
 import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import kouta.numberon.R
 import kouta.numberon.view.Adapter.CallListAdapter
 import kouta.numberon.view.Fragment.GameResultFragment
 import kouta.numberon.view.Fragment.TurnChangeFragment
+import kotlin.math.pow
 
 // radioButton生成部分が'number.add(null)', 'number[n - 1] = null'以外同じ ←activity内にメソッドの作成
 class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.View {
@@ -50,8 +52,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         firstPlayer = presenter.getFirstPlayer()
         digit = presenter.getDigit()
 
-        presenter.createDigitList(digit)
-
         mode = presenter.getMode()
         select_title.setText(presenter.modeTextChange(mode))
 
@@ -74,6 +74,23 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         second_turn_text = resources.getString(presenter.returnSecondText(firstPlayer, mode))
 
         turn_text.text = first_turn_text
+
+        if (mode == "cpu" && firstPlayer == 2) {
+            val cpu_number = presenter.createDigitList(digit)
+            for (n in 0 until digit) {
+                if (n == 0) {
+                    number[n] = cpu_number / (10f.pow(digit - 1)).toInt()
+                } else {
+                    var sum = 0
+                    for (i in 0 until n) {
+                        sum += number[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0  //アンラップ注意
+                    }
+                    number[n] = (cpu_number - sum) / (10f.pow(digit - 1 - n)).toInt()
+                }
+            }
+            Log.d("checknumber", "$number : $cpu_number")
+            call()
+        }
 
         /**
          * ボタン押すための前処理
@@ -152,100 +169,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
                 select_card = presenter.numberToCard(select_number)
             }
             btn_call -> {
-                var call_number = mutableListOf<Int?>()
-                var base_number = mutableListOf<Int?>()
-
-                /**
-                 * 配列に格納
-                 */
-                for (n in number) {
-                    call_number.add(n)
-                }
-
-                /**
-                 * 合計値の処理
-                 */
-                var sum = presenter.numberToSum(digit, number)
-
-                if (state == 3) {
-                    if (firstPlayer == 1) {
-                        base_number = player1_setting_number
-                    } else if (firstPlayer == 2) {
-                        base_number = player2_setting_number
-                    }
-                } else if (state == 4) {
-                    if (firstPlayer == 1) {
-                        base_number = player2_setting_number
-                    } else if (firstPlayer == 2) {
-                        base_number = player1_setting_number
-                    }
-                }
-
-                /**
-                 * 正しいNumberか確認
-                 */
-                val check = Check(base_number, number, state, digit, sum)
-                Log.d("check", call_number.toString())
-                /**
-                 * 正しいNumberの時の処理
-                 */
-                if (check) {
-                    if (state == 1) {
-                        /**
-                         * 先攻のNumber設定時
-                         */
-                        if (firstPlayer == 1) {
-                            turn_text.text = second_turn_text
-                            for (n in call_number) {
-                                player1_setting_number.add(n)
-                            }
-                        } else if (firstPlayer == 2) {
-                            turn_text.text = second_turn_text
-                            for (n in call_number) {
-                                player2_setting_number.add(n)
-                            }
-                        }
-                        first_turn_text = resources.getString(presenter.returnFirstTurnText(firstPlayer, mode))
-                        second_turn_text = resources.getString(presenter.returnSecondTurnText(firstPlayer, mode))
-                    } else if (state == 2) {
-                        /**
-                         * 後攻のNumber設定時
-                         */
-                        if (firstPlayer == 1) {
-                            turn_text.text = first_turn_text
-                            /**
-                             * 配列に格納
-                             */
-                            for (n in call_number) {
-                                player2_setting_number.add(n)
-                            }
-                        } else if (firstPlayer == 2) {
-                            turn_text.text = first_turn_text
-                            /**
-                             * 配列に格納
-                             */
-                            for (n in call_number) {
-                                player1_setting_number.add(n)
-                            }
-                        }
-                    } else if (state == 3) {
-                        /**
-                         * 先攻のNumber選択時
-                         */
-                        turn_text.text = second_turn_text
-                    } else if (state == 4) {
-                        /**
-                         * 後攻のNumber選択時
-                         */
-                        turn_text.text = first_turn_text
-                    }
-
-                    if (state == 4) {
-                        state -= 1
-                    } else {
-                        state += 1
-                    }
-                }
+                call()
             }
         }
 
@@ -263,6 +187,103 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
             val radio = findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
             radio.setButtonDrawable(select_card)
             number[radioGroup.checkedRadioButtonId - 1] = select_number
+        }
+    }
+
+    fun call() {
+        var call_number = mutableListOf<Int?>()
+        var base_number = mutableListOf<Int?>()
+
+        /**
+         * 配列に格納
+         */
+        for (n in number) {
+            call_number.add(n)
+        }
+
+        /**
+         * 合計値の処理
+         */
+        var sum = presenter.numberToSum(digit, number)
+
+        if (state == 3) {
+            if (firstPlayer == 1) {
+                base_number = player1_setting_number
+            } else if (firstPlayer == 2) {
+                base_number = player2_setting_number
+            }
+        } else if (state == 4) {
+            if (firstPlayer == 1) {
+                base_number = player2_setting_number
+            } else if (firstPlayer == 2) {
+                base_number = player1_setting_number
+            }
+        }
+
+        /**
+         * 正しいNumberか確認
+         */
+        val check = Check(base_number, number, state, digit, sum)
+        Log.d("check", call_number.toString())
+        /**
+         * 正しいNumberの時の処理
+         */
+        if (check) {
+            if (state == 1) {
+                /**
+                 * 先攻のNumber設定時
+                 */
+                if (firstPlayer == 1) {
+                    turn_text.text = second_turn_text
+                    for (n in call_number) {
+                        player1_setting_number.add(n)
+                    }
+                } else if (firstPlayer == 2) {
+                    turn_text.text = second_turn_text
+                    for (n in call_number) {
+                        player2_setting_number.add(n)
+                    }
+                }
+                first_turn_text = resources.getString(presenter.returnFirstTurnText(firstPlayer, mode))
+                second_turn_text = resources.getString(presenter.returnSecondTurnText(firstPlayer, mode))
+            } else if (state == 2) {
+                /**
+                 * 後攻のNumber設定時
+                 */
+                if (firstPlayer == 1) {
+                    turn_text.text = first_turn_text
+                    /**
+                     * 配列に格納
+                     */
+                    for (n in call_number) {
+                        player2_setting_number.add(n)
+                    }
+                } else if (firstPlayer == 2) {
+                    turn_text.text = first_turn_text
+                    /**
+                     * 配列に格納
+                     */
+                    for (n in call_number) {
+                        player1_setting_number.add(n)
+                    }
+                }
+            } else if (state == 3) {
+                /**
+                 * 先攻のNumber選択時
+                 */
+                turn_text.text = second_turn_text
+            } else if (state == 4) {
+                /**
+                 * 後攻のNumber選択時
+                 */
+                turn_text.text = first_turn_text
+            }
+
+            if (state == 4) {
+                state -= 1
+            } else {
+                state += 1
+            }
         }
     }
 
