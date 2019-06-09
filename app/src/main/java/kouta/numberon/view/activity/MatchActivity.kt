@@ -208,15 +208,15 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
 
         if (state == 3) {
             if (firstPlayer == 1) {
-                base_number = player1_setting_number
-            } else if (firstPlayer == 2) {
                 base_number = player2_setting_number
+            } else if (firstPlayer == 2) {
+                base_number = player1_setting_number
             }
         } else if (state == 4) {
             if (firstPlayer == 1) {
-                base_number = player2_setting_number
-            } else if (firstPlayer == 2) {
                 base_number = player1_setting_number
+            } else if (firstPlayer == 2) {
+                base_number = player2_setting_number
             }
         }
 
