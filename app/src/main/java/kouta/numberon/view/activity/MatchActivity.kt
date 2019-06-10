@@ -48,7 +48,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match)
 
-        presenter = MatchPresenter()
+        presenter = MatchPresenter(this)
         firstPlayer = presenter.getFirstPlayer()
         digit = presenter.getDigit()
 
@@ -76,20 +76,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         turn_text.text = first_turn_text
 
         if (mode == "cpu" && firstPlayer == 2) {
-            val cpu_number = presenter.createDigitList(digit)
-            for (n in 0 until digit) {
-                if (n == 0) {
-                    number[n] = cpu_number / (10f.pow(digit - 1)).toInt()
-                } else {
-                    var sum = 0
-                    for (i in 0 until n) {
-                        sum += number[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0  //アンラップ注意
-                    }
-                    number[n] = (cpu_number - sum) / (10f.pow(digit - 1 - n)).toInt()
-                }
-            }
-            Log.d("checknumber", "$number : $cpu_number")
-            call()
+            cpuBaseNumber()
         }
 
         /**
@@ -190,6 +177,23 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
     }
 
+    override fun cpuBaseNumber() {
+        val cpu_number = presenter.createDigitList(digit)
+        for (n in 0 until digit) {
+            if (n == 0) {
+                number[n] = cpu_number / (10f.pow(digit - 1)).toInt()
+            } else {
+                var sum = 0
+                for (i in 0 until n) {
+                    sum += number[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0  //アンラップ注意
+                }
+                number[n] = (cpu_number - sum) / (10f.pow(digit - 1 - n)).toInt()
+            }
+        }
+        Log.d("checknumber", "$number : $cpu_number")
+        call()
+    }
+
     fun call() {
         var call_number = mutableListOf<Int?>()
         var base_number = mutableListOf<Int?>()
@@ -246,6 +250,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
                 }
                 first_turn_text = resources.getString(presenter.returnFirstTurnText(firstPlayer, mode))
                 second_turn_text = resources.getString(presenter.returnSecondTurnText(firstPlayer, mode))
+
             } else if (state == 2) {
                 /**
                  * 後攻のNumber設定時
@@ -285,6 +290,13 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
                 state += 1
             }
         }
+
+        Log.d("checklist", list.size.toString())
+        if (mode == "cpu" && firstPlayer == 1 && state == 2) {
+            cpuBaseNumber()
+        } else if (mode == "cpu" && firstPlayer == 2 && state == 3 && list.size == 0) {
+            cpuBaseNumber()
+        }
     }
 
     fun Check(base_number_C : MutableList<Int?>, call_number_C : MutableList<Int?>, state_C : Int, digit_C : Int, sum_C : String) : Boolean {
@@ -301,21 +313,14 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
              * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
              */
             if (state_C == 1 || state_C == 2) {
-                /**
-                 * 交代用のfragment表示
-                 */
-                val bundle = Bundle()
-                bundle.putString("result", result)
 
-                val fragment = TurnChangeFragment()
-                fragment.arguments = bundle
-                supportFragmentManager.beginTransaction()
-                        .add(R.id.match_base, fragment)
-                        .commit()
+                if (mode == "local") {
+                    showTurnChecngeFragment(result, state_C)
+                }
 
             } else if (state_C == 3 || state_C == 4) {
-                val hit = MatchPresenter().returnHit(base_number_C, call_number_C)
-                val blow = MatchPresenter().returnBlow(base_number_C, call_number_C)
+                val hit = presenter.returnHit(base_number_C, call_number_C)
+                val blow = presenter.returnBlow(base_number_C, call_number_C)
 
                 val listAdapter = CallListAdapter(this, list)
                 playerList.adapter = listAdapter
@@ -352,17 +357,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
                             .add(R.id.match_base, fragment)
                             .commit()
                 } else {
-                    /**
-                     * 交代用のfragment表示
-                     */
-                    val bundle = Bundle()
-                    bundle.putString("result", result)
-
-                    val fragment = TurnChangeFragment()
-                    fragment.arguments = bundle
-                    supportFragmentManager.beginTransaction()
-                            .add(R.id.match_base, fragment)
-                            .commit()
+                    showTurnChecngeFragment(result, state_C)
                 }
             }
 
@@ -401,4 +396,17 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
     }
 
+    fun showTurnChecngeFragment(result : String, state : Int) {
+        /**
+         * 交代用のfragment表示
+         */
+        val bundle = Bundle()
+        bundle.putString("result", result)
+
+        val fragment = TurnChangeFragment(state)
+        fragment.arguments = bundle
+        supportFragmentManager.beginTransaction()
+                .add(R.id.match_base, fragment)
+                .commit()
+    }
 }

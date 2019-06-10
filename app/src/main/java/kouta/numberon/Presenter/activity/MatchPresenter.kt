@@ -1,12 +1,11 @@
 package kouta.numberon.Presenter.activity
 
-import android.util.Log
 import kouta.numberon.R
 import kotlin.math.pow
 
-class MatchPresenter : MatchContract.Presenter {
+class MatchPresenter(private val view : MatchContract.View) : MatchContract.Presenter {
     override fun start() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        view.cpuBaseNumber()
     }
 
     override fun returnHit(baseNumber : MutableList<Int?>, selectnumber : MutableList<Int?>) : Int {

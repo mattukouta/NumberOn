@@ -1,5 +1,7 @@
 package kouta.numberon.Presenter.fragment
 
+import kouta.numberon.Model.FirstPlayer
+import kouta.numberon.Model.Mode
 import kouta.numberon.Presenter.BasePresenter
 import kouta.numberon.Presenter.BaseView
 
@@ -8,7 +10,7 @@ interface TurnChangeContract {
 
     }
 
-    interface Presenter : BasePresenter {
+    interface Presenter : BasePresenter, Mode, FirstPlayer {
 
     }
 }

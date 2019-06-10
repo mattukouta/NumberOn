@@ -10,6 +10,7 @@ import kouta.numberon.Presenter.NumberToCard
 
 interface MatchContract {
     interface View : BaseView<Presenter> {
+        fun cpuBaseNumber()
     }
 
     interface Presenter : BasePresenter, NumberToCard, ModeTextChange, Mode, Digit, FirstPlayer {
