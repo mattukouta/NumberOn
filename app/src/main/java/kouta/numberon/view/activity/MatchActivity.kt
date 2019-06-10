@@ -16,6 +16,7 @@ import kouta.numberon.view.Adapter.CallListAdapter
 import kouta.numberon.view.Fragment.GameResultFragment
 import kouta.numberon.view.Fragment.TurnChangeFragment
 import kotlin.math.pow
+import kotlin.math.sign
 
 // radioButton生成部分が'number.add(null)', 'number[n - 1] = null'以外同じ ←activity内にメソッドの作成
 class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.View {
@@ -344,6 +345,62 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
                     flag = 0
                 }
 
+                if (mode == "cpu" && ((firstPlayer == 1 && state_C == 4) || (firstPlayer == 2 && state_C == 3))) {
+//                    val hoge = presenter.cpuNumber
+                    val hogehoge = mutableListOf<Int>()
+                    val hoge = mutableListOf<Int?>()
+
+                    for (n in 0 until presenter.cpuNumber.size) {
+                        hogehoge.add(presenter.cpuNumber[n])
+                    }
+
+                    for (n in 0 until digit) {
+                        hoge.add(0)
+                    }
+
+                    Log.d("checklisthogehoge", hogehoge.toString())
+                    for (x in 0 until hogehoge.size) {
+
+//                        for (n in 0 until digit) {
+//                            if (n == 0) {
+//                                hoge.add(
+//                                        hogehoge[i] / (10f.pow(digit - 1)).toInt())
+////                                Log.d("checklisthoge", hoge.size.toString())
+//                                Log.d("checklisthogehoge", hogehoge[i].toString())
+//                            } else {
+//                                var sum = 0
+//                                for (g in 0 until n) {
+//                                    sum += hoge[g]?.times(((10f.pow(digit - 1 - g)).toInt())) ?: 0
+//                                }
+//                                hoge.add((hogehoge[i] - sum) / (10f.pow(digit - 1 - n)).toInt())
+//                                Log.d("checklisthogehoge", hogehoge[i].toString())
+//                            }
+//                        }
+
+                        for (n in 0 until digit) {
+                            if (n == 0) {
+//                                Log.d("check", hogehoge.size.toString())
+                                hoge[n] =
+                                        hogehoge[x] / (10f.pow(digit - 1)).toInt()
+                            } else {
+                                var sum = 0
+                                for (i in 0 until n) {
+                                    sum += hoge[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0
+                                }
+                                hoge[n] = (hogehoge[x] - sum) / (10f.pow(digit - 1 - n)).toInt()
+                            }
+                        }
+
+                        val removeHit = presenter.returnHit(call_number_C, hoge)
+                        val removeBlow = presenter.returnBlow(call_number_C, hoge)
+//                        Log.d("checkhoge", "$hoge : $removeHit : $removeBlow")
+                        if (hit != removeHit || blow != removeBlow) {
+                            presenter.cpuNumber.removeAll { it == hogehoge[x] }
+                        }
+                    }
+                    Log.d("checklist", "${presenter.cpuNumber.size}")
+                }
+
                 if (hit == digit_C) {
                     val bundle = Bundle()
 
@@ -411,9 +468,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
     }
 
     fun cpuSelectNumber() {
-        val list = presenter.cpuNumber
-        val selectNumber = list.random()
-        list.removeAll { it == selectNumber }
+        val selectNumber = presenter.cpuNumber.random()
 
         for (n in 0 until digit) {
             if (n == 0) {
