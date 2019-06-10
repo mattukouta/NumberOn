@@ -185,7 +185,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
             } else {
                 var sum = 0
                 for (i in 0 until n) {
-                    sum += number[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0  //アンラップ注意
+                    sum += number[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0
                 }
                 number[n] = (cpu_number - sum) / (10f.pow(digit - 1 - n)).toInt()
             }
@@ -295,7 +295,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         if (mode == "cpu" && firstPlayer == 1 && state == 2) {
             cpuBaseNumber()
         } else if (mode == "cpu" && firstPlayer == 2 && state == 3 && list.size == 0) {
-            cpuBaseNumber()
+            cpuSelectNumber()
         }
     }
 
@@ -408,5 +408,25 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         supportFragmentManager.beginTransaction()
                 .add(R.id.match_base, fragment)
                 .commit()
+    }
+
+    fun cpuSelectNumber() {
+        val list = presenter.cpuNumber
+        val selectNumber = list.random()
+        list.removeAll { it == selectNumber }
+
+        for (n in 0 until digit) {
+            if (n == 0) {
+                number[n] = selectNumber / (10f.pow(digit - 1)).toInt()
+            } else {
+                var sum = 0
+                for (i in 0 until n) {
+                    sum += number[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0
+                }
+                number[n] = (selectNumber - sum) / (10f.pow(digit - 1 - n)).toInt()
+            }
+        }
+        Log.d("checknumber", "$number : $selectNumber : ${list.size}")
+        call()
     }
 }

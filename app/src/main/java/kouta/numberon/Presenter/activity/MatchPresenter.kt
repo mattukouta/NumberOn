@@ -4,6 +4,9 @@ import kouta.numberon.R
 import kotlin.math.pow
 
 class MatchPresenter(private val view : MatchContract.View) : MatchContract.Presenter {
+
+    override var cpuNumber = mutableListOf<Int>()
+
     override fun start() {
         view.cpuBaseNumber()
     }
@@ -204,6 +207,9 @@ class MatchPresenter(private val view : MatchContract.View) : MatchContract.Pres
                 list.add(n)
             }
         }
+
+        cpuNumber = list
+
         return list.random()
     }
 

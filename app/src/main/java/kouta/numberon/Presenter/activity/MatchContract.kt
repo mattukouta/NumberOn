@@ -24,5 +24,6 @@ interface MatchContract {
         fun getWinPlayer(state : Int, firstPlayer : Int, mode : String) : String
         fun createDigitList(digit : Int) : Int
         fun checkList(number : Int, digit : Int) : Boolean
+        var cpuNumber : MutableList<Int>
     }
 }
