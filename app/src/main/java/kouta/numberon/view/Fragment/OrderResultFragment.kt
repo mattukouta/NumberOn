@@ -25,6 +25,7 @@ class OrderResultFragment : Fragment(), OrderResultContract.View {
         var player2 = 0
 
         presenter = OrderResultPresenter()
+        val mode = presenter.getMode()
 
         /**
          * カード選択値の受け取り
@@ -40,12 +41,8 @@ class OrderResultFragment : Fragment(), OrderResultContract.View {
         view.player1_card.setImageResource(card1)
         view.player2_card.setImageResource(card2)
 
-        if (player1 > player2) {
-            view.textView.text = resources.getText(R.string.order_player1)
-        } else {
-            view.textView.text = resources.getText(R.string.order_player2)
-            presenter.setFirstPlayer(2)
-        }
+        val resouse = presenter.OrderResultTextBranch(mode, player1, player2)
+        view.textView.text = resources.getText(resouse)
 
         /**
          * 先行、後攻が決まりタッチでゲームスタートの処理

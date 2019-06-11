@@ -11,8 +11,9 @@ import kouta.numberon.Presenter.fragment.TurnChangeContract
 import kouta.numberon.Presenter.fragment.TurnChangePresenter
 
 import kouta.numberon.R
+import kouta.numberon.view.activity.MatchActivity
 
-class TurnChangeFragment : Fragment(), TurnChangeContract.View {
+class TurnChangeFragment(private val state : Int) : Fragment(), TurnChangeContract.View {
     override lateinit var presenter : TurnChangeContract.Presenter
 
     override fun onCreateView(inflater : LayoutInflater, container : ViewGroup?, savedInstanceState : Bundle?) : View? {
@@ -22,6 +23,8 @@ class TurnChangeFragment : Fragment(), TurnChangeContract.View {
 
         presenter = TurnChangePresenter()
 
+        val mode = presenter.getMode()
+        val firstPlayer = presenter.getFirstPlayer()
         /**
          * call結果の表示
          */
@@ -32,6 +35,12 @@ class TurnChangeFragment : Fragment(), TurnChangeContract.View {
          */
         view.turn_change_background.setOnClickListener {
             fragmentManager?.beginTransaction()?.remove(this)?.commit()
+
+            if (mode == "cpu" && ((firstPlayer == 1 && state == 3) || (firstPlayer == 2 && state == 4))) {
+                val activity : MatchActivity = activity as MatchActivity
+//                activity.cpuBaseNumber()
+                activity.cpuSelectNumber()
+            }
         }
 
         return view

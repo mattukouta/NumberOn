@@ -1,6 +1,7 @@
 package kouta.numberon.view.Fragment
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import kouta.numberon.Presenter.fragment.GameResultContract
 import kouta.numberon.Presenter.fragment.GameResultPresenter
 
 import kouta.numberon.R
+import kouta.numberon.view.activity.SelectModeActivity
 
 
 class GameResultFragment : Fragment(), GameResultContract.View {
@@ -32,7 +34,10 @@ class GameResultFragment : Fragment(), GameResultContract.View {
          * 画面タップ時処理
          */
         view.result_background.setOnClickListener {
-            activity?.finish()
+//            activity.finish()
+            val intent = Intent(activity, SelectModeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
         }
 
         return view
