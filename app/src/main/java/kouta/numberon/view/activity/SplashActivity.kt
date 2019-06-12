@@ -28,11 +28,13 @@ class SplashActivity : AppCompatActivity(), SplashContract.View {
 
         val intent = Intent(this, SelectModeActivity::class.java)
 
+        /**
+         * Presenterからアニメーションの値取得と
+         * アニメーションのスタート
+         */
         presenter = SplashPresenter(this)
-
         anim_up = presenter.anim_up()
         anim_down = presenter.anim_down()
-
         presenter.start()
 
         /**
@@ -44,6 +46,9 @@ class SplashActivity : AppCompatActivity(), SplashContract.View {
         }
     }
 
+    /**
+     * アニメーションの適用
+     */
     override fun showAnimation() {
         GlobalScope.launch(Dispatchers.Main) {
             while (true) {
@@ -54,6 +59,9 @@ class SplashActivity : AppCompatActivity(), SplashContract.View {
         }
     }
 
+    /**
+     * アニメーション用のcouroutine
+     */
     suspend fun View.AnimationAsync(anim : Animation) {
         return suspendCoroutine { continuation ->
             anim.setAnimationListener(object : Animation.AnimationListener {

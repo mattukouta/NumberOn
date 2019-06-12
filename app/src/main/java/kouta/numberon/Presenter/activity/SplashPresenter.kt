@@ -5,6 +5,9 @@ import android.view.animation.TranslateAnimation
 
 class SplashPresenter(private val view : SplashContract.View) : SplashContract.Presenter {
 
+    /**
+     * アニメーションの上昇値
+     */
     override fun anim_up() : Animation {
         val anim = TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0f,
@@ -15,6 +18,9 @@ class SplashPresenter(private val view : SplashContract.View) : SplashContract.P
         return anim
     }
 
+    /**
+     * アニメーションの下降値
+     */
     override fun anim_down() : Animation {
         val anim = TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0f,
@@ -25,6 +31,9 @@ class SplashPresenter(private val view : SplashContract.View) : SplashContract.P
         return anim
     }
 
+    /**
+     * アニメーションのスタート
+     */
     override fun start() {
         view.showAnimation()
     }
