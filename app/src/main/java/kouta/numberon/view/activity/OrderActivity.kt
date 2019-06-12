@@ -29,19 +29,20 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.V
         setContentView(R.layout.activity_order)
 
         presenter = OrderPresenter()
-
-        val dialogFragment = DigitDialogFragment()
+        /**
+         * modeの取得
+         */
         mode = presenter.getMode()
 
+        showDigitFragment()
+
+        /**
+         * 表示Textの変更
+         */
         select_title.setText(presenter.modeTextChange(mode))
         if (mode == "cpu") {
             select_text.text = resources.getText(R.string.select_player)
         }
-
-
-        dialogFragment.isCancelable = false
-        dialogFragment.setTargetFragment(null, presenter.getDigitRequestCode())
-        dialogFragment.show(supportFragmentManager, mode)
 
         zero.setOnClickListener(this)
         one.setOnClickListener(this)
@@ -74,10 +75,10 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.V
 
                         player1 = select
 
-                        if (mode == "cpu"){
+                        if (mode == "cpu") {
                             player2 = presenter.getListRemoveShuffle(player1)
 
-                            showFragment()
+                            showResultFragment()
                         } else if (mode == "local") {
                             /**
                              * player1の決定時
@@ -94,15 +95,20 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.V
                          */
 
                         player2 = select
-                        showFragment()
+                        showResultFragment()
                     }
                 }
             }
         }
 
-        /**
-         * 色の可視化
-         */
+        showCardColor(v)
+    }
+
+    /**
+     * 色の可視化
+     * 押したカードに色の枠をつける
+     */
+    override fun showCardColor(v : View?) {
         if (v != null && v != select_btn) {
 
             if (view != null && v != view) {
@@ -113,7 +119,20 @@ class OrderActivity : AppCompatActivity(), View.OnClickListener, OrderContract.V
         }
     }
 
-    fun showFragment() {
+    /**
+     * 桁数選択用のDialogFragmentの表示
+     */
+    override fun showDigitFragment() {
+        val dialogFragment = DigitDialogFragment()
+        dialogFragment.isCancelable = false
+        dialogFragment.setTargetFragment(null, presenter.getDigitRequestCode())
+        dialogFragment.show(supportFragmentManager, mode)
+    }
+
+    /**
+     * 先行後攻の結果表示用のFragmentの表示
+     */
+    override fun showResultFragment() {
         val shuffle_card_number = card_number.shuffled()
         val bundle = Bundle()
         bundle.putInt(presenter.getPlayer1CardKey(), shuffle_card_number[player1])

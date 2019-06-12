@@ -7,6 +7,9 @@ import kouta.numberon.Presenter.ModeTextChange
 
 interface OrderContract {
     interface View : BaseView<Presenter> {
+        fun showResultFragment()
+        fun showCardColor(v : android.view.View?)
+        fun showDigitFragment()
     }
 
     interface Presenter : BasePresenter, ModeTextChange, Mode {
