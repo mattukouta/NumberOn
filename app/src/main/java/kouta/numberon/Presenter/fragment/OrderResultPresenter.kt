@@ -6,9 +6,7 @@ import kouta.numberon.R
 class OrderResultPresenter : OrderResultContract.Presenter {
 
 
-    override fun start() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun start() {}
 
     override fun getPlayer1CardKey() : String {
         return DataUtils().PLAYER1_CARD

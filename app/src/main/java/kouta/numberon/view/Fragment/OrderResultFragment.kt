@@ -7,15 +7,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
+import kotlinx.android.synthetic.main.fragment_game_result.view.*
 import kotlinx.android.synthetic.main.fragment_order_result.view.*
+import kotlinx.android.synthetic.main.fragment_order_result.view.result_background
 import kouta.numberon.Presenter.fragment.OrderResultContract
 import kouta.numberon.Presenter.fragment.OrderResultPresenter
 
 import kouta.numberon.R
 import kouta.numberon.view.activity.MatchActivity
 
-class OrderResultFragment : Fragment(), OrderResultContract.View {
+class OrderResultFragment : Fragment(), OrderResultContract.View, View.OnClickListener {
+
     override lateinit var presenter : OrderResultContract.Presenter
+    lateinit var background : ConstraintLayout
 
     override fun onCreateView(inflater : LayoutInflater, container : ViewGroup?,
                               savedInstanceState : Bundle?) : View? {
@@ -23,6 +28,8 @@ class OrderResultFragment : Fragment(), OrderResultContract.View {
         val argument = arguments
         var player1 = 0
         var player2 = 0
+
+        background = view.result_background
 
         presenter = OrderResultPresenter()
         val mode = presenter.getMode()
@@ -44,6 +51,8 @@ class OrderResultFragment : Fragment(), OrderResultContract.View {
         val resouse = presenter.OrderResultTextBranch(mode, player1, player2)
         view.textView.text = resources.getText(resouse)
 
+
+        background.setOnClickListener(this)
         /**
          * 先行、後攻が決まりタッチでゲームスタートの処理
          */
@@ -54,5 +63,19 @@ class OrderResultFragment : Fragment(), OrderResultContract.View {
         }
 
         return view
+    }
+
+    override fun onClick(v : View?) {
+        when (v) {
+            background -> {
+                intent()
+            }
+        }
+    }
+
+    override fun intent() {
+        val intent = Intent(activity, MatchActivity::class.java)
+        activity?.startActivity(intent)
+        activity?.overridePendingTransition(0, 0)
     }
 }

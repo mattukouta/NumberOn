@@ -9,7 +9,7 @@ import kouta.numberon.Presenter.NumberToCard
 
 interface OrderResultContract {
     interface View : BaseView<Presenter> {
-
+        fun intent()
     }
 
     interface Presenter : BasePresenter, NumberToCard, FirstPlayer, Mode, ModeString {
