@@ -62,7 +62,7 @@ class SplashActivity : AppCompatActivity(), SplashContract.View {
     /**
      * アニメーション用のcouroutine
      */
-    suspend fun View.AnimationAsync(anim : Animation) {
+    override suspend fun View.AnimationAsync(anim : Animation) {
         return suspendCoroutine { continuation ->
             anim.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation : Animation?) {

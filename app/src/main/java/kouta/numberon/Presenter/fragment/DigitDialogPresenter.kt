@@ -4,9 +4,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 
 class DigitDialogPresenter : DigitDialogContract.Presenter {
-    override fun start() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun start() {}
 
     /**
      * 同一TAGのダイアログが表示されているかどうかを判定する。
