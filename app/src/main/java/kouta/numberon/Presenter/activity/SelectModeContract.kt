@@ -10,6 +10,5 @@ interface SelectModeContract {
         fun intent(intent : Intent)
     }
 
-    interface Presenter : BasePresenter, Mode {
-    }
+    interface Presenter : BasePresenter, Mode
 }

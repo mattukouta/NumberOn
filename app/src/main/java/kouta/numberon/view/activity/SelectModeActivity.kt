@@ -44,6 +44,12 @@ class SelectModeActivity : AppCompatActivity(), SelectModeContract.View {
          */
         online_btn.setOnClickListener {
         }
+
+        /**
+         * ルール説明選択時処理
+         */
+        rule_btn.setOnClickListener {
+        }
     }
 
     /**
