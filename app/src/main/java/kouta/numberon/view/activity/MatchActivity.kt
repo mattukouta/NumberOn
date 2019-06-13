@@ -16,7 +16,6 @@ import kouta.numberon.view.Adapter.CallListAdapter
 import kouta.numberon.view.Fragment.GameResultFragment
 import kouta.numberon.view.Fragment.TurnChangeFragment
 import kotlin.math.pow
-import kotlin.math.sign
 
 // radioButton生成部分が'number.add(null)', 'number[n - 1] = null'以外同じ ←activity内にメソッドの作成
 class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.View {
@@ -56,21 +55,11 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         mode = presenter.getMode()
         select_title.setText(presenter.modeTextChange(mode))
 
-        for (n in 1..digit) {
-            /**
-             * radiobuttonの追加
-             */
-            val radio = RadioButton(this)
-            radio.background = resources.getDrawable(R.drawable.card_checked, null)
-            radio.setButtonDrawable(R.drawable.trump_white)
-            radio.id = n
-            radioGroup.addView(radio)
+        radioInit()
 
-            /**
-             * 配列の作成
-             */
-            number.add(null)
-        }
+        /**
+         * 設定するnumberを選んでくださいの趣旨のテキストの取得
+         */
         first_turn_text = resources.getString(presenter.returnFirstText(firstPlayer, mode))
         second_turn_text = resources.getString(presenter.returnSecondText(firstPlayer, mode))
 
@@ -106,6 +95,20 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         val intent = Intent(this, SelectModeActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
+    }
+
+    /**
+     * 交代用のfragment表示
+     */
+    fun showTurnChecngeFragment(result : String, state : Int) {
+        val bundle = Bundle()
+        bundle.putString("result", result)
+
+        val fragment = TurnChangeFragment(state)
+        fragment.arguments = bundle
+        supportFragmentManager.beginTransaction()
+                .add(R.id.match_base, fragment)
+                .commit()
     }
 
     /**
@@ -178,6 +181,24 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
     }
 
+    fun cpuSelectNumber() {
+        val selectNumber = presenter.cpuNumber.random()
+
+        for (n in 0 until digit) {
+            if (n == 0) {
+                number[n] = selectNumber / (10f.pow(digit - 1)).toInt()
+            } else {
+                var sum = 0
+                for (i in 0 until n) {
+                    sum += number[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0
+                }
+                number[n] = (selectNumber - sum) / (10f.pow(digit - 1 - n)).toInt()
+            }
+        }
+        call()
+    }
+
+
     override fun cpuBaseNumber() {
         val cpu_number = presenter.createDigitList(digit)
         for (n in 0 until digit) {
@@ -191,8 +212,41 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
                 number[n] = (cpu_number - sum) / (10f.pow(digit - 1 - n)).toInt()
             }
         }
-        Log.d("checknumber", "$number : $cpu_number")
         call()
+    }
+
+    fun removeList(call_number_C : MutableList<Int?>, hit : Int, blow : Int) {
+        val hogehoge = mutableListOf<Int>()
+        val hoge = mutableListOf<Int?>()
+
+        for (n in 0 until presenter.cpuNumber.size) {
+            hogehoge.add(presenter.cpuNumber[n])
+        }
+
+        for (n in 0 until digit) {
+            hoge.add(0)
+        }
+        for (x in 0 until hogehoge.size) {
+
+            for (n in 0 until digit) {
+                if (n == 0) {
+                    hoge[n] =
+                            hogehoge[x] / (10f.pow(digit - 1)).toInt()
+                } else {
+                    var sum = 0
+                    for (i in 0 until n) {
+                        sum += hoge[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0
+                    }
+                    hoge[n] = (hogehoge[x] - sum) / (10f.pow(digit - 1 - n)).toInt()
+                }
+            }
+
+            val removeHit = presenter.returnHit(call_number_C, hoge)
+            val removeBlow = presenter.returnBlow(call_number_C, hoge)
+            if (hit != removeHit || blow != removeBlow) {
+                presenter.cpuNumber.removeAll { it == hogehoge[x] }
+            }
+        }
     }
 
     fun call() {
@@ -229,26 +283,31 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
          * 正しいNumberか確認
          */
         val check = Check(base_number, number, state, digit, sum)
-        Log.d("check", call_number.toString())
+
+        // ここから下をメソッド作成するもありかな
+
         /**
          * 正しいNumberの時の処理
          */
         if (check) {
             if (state == 1) {
+
                 /**
                  * 先攻のNumber設定時
                  */
+                turn_text.text = second_turn_text
                 if (firstPlayer == 1) {
-                    turn_text.text = second_turn_text
                     for (n in call_number) {
                         player1_setting_number.add(n)
                     }
                 } else if (firstPlayer == 2) {
-                    turn_text.text = second_turn_text
                     for (n in call_number) {
                         player2_setting_number.add(n)
                     }
                 }
+                /**
+                 * numberを選んでくださいの趣旨のテキストの取得
+                 */
                 first_turn_text = resources.getString(presenter.returnFirstTurnText(firstPlayer, mode))
                 second_turn_text = resources.getString(presenter.returnSecondTurnText(firstPlayer, mode))
 
@@ -256,19 +315,12 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
                 /**
                  * 後攻のNumber設定時
                  */
+                turn_text.text = first_turn_text
                 if (firstPlayer == 1) {
-                    turn_text.text = first_turn_text
-                    /**
-                     * 配列に格納
-                     */
                     for (n in call_number) {
                         player2_setting_number.add(n)
                     }
                 } else if (firstPlayer == 2) {
-                    turn_text.text = first_turn_text
-                    /**
-                     * 配列に格納
-                     */
                     for (n in call_number) {
                         player1_setting_number.add(n)
                     }
@@ -292,7 +344,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
             }
         }
 
-        Log.d("checklist", list.size.toString())
+
         if (mode == "cpu" && firstPlayer == 1 && state == 2) {
             cpuBaseNumber()
         } else if (mode == "cpu" && firstPlayer == 2 && state == 3 && list.size == 0) {
@@ -309,14 +361,13 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
          */
 
         if (call_number_C.filterNotNull().size == digit_C) {
-            var result = ""
             /**
              * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
              */
             if (state_C == 1 || state_C == 2) {
 
                 if (mode == "local") {
-                    showTurnChecngeFragment(result, state_C)
+                    showTurnChecngeFragment("", state_C)
                 }
 
             } else if (state_C == 3 || state_C == 4) {
@@ -326,119 +377,24 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
                 val listAdapter = CallListAdapter(this, list)
                 playerList.adapter = listAdapter
 
-                result = resources.getString(R.string.hit_blow, hit, blow)
+                val result = resources.getString(R.string.hit_blow, hit, blow)
 
-                /**
-                 * callボタン押した時の処理
-                 */
-                if (flag == 0) {
-                    player_result = Player()
-                    player_result.player1_call = sum_C
-                    player_result.player1_hit_blow = result
-                    list.add(0, player_result)
-                    listAdapter.notifyDataSetChanged()
-                    flag = 1
-                } else if (flag == 1) {
-                    player_result.player2_call = sum_C
-                    player_result.player2_hit_blow = result
-                    listAdapter.notifyDataSetChanged()
-                    flag = 0
-                }
+                showCallList(result, sum_C)
 
                 if (mode == "cpu" && ((firstPlayer == 1 && state_C == 4) || (firstPlayer == 2 && state_C == 3))) {
-//                    val hoge = presenter.cpuNumber
-                    val hogehoge = mutableListOf<Int>()
-                    val hoge = mutableListOf<Int?>()
 
-                    for (n in 0 until presenter.cpuNumber.size) {
-                        hogehoge.add(presenter.cpuNumber[n])
-                    }
+                    removeList(call_number_C, hit, blow)
 
-                    for (n in 0 until digit) {
-                        hoge.add(0)
-                    }
-
-                    Log.d("checklisthogehoge", hogehoge.toString())
-                    for (x in 0 until hogehoge.size) {
-
-//                        for (n in 0 until digit) {
-//                            if (n == 0) {
-//                                hoge.add(
-//                                        hogehoge[i] / (10f.pow(digit - 1)).toInt())
-////                                Log.d("checklisthoge", hoge.size.toString())
-//                                Log.d("checklisthogehoge", hogehoge[i].toString())
-//                            } else {
-//                                var sum = 0
-//                                for (g in 0 until n) {
-//                                    sum += hoge[g]?.times(((10f.pow(digit - 1 - g)).toInt())) ?: 0
-//                                }
-//                                hoge.add((hogehoge[i] - sum) / (10f.pow(digit - 1 - n)).toInt())
-//                                Log.d("checklisthogehoge", hogehoge[i].toString())
-//                            }
-//                        }
-
-                        for (n in 0 until digit) {
-                            if (n == 0) {
-//                                Log.d("check", hogehoge.size.toString())
-                                hoge[n] =
-                                        hogehoge[x] / (10f.pow(digit - 1)).toInt()
-                            } else {
-                                var sum = 0
-                                for (i in 0 until n) {
-                                    sum += hoge[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0
-                                }
-                                hoge[n] = (hogehoge[x] - sum) / (10f.pow(digit - 1 - n)).toInt()
-                            }
-                        }
-
-                        val removeHit = presenter.returnHit(call_number_C, hoge)
-                        val removeBlow = presenter.returnBlow(call_number_C, hoge)
-//                        Log.d("checkhoge", "$hoge : $removeHit : $removeBlow")
-                        if (hit != removeHit || blow != removeBlow) {
-                            presenter.cpuNumber.removeAll { it == hogehoge[x] }
-                        }
-                    }
-                    Log.d("checklist", "${presenter.cpuNumber.size}")
                 }
 
                 if (hit == digit_C) {
-                    val bundle = Bundle()
-
-                    val player = presenter.getWinPlayer(state_C, firstPlayer, mode)
-
-                    bundle.putString("win_player", player)
-
-                    val fragment = GameResultFragment()
-                    fragment.arguments = bundle
-                    supportFragmentManager.beginTransaction()
-                            .add(R.id.match_base, fragment)
-                            .commit()
+                    showGameResult(state_C)
                 } else {
                     showTurnChecngeFragment(result, state_C)
                 }
             }
 
-            /**
-             * 選択していたNumberの初期化
-             */
-            radioGroup.clearCheck()
-            radioGroup.removeAllViews()
-            for (n in 1..digit) {
-                /**
-                 * radiobuttonの追加
-                 */
-
-                val radio = RadioButton(this)
-                radio.background = resources.getDrawable(R.drawable.card_checked, null)
-                radio.setButtonDrawable(R.drawable.trump_white)
-                radio.id = n
-                radioGroup.addView(radio)
-
-                /**
-                 * 配列の作成
-                 */
-                number[n - 1] = null
-            }
+            radioAdd()
 
 
             Log.d("check", "good!")
@@ -453,35 +409,84 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
     }
 
-    fun showTurnChecngeFragment(result : String, state : Int) {
-        /**
-         * 交代用のfragment表示
-         */
+    /**
+     * ゲーム終了と勝者の画面表示
+     */
+    fun showGameResult(state_C : Int) {
         val bundle = Bundle()
-        bundle.putString("result", result)
 
-        val fragment = TurnChangeFragment(state)
+        val player = presenter.getWinPlayer(state_C, firstPlayer, mode)
+
+        bundle.putString("win_player", player)
+
+        val fragment = GameResultFragment()
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
                 .add(R.id.match_base, fragment)
                 .commit()
     }
 
-    fun cpuSelectNumber() {
-        val selectNumber = presenter.cpuNumber.random()
+    /**
+     * 各プレイヤーがcallした値の表示とhit&blowを表示
+     */
+    fun showCallList(result : String, sum_C : String) {
+        val listAdapter = CallListAdapter(this, list)
+        playerList.adapter = listAdapter
 
-        for (n in 0 until digit) {
-            if (n == 0) {
-                number[n] = selectNumber / (10f.pow(digit - 1)).toInt()
-            } else {
-                var sum = 0
-                for (i in 0 until n) {
-                    sum += number[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0
-                }
-                number[n] = (selectNumber - sum) / (10f.pow(digit - 1 - n)).toInt()
-            }
+        if (flag == 0) {
+            player_result = Player()
+            player_result.player1_call = sum_C
+            player_result.player1_hit_blow = result
+            list.add(0, player_result)
+            listAdapter.notifyDataSetChanged()
+            flag = 1
+        } else if (flag == 1) {
+            player_result.player2_call = sum_C
+            player_result.player2_hit_blow = result
+            listAdapter.notifyDataSetChanged()
+            flag = 0
         }
-        Log.d("checknumber", "$number : $selectNumber : ${list.size}")
-        call()
+    }
+
+    fun radioAdd() {
+        /**
+         * 選択していたNumberの初期化
+         */
+        radioGroup.clearCheck()
+        radioGroup.removeAllViews()
+        for (n in 1..digit) {
+            /**
+             * radiobuttonの追加
+             */
+
+            val radio = RadioButton(this)
+            radio.background = resources.getDrawable(R.drawable.card_checked, null)
+            radio.setButtonDrawable(R.drawable.trump_white)
+            radio.id = n
+            radioGroup.addView(radio)
+
+            /**
+             * 配列の作成
+             */
+            number[n - 1] = null
+        }
+    }
+
+    fun radioInit() {
+        for (n in 1..digit) {
+            /**
+             * radiobuttonの追加
+             */
+            val radio = RadioButton(this)
+            radio.background = resources.getDrawable(R.drawable.card_checked, null)
+            radio.setButtonDrawable(R.drawable.trump_white)
+            radio.id = n
+            radioGroup.addView(radio)
+
+            /**
+             * 配列の作成
+             */
+            number.add(null)
+        }
     }
 }
