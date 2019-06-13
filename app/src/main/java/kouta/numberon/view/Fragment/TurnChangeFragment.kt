@@ -36,9 +36,12 @@ class TurnChangeFragment(private val state : Int) : Fragment(), TurnChangeContra
         view.turn_change_background.setOnClickListener {
             fragmentManager?.beginTransaction()?.remove(this)?.commit()
 
+            /**
+             * cpuNumber宣言
+             * 画面を押した直後すぎるので検討の必要あり
+             */
             if (mode == "cpu" && ((firstPlayer == 1 && state == 3) || (firstPlayer == 2 && state == 4))) {
                 val activity : MatchActivity = activity as MatchActivity
-//                activity.cpuBaseNumber()
                 activity.cpuSelectNumber()
             }
         }
