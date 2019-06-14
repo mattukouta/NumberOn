@@ -45,6 +45,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
     lateinit var first_turn_text : String
     lateinit var second_turn_text : String
     lateinit var mode : String
+    var call_sum = ""
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +54,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         presenter = MatchPresenter(this)
         firstPlayer = presenter.getFirstPlayer()
         digit = presenter.getDigit()
-
         mode = presenter.getMode()
         select_title.setText(presenter.modeTextChange(mode))
 
@@ -88,32 +88,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         btn_8.setOnClickListener(this)
         btn_9.setOnClickListener(this)
         btn_call.setOnClickListener(this)
-    }
-
-    /**
-     * バックキーの処理
-     */
-    override fun onBackPressed() {
-        /**
-         * activityのスタックを全て削除してSelectModeActivityに遷移する
-         */
-        val intent = Intent(this, SelectModeActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
-    }
-
-    /**
-     * 交代用のfragment表示
-     */
-    fun showTurnChecngeFragment(result : String, state : Int) {
-        val bundle = Bundle()
-        bundle.putString("result", result)
-
-        val fragment = TurnChangeFragment(state)
-        fragment.arguments = bundle
-        supportFragmentManager.beginTransaction()
-                .add(R.id.match_base, fragment)
-                .commit()
     }
 
     /**
@@ -221,7 +195,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         val selectNumber = presenter.cpuNumber.random()
 
         number = returnIntToList(selectNumber)
-//        sumCallInit()
     }
 
     /**
@@ -233,7 +206,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         val cpu_number = presenter.createDigitList(digit)
 
         number = returnIntToList(cpu_number)
-//        sumCallInit()
     }
 
     /**
@@ -278,7 +250,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         /**
          * 合計値の処理
          */
-        var sum = presenter.numberToSum(digit, number)
+        call_sum = presenter.numberToSum(digit, number)
 
         if (state == 3) {
             if (firstPlayer == 1) {
@@ -297,7 +269,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         /**
          * 正しいNumberか確認
          */
-        val check = callListCheck(sum)
+        val check = callListCheck()
 
         stateBranch(check)
     }
@@ -377,7 +349,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
     }
 
     // 関数内で関数の使用
-    fun callListCheck(sum_C : String) : Boolean {
+    fun callListCheck() : Boolean {
         /**
          * 作成していたnumberリストの全ての値がnullではないことの確認
          * number.filterNotNull()でnullじゃない要素の抽出
@@ -387,7 +359,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
 
         if (call_number.filterNotNull().size == digit) {
 
-            callResult(sum_C)
+            callResult()
 
             Log.d("check", "good!")
 
@@ -402,7 +374,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
     }
 
     // 関数内で関数の使用
-    fun callResult(sum_C : String) {
+    fun callResult() {
         /**
          * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
          */
@@ -417,7 +389,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
             val blow = presenter.returnBlow(base_number, call_number)
             val result = resources.getString(R.string.hit_blow, hit, blow)
 
-            showCallList(result, sum_C)
+            showCallList(result, call_sum)
 
             if (mode == "cpu" && ((firstPlayer == 1 && state == 4) || (firstPlayer == 2 && state == 3))) {
 
@@ -504,5 +476,31 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
              */
             number.add(null)
         }
+    }
+
+    /**
+     * バックキーの処理
+     */
+    override fun onBackPressed() {
+        /**
+         * activityのスタックを全て削除してSelectModeActivityに遷移する
+         */
+        val intent = Intent(this, SelectModeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
+
+    /**
+     * 交代用のfragment表示
+     */
+    fun showTurnChecngeFragment(result : String, state : Int) {
+        val bundle = Bundle()
+        bundle.putString("result", result)
+
+        val fragment = TurnChangeFragment(state)
+        fragment.arguments = bundle
+        supportFragmentManager.beginTransaction()
+                .add(R.id.match_base, fragment)
+                .commit()
     }
 }
