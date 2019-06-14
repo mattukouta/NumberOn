@@ -235,7 +235,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
     }
 
-    // 関数内で関数の使用
     fun sumCallInit() {
         call_number = mutableListOf()
         base_number = mutableListOf()
@@ -271,84 +270,91 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
          */
         val check = callListCheck()
 
-        stateBranch(check)
+        if (check) {
+
+            callResult()
+
+            stateBranch()
+
+            stateChenge()
+
+            Log.d("check", "$player1_setting_number : $player2_setting_number")
+
+
+            if (mode == "cpu" && firstPlayer == 1 && state == 2) {
+                cpuBaseNumber()
+
+                sumCallInit()
+            } else if (mode == "cpu" && firstPlayer == 2 && state == 3 && list.size == 0) {
+                cpuSelectNumber()
+
+                sumCallInit()
+            }
+        }
     }
 
-    fun stateBranch(check : Boolean) {
+    fun stateBranch() {
 
         /**
          * 正しいNumberの時の処理
          */
-        if (check) {
-            if (state == 1) {
+        if (state == 1) {
 
-                /**
-                 * 先攻のNumber設定時
-                 */
-                turn_text.text = second_turn_text
-                if (firstPlayer == 1) {
+            /**
+             * 先攻のNumber設定時
+             */
+            turn_text.text = second_turn_text
+            if (firstPlayer == 1) {
 
-                    player1_setting_number = call_number
+                player1_setting_number = call_number
 
 
-                } else if (firstPlayer == 2) {
+            } else if (firstPlayer == 2) {
 
-                    player2_setting_number = call_number
+                player2_setting_number = call_number
 
-                }
-                /**
-                 * numberを選んでくださいの趣旨のテキストの取得
-                 */
-                first_turn_text = resources.getString(presenter.returnFirstTurnText(firstPlayer, mode))
-                second_turn_text = resources.getString(presenter.returnSecondTurnText(firstPlayer, mode))
-
-            } else if (state == 2) {
-                /**
-                 * 後攻のNumber設定時
-                 */
-                turn_text.text = first_turn_text
-                if (firstPlayer == 1) {
-
-                    player2_setting_number = call_number
-
-                } else if (firstPlayer == 2) {
-
-                    player1_setting_number = call_number
-
-                }
-            } else if (state == 3) {
-                /**
-                 * 先攻のNumber選択時
-                 */
-                turn_text.text = second_turn_text
-            } else if (state == 4) {
-                /**
-                 * 後攻のNumber選択時
-                 */
-                turn_text.text = first_turn_text
             }
+            /**
+             * numberを選んでくださいの趣旨のテキストの取得
+             */
+            first_turn_text = resources.getString(presenter.returnFirstTurnText(firstPlayer, mode))
+            second_turn_text = resources.getString(presenter.returnSecondTurnText(firstPlayer, mode))
 
-            if (state == 4) {
-                state -= 1
-            } else {
-                state += 1
+        } else if (state == 2) {
+            /**
+             * 後攻のNumber設定時
+             */
+            turn_text.text = first_turn_text
+            if (firstPlayer == 1) {
+
+                player2_setting_number = call_number
+
+            } else if (firstPlayer == 2) {
+
+                player1_setting_number = call_number
+
             }
-            Log.d("check", "$player1_setting_number : $player2_setting_number")
-        }
-
-
-        if (mode == "cpu" && firstPlayer == 1 && state == 2) {
-            cpuBaseNumber()
-
-            sumCallInit()
-        } else if (mode == "cpu" && firstPlayer == 2 && state == 3 && list.size == 0) {
-            cpuSelectNumber()
-
-            sumCallInit()
+        } else if (state == 3) {
+            /**
+             * 先攻のNumber選択時
+             */
+            turn_text.text = second_turn_text
+        } else if (state == 4) {
+            /**
+             * 後攻のNumber選択時
+             */
+            turn_text.text = first_turn_text
         }
     }
 
-    // 関数内で関数の使用
+    fun stateChenge() {
+        if (state == 4) {
+            state -= 1
+        } else {
+            state += 1
+        }
+    }
+
     fun callListCheck() : Boolean {
         /**
          * 作成していたnumberリストの全ての値がnullではないことの確認
@@ -358,8 +364,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
          */
 
         if (call_number.filterNotNull().size == digit) {
-
-            callResult()
 
             Log.d("check", "good!")
 
@@ -373,7 +377,6 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
     }
 
-    // 関数内で関数の使用
     fun callResult() {
         /**
          * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
@@ -389,18 +392,18 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
             val blow = presenter.returnBlow(base_number, call_number)
             val result = resources.getString(R.string.hit_blow, hit, blow)
 
+            if (hit == digit) {
+                showGameResult(state)
+            } else {
+                showTurnChecngeFragment(result, state)
+            }
+
             showCallList(result, call_sum)
 
             if (mode == "cpu" && ((firstPlayer == 1 && state == 4) || (firstPlayer == 2 && state == 3))) {
 
                 removeList(call_number, hit, blow)
 
-            }
-
-            if (hit == digit) {
-                showGameResult(state)
-            } else {
-                showTurnChecngeFragment(result, state)
             }
         }
 
