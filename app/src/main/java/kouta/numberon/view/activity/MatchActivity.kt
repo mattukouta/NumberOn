@@ -181,6 +181,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
     }
 
+    // 下の3つがもう少し改良できそう
     fun cpuSelectNumber() {
         val selectNumber = presenter.cpuNumber.random()
 
@@ -448,10 +449,13 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
     }
 
+
+    //以下2つを1つのメソッドにできそう
     fun radioAdd() {
         /**
          * 選択していたNumberの初期化
          */
+        //あってもなくても
         radioGroup.clearCheck()
         radioGroup.removeAllViews()
         for (n in 1..digit) {
@@ -473,6 +477,11 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
     }
 
     fun radioInit() {
+        /**
+         * 選択していたNumberの初期化
+         */
+        radioGroup.clearCheck()
+        radioGroup.removeAllViews()
         for (n in 1..digit) {
             /**
              * radiobuttonの追加
