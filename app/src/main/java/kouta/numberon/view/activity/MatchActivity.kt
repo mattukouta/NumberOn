@@ -68,7 +68,10 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         turn_text.text = first_turn_text
 
         if (mode == "cpu" && firstPlayer == 2) {
+
             cpuBaseNumber()
+
+            sumCallInit()
         }
 
         /**
@@ -193,7 +196,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
      * 与えられた引数のIntをListとして返す関数
      */
     // 変数名を変更してpresenter案件
-    fun hoge(hoge : Int) : MutableList<Int?> {
+    fun returnIntToList(hoge : Int) : MutableList<Int?> {
         var hogelist = mutableListOf<Int?>()
         for (n in 0 until digit) {
             if (n == 0) {
@@ -213,13 +216,12 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
     /**
      * listからrandomに取り出し実行
      */
-    // 下の3つがもう少し改良できそう
     // 関数内で関数の使用
     fun cpuSelectNumber() {
         val selectNumber = presenter.cpuNumber.random()
 
-        number = hoge(selectNumber)
-        sumCallInit()
+        number = returnIntToList(selectNumber)
+//        sumCallInit()
     }
 
     /**
@@ -230,10 +232,14 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
     override fun cpuBaseNumber() {
         val cpu_number = presenter.createDigitList(digit)
 
-        number = hoge(cpu_number)
-        sumCallInit()
+        number = returnIntToList(cpu_number)
+//        sumCallInit()
     }
 
+    /**
+     * cpu対戦時、cpuが宣言したnumberとhit&blowの結果から、
+     * 条件にあったnumberをリストから削除する
+     */
     fun removeList(call_number_C : MutableList<Int?>, hit : Int, blow : Int) {
         val hogehoge = mutableListOf<Int>()
         var hoge = mutableListOf<Int?>()
@@ -247,7 +253,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
         for (x in 0 until hogehoge.size) {
 
-            hoge = hoge(hogehoge[x])
+            hoge = returnIntToList(hogehoge[x])
 
             val removeHit = presenter.returnHit(call_number_C, hoge)
             val removeBlow = presenter.returnBlow(call_number_C, hoge)
@@ -291,11 +297,10 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         /**
          * 正しいNumberか確認
          */
-        val check = Check(sum)
+        val check = callListCheck(sum)
 
         stateBranch(check)
     }
-
 
     fun stateBranch(check : Boolean) {
 
@@ -310,13 +315,14 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
                  */
                 turn_text.text = second_turn_text
                 if (firstPlayer == 1) {
-                    for (n in call_number) {
-                        player1_setting_number.add(n)
-                    }
+
+                    player1_setting_number = call_number
+
+
                 } else if (firstPlayer == 2) {
-                    for (n in call_number) {
-                        player2_setting_number.add(n)
-                    }
+
+                    player2_setting_number = call_number
+
                 }
                 /**
                  * numberを選んでくださいの趣旨のテキストの取得
@@ -330,13 +336,13 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
                  */
                 turn_text.text = first_turn_text
                 if (firstPlayer == 1) {
-                    for (n in call_number) {
-                        player2_setting_number.add(n)
-                    }
+
+                    player2_setting_number = call_number
+
                 } else if (firstPlayer == 2) {
-                    for (n in call_number) {
-                        player1_setting_number.add(n)
-                    }
+
+                    player1_setting_number = call_number
+
                 }
             } else if (state == 3) {
                 /**
@@ -355,18 +361,23 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
             } else {
                 state += 1
             }
+            Log.d("check", "$player1_setting_number : $player2_setting_number")
         }
 
 
         if (mode == "cpu" && firstPlayer == 1 && state == 2) {
             cpuBaseNumber()
+
+            sumCallInit()
         } else if (mode == "cpu" && firstPlayer == 2 && state == 3 && list.size == 0) {
             cpuSelectNumber()
+
+            sumCallInit()
         }
     }
 
     // 関数内で関数の使用
-    fun Check(sum_C : String) : Boolean {
+    fun callListCheck(sum_C : String) : Boolean {
         /**
          * 作成していたnumberリストの全ての値がnullではないことの確認
          * number.filterNotNull()でnullじゃない要素の抽出

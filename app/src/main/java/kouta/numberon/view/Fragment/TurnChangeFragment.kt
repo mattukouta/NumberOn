@@ -43,6 +43,8 @@ class TurnChangeFragment(private val state : Int) : Fragment(), TurnChangeContra
             if (mode == "cpu" && ((firstPlayer == 1 && state == 3) || (firstPlayer == 2 && state == 4))) {
                 val activity : MatchActivity = activity as MatchActivity
                 activity.cpuSelectNumber()
+
+                activity.sumCallInit()
             }
         }
 

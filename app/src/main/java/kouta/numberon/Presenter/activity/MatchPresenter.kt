@@ -8,7 +8,7 @@ class MatchPresenter(private val view : MatchContract.View) : MatchContract.Pres
     override var cpuNumber = mutableListOf<Int>()
 
     override fun start() {
-        view.cpuBaseNumber()
+//        view.cpuBaseNumber()
     }
 
     override fun returnHit(baseNumber : MutableList<Int?>, selectnumber : MutableList<Int?>) : Int {
