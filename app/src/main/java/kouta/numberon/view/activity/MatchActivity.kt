@@ -39,6 +39,8 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
 
     var player1_setting_number = mutableListOf<Int?>()
     var player2_setting_number = mutableListOf<Int?>()
+    var call_number = mutableListOf<Int?>()
+    var base_number = mutableListOf<Int?>()
 
     lateinit var first_turn_text : String
     lateinit var second_turn_text : String
@@ -160,7 +162,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
                 select_card = presenter.numberToCard(select_number)
             }
             btn_call -> {
-                call()
+                sumCallInit()
             }
         }
 
@@ -181,44 +183,60 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
     }
 
-    // 下の3つがもう少し改良できそう
-    fun cpuSelectNumber() {
-        val selectNumber = presenter.cpuNumber.random()
+    /**
+     * 以下メソッドわけ中
+     * 現状では、presenterに移行前のものもこのActivityに書いてある
+     * 修正が落ち着いたら移行する
+     */
 
+    /**
+     * 与えられた引数のIntをListとして返す関数
+     */
+    // 変数名を変更してpresenter案件
+    fun hoge(hoge : Int) : MutableList<Int?> {
+        var hogelist = mutableListOf<Int?>()
         for (n in 0 until digit) {
             if (n == 0) {
-                number[n] = selectNumber / (10f.pow(digit - 1)).toInt()
+                hogelist.add(hoge / (10f.pow(digit - 1)).toInt())
             } else {
                 var sum = 0
                 for (i in 0 until n) {
-                    sum += number[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0
+                    sum += hogelist[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0
                 }
-                number[n] = (selectNumber - sum) / (10f.pow(digit - 1 - n)).toInt()
+                hogelist.add((hoge - sum) / (10f.pow(digit - 1 - n)).toInt())
             }
         }
-        call()
+        return hogelist
     }
 
 
+    /**
+     * listからrandomに取り出し実行
+     */
+    // 下の3つがもう少し改良できそう
+    // 関数内で関数の使用
+    fun cpuSelectNumber() {
+        val selectNumber = presenter.cpuNumber.random()
+
+        number = hoge(selectNumber)
+        sumCallInit()
+    }
+
+    /**
+     * 桁に応じたlistを作成し、
+     * 作成したリストからrandomに取り出し実行
+     */
+    // 関数内で関数の使用
     override fun cpuBaseNumber() {
         val cpu_number = presenter.createDigitList(digit)
-        for (n in 0 until digit) {
-            if (n == 0) {
-                number[n] = cpu_number / (10f.pow(digit - 1)).toInt()
-            } else {
-                var sum = 0
-                for (i in 0 until n) {
-                    sum += number[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0
-                }
-                number[n] = (cpu_number - sum) / (10f.pow(digit - 1 - n)).toInt()
-            }
-        }
-        call()
+
+        number = hoge(cpu_number)
+        sumCallInit()
     }
 
     fun removeList(call_number_C : MutableList<Int?>, hit : Int, blow : Int) {
         val hogehoge = mutableListOf<Int>()
-        val hoge = mutableListOf<Int?>()
+        var hoge = mutableListOf<Int?>()
 
         for (n in 0 until presenter.cpuNumber.size) {
             hogehoge.add(presenter.cpuNumber[n])
@@ -229,18 +247,7 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
         for (x in 0 until hogehoge.size) {
 
-            for (n in 0 until digit) {
-                if (n == 0) {
-                    hoge[n] =
-                            hogehoge[x] / (10f.pow(digit - 1)).toInt()
-                } else {
-                    var sum = 0
-                    for (i in 0 until n) {
-                        sum += hoge[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0
-                    }
-                    hoge[n] = (hogehoge[x] - sum) / (10f.pow(digit - 1 - n)).toInt()
-                }
-            }
+            hoge = hoge(hogehoge[x])
 
             val removeHit = presenter.returnHit(call_number_C, hoge)
             val removeBlow = presenter.returnBlow(call_number_C, hoge)
@@ -250,9 +257,10 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
     }
 
-    fun call() {
-        var call_number = mutableListOf<Int?>()
-        var base_number = mutableListOf<Int?>()
+    // 関数内で関数の使用
+    fun sumCallInit() {
+        call_number = mutableListOf()
+        base_number = mutableListOf()
 
         /**
          * 配列に格納
@@ -283,9 +291,13 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         /**
          * 正しいNumberか確認
          */
-        val check = Check(base_number, number, state, digit, sum)
+        val check = Check(sum)
 
-        // ここから下をメソッド作成するもありかな
+        stateBranch(check)
+    }
+
+
+    fun stateBranch(check : Boolean) {
 
         /**
          * 正しいNumberの時の処理
@@ -353,7 +365,8 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
     }
 
-    fun Check(base_number_C : MutableList<Int?>, call_number_C : MutableList<Int?>, state_C : Int, digit_C : Int, sum_C : String) : Boolean {
+    // 関数内で関数の使用
+    fun Check(sum_C : String) : Boolean {
         /**
          * 作成していたnumberリストの全ての値がnullではないことの確認
          * number.filterNotNull()でnullじゃない要素の抽出
@@ -361,42 +374,9 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
          * 選択していた桁数が等しいことを確認し次の処理へ
          */
 
-        if (call_number_C.filterNotNull().size == digit_C) {
-            /**
-             * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
-             */
-            if (state_C == 1 || state_C == 2) {
+        if (call_number.filterNotNull().size == digit) {
 
-                if (mode == "local") {
-                    showTurnChecngeFragment("", state_C)
-                }
-
-            } else if (state_C == 3 || state_C == 4) {
-                val hit = presenter.returnHit(base_number_C, call_number_C)
-                val blow = presenter.returnBlow(base_number_C, call_number_C)
-
-                val listAdapter = CallListAdapter(this, list)
-                playerList.adapter = listAdapter
-
-                val result = resources.getString(R.string.hit_blow, hit, blow)
-
-                showCallList(result, sum_C)
-
-                if (mode == "cpu" && ((firstPlayer == 1 && state_C == 4) || (firstPlayer == 2 && state_C == 3))) {
-
-                    removeList(call_number_C, hit, blow)
-
-                }
-
-                if (hit == digit_C) {
-                    showGameResult(state_C)
-                } else {
-                    showTurnChecngeFragment(result, state_C)
-                }
-            }
-
-            radioAdd()
-
+            callResult(sum_C)
 
             Log.d("check", "good!")
 
@@ -409,6 +389,45 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
 
         }
     }
+
+    // 関数内で関数の使用
+    fun callResult(sum_C : String) {
+        /**
+         * 各プレイヤーの宣言numberとHit&Blowの結果表示用のリスト作成
+         */
+        if (state == 1 || state == 2) {
+
+            if (mode == "local") {
+                showTurnChecngeFragment("", state)
+            }
+
+        } else if (state == 3 || state == 4) {
+            val hit = presenter.returnHit(base_number, call_number)
+            val blow = presenter.returnBlow(base_number, call_number)
+            val result = resources.getString(R.string.hit_blow, hit, blow)
+
+            showCallList(result, sum_C)
+
+            if (mode == "cpu" && ((firstPlayer == 1 && state == 4) || (firstPlayer == 2 && state == 3))) {
+
+                removeList(call_number, hit, blow)
+
+            }
+
+            if (hit == digit) {
+                showGameResult(state)
+            } else {
+                showTurnChecngeFragment(result, state)
+            }
+        }
+
+        radioInit()
+    }
+
+    /**
+     *  以下はViewに関わる関数
+     *  overrideは後々
+     */
 
     /**
      * ゲーム終了と勝者の画面表示
@@ -449,37 +468,14 @@ class MatchActivity : AppCompatActivity(), View.OnClickListener, MatchContract.V
         }
     }
 
-
-    //以下2つを1つのメソッドにできそう
-    fun radioAdd() {
-        /**
-         * 選択していたNumberの初期化
-         */
-        //あってもなくても
-        radioGroup.clearCheck()
-        radioGroup.removeAllViews()
-        for (n in 1..digit) {
-            /**
-             * radiobuttonの追加
-             */
-
-            val radio = RadioButton(this)
-            radio.background = resources.getDrawable(R.drawable.card_checked, null)
-            radio.setButtonDrawable(R.drawable.trump_white)
-            radio.id = n
-            radioGroup.addView(radio)
-
-            /**
-             * 配列の作成
-             */
-            number[n - 1] = null
-        }
-    }
-
+    /**
+     * 選択しているradioButtonを初期化する
+     */
     fun radioInit() {
         /**
          * 選択していたNumberの初期化
          */
+        number = mutableListOf()
         radioGroup.clearCheck()
         radioGroup.removeAllViews()
         for (n in 1..digit) {

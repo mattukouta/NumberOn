@@ -213,6 +213,7 @@ class MatchPresenter(private val view : MatchContract.View) : MatchContract.Pres
         return list.random()
     }
 
+    // 魔の関数になってる
     override fun checkList(number : Int, digit : Int) : Boolean {
         var list = mutableListOf(11, 12, 13, 14, 15)
 
