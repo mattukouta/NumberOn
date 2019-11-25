@@ -10,7 +10,10 @@ import kouta.numberon.Presenter.NumberToCard
 
 interface MatchContract {
     interface View : BaseView<Presenter> {
-        fun cpuBaseNumber()
+        fun showGameResult(state_C : Int)
+        fun showCallList(result : String, sum_C : String)
+        fun radioInit()
+        fun showTurnChecngeFragment(result : String, state : Int)
     }
 
     interface Presenter : BasePresenter, NumberToCard, ModeTextChange, Mode, Digit, FirstPlayer {
@@ -25,5 +28,12 @@ interface MatchContract {
         fun createDigitList(digit : Int) : Int
         fun checkList(number : Int, digit : Int) : Boolean
         var cpuNumber : MutableList<Int>
+        fun returnIntToList(hoge : Int) : MutableList<Int?>
+        //        fun cpuSelectNumber() : MutableList<Int?>
+        fun cpuBaseNumber() : MutableList<Int?>
+
+        fun removeList(call_number_C : MutableList<Int?>, hit : Int, blow : Int)
+        fun stateChenge(state : Int) : Int
+        fun callListCheck(call_number : MutableList<Int?>) : Boolean
     }
 }

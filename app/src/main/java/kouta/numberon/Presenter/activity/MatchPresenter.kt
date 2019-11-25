@@ -1,5 +1,6 @@
 package kouta.numberon.Presenter.activity
 
+import android.util.Log
 import kouta.numberon.R
 import kotlin.math.pow
 
@@ -248,4 +249,105 @@ class MatchPresenter(private val view : MatchContract.View) : MatchContract.Pres
 
         return false
     }
+
+    /**
+     * 与えられた引数のIntをListとして返す関数
+     */
+    override fun returnIntToList(hoge : Int) : MutableList<Int?> {
+        val digit = getDigit()
+        var hogelist = mutableListOf<Int?>()
+        for (n in 0 until digit) {
+            if (n == 0) {
+                hogelist.add(hoge / (10f.pow(digit - 1)).toInt())
+            } else {
+                var sum = 0
+                for (i in 0 until n) {
+                    sum += hogelist[i]?.times(((10f.pow(digit - 1 - i)).toInt())) ?: 0
+                }
+                hogelist.add((hoge - sum) / (10f.pow(digit - 1 - n)).toInt())
+            }
+        }
+        return hogelist
+    }
+
+    /**
+     * 桁に応じたlistを作成し、
+     * 作成したリストからrandomに取り出し実行
+     */
+    override fun cpuBaseNumber() : MutableList<Int?> {
+        val digit = getDigit()
+        val cpu_number = createDigitList(digit)
+
+        return returnIntToList(cpu_number)
+    }
+
+    /**
+     * cpu対戦時、cpuが宣言したnumberとhit&blowの結果から、
+     * 条件にあったnumberをリストから削除する
+     */
+    override fun removeList(call_number_C : MutableList<Int?>, hit : Int, blow : Int) {
+        val hogehoge = mutableListOf<Int>()
+        var hoge = mutableListOf<Int?>()
+        val digit = getDigit()
+
+        for (n in 0 until cpuNumber.size) {
+            hogehoge.add(cpuNumber[n])
+        }
+
+        for (n in 0 until digit) {
+            hoge.add(0)
+        }
+        for (x in 0 until hogehoge.size) {
+
+            hoge = returnIntToList(hogehoge[x])
+
+            val removeHit = returnHit(call_number_C, hoge)
+            val removeBlow = returnBlow(call_number_C, hoge)
+            if (hit != removeHit || blow != removeBlow) {
+                cpuNumber.removeAll { it == hogehoge[x] }
+            }
+        }
+    }
+
+    override fun stateChenge(state : Int) : Int {
+        var returnState = state
+        if (state == 4) {
+            returnState -= 1
+        } else {
+            returnState += 1
+        }
+        return returnState
+    }
+
+    override fun callListCheck(call_number : MutableList<Int?>) : Boolean {
+        /**
+         * 作成していたnumberリストの全ての値がnullではないことの確認
+         * number.filterNotNull()でnullじゃない要素の抽出
+         * number.filterNotNull().size == digitでnullじゃない要素のサイズと、
+         * 選択していた桁数が等しいことを確認し次の処理へ
+         */
+
+        if (call_number.filterNotNull().size == getDigit()) {
+
+            Log.d("check", "good!")
+
+            return true
+
+        } else {
+            Log.d("check", "bad..")
+
+            return false
+
+        }
+    }
+
+//    /**
+//     * listからrandomに取り出し実行
+//     */
+//    // 関数内で関数の使用
+//    override fun cpuSelectNumber() : MutableList<Int?> {
+//        val selectNumber = cpuNumber.random()
+//
+//        return returnIntToList(selectNumber)
+//    }
 }
